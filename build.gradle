@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+mainClassName = "com.premierinc.SrtApplication"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    // maven { url "someUrl" }
+}
+
+dependencies {
+    compile group: 'org.springframework', name: 'spring-expression', version: '4.2.5.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.2.5.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.5.RELEASE'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.7.3'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.7.3'
+
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.3'
+    compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
+
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.10'
+}
+
+test {
+    testLogging {
+        // Make sure output from
+        // standard out or error is shown
+        // in Gradle output.
+        showStandardStreams = true
+
+        // Or we use events method:
+        // events 'standard_out', 'standard_error'
+
+        // Or set property events:
+        // events = ['standard_out', 'standard_error']
+
+        // Instead of string values we can
+        // use enum values:
+        // events org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
+        //        org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+    }
+}
+//
+// We use the Gradle Wrapper
+//
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}

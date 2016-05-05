@@ -1,0 +1,31 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "numeric",
+        "identity": {
+          "name": "MILK",
+          "uom": "oz"
+        },
+        "description": "Amount of milk > 1.33 oz",
+        "operator": "GT",
+        "value": 2.22
+      },
+      {
+        "type": "andOr",
+        "operator": "AND"
+      },
+      {
+        "type": "datetime",
+        "identity": {
+          "name": "MILK_DATE"
+        },
+        "description": "Date Milk was milked >= 5 Days ago from now",
+        "operator": "GE",
+        "date_adjuster": "DAYS_AGO",
+        "value" : 5
+      }
+    ]
+  }
+}

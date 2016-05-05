@@ -1,0 +1,106 @@
+# #################################
+# Data Definition
+# #################################
+# Where does your milk come from?
+# #################################
+- identity    :
+    source      : TD
+    name        : MILK_TABLE
+    short_name  : MILK_TABLE
+  data_source : TD_ORACLE
+  cache       :
+    duration_time : 10
+    duration_type : minutes
+  fields :
+    - column      : id
+      alias       : milk_id
+      data_type   : long
+    - column      : source
+      alias       : milk_source
+      data_type   : varchar
+      data_length : 32
+    - column      : milked_date
+      alias       : milked_date
+      data_type   : datetime
+    - column      : amount_in_gallons
+      alias       : amount_in_gallons
+      data_type   : integer
+  sql : |
+    SELECT  id
+    ,       source
+    ,       milked_date
+    ,       amount_in_gallons
+    FROM    MILK_TABLE
+
+# #################################
+# What kind of pet might you have?
+# #################################
+- identity    :
+    source      : TD
+    name        : PET_TABLE
+    short_name  : PET_TABLE
+  data_source : TD_ORACLE
+  cache       :
+    duration_time : 1
+    duration_type : day
+  fields :
+    - column      : id
+      alias       : pet_id
+      data_type   : long
+    - column      : name
+      alias       : pet_name
+      data_type   : varchar
+      data_length : 32
+    - column      : animal_type
+      alias       : animal_type
+      data_type   : varchar
+      data_length : 32
+  sql : |
+    SELECT  id
+    ,       name
+    ,       animal_type
+    FROM    PET_TABLE
+
+# #################################
+# What kind of pet drinks milk?
+# #################################
+- identity    :
+    source      : TD
+    name        : PET_MILK_TABLE
+    short_name  : PET_MILK_TABLE
+  data_source : TD_ORACLE
+  cache       :
+    duration_time : 1
+    duration_type : day
+  fields :
+    - column      : id
+      alias       : pet_milk_id
+      data_type   : long
+    - column      : animal_type
+      alias       : animal_type
+      data_type   : varchar
+      data_length : 32
+    - column      : name
+      alias       : pet_name
+      data_type   : varchar
+      data_length : 32
+    - column      : milk_amount_in_oz_per_week
+      alias       : milk_amount_oz
+      data_type   : integer
+    - column      : source
+      alias       : milk_source
+      data_type   : varchar
+      data_length : 32
+  sql : |
+    SELECT  PM.id
+    ,       P.name
+    ,       P.animal_type
+    ,       MP.milk_amount_in_oz_per_week
+    ,       M.Source
+    FROM    PET_TABLE  P
+            INNER JOIN PET_MILK_TABLE PM
+              ON  PM.Pet_Id = P.Id
+            INNER JOIN MILK_TABLE M
+              ON  M.Id = PM.Milk_Id
+
+

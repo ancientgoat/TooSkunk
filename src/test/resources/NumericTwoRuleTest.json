@@ -1,0 +1,47 @@
+{
+  "rule": {
+	"name": "X1",
+	"description": "y1",
+	"condition": [
+	  {
+		"type": "IF",
+		"expression": "MILK > 1.11 * 1"
+	  },
+	  {
+		"type": "THEN",
+		"rule": {
+		  "name": "X2",
+		  "description": "y2",
+		  "condition": [
+			{
+			  "type": "IF",
+			  "expression": "MILK < 3"
+			},
+			{
+			  "type": "THEN",
+			  "action": {
+				"actiontype": "PRINT",
+				"message": "********* We Have a (2)THEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			  }
+			},
+			{
+			  "type": "ELSE",
+			  "action": {
+				"actiontype": "PRINT",
+				"message": "********* We Have a (2)ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"type": "ELSE",
+		"action": {
+		  "actiontype": "PRINT",
+		  "message": "********* We Have a (1)ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		}
+	  }
+	]
+  }
+}
+
