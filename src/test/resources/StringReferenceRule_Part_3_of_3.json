@@ -1,0 +1,26 @@
+{
+  "rule": {
+	"name": "COKE_RULE_00003",
+	"description": "Are things really better?  Or are you hyped up on sugar?",
+	"condition": [
+	  {
+		"ref": "COKE_RULE_00001"
+	  },
+	  {
+		"type": "THEN",
+		"action": {
+		  "actiontype": "PRINT",
+		  "message": "********* We Have a THEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		}
+	  },
+	  {
+		"type": "ELSE",
+		"action": {
+		  "actiontype": "PRINT",
+		  "message": "********* We Have a ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		}
+	  }
+	]
+  }
+}
+
