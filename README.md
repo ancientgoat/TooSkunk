@@ -14,8 +14,8 @@ Rule Beta
 -----------
 ```
 IF 'Rule Alpha'
-    THEN 'Beta older'
-    ELSE 'Beta younger'
+    THEN print 'Beta older'
+    ELSE print 'Beta younger'
 ```
 
 Order of execution when running 'Rule Beta'
