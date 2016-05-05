@@ -7,13 +7,13 @@ Rule Alpha
 ```
 IF Age > 18
     THEN print 'older'
-    THEN print 'younger'
+    ELSE print 'younger'
 ```
 
 Rule Beta
 -----------
 ```
-  IF 'Rule Alpha'
+IF 'Rule Alpha'
     THEN 'Beta older'
     ELSE 'Beta younger'
 ```
