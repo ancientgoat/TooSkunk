@@ -105,11 +105,54 @@ public class SkRuleRunner {
 		this.ruleContext.setValue(inKey, inValue);
 	}
 
+	public void setValue(SkExpression inExpression) {
+		this.ruleContext.setValue(inExpression);
+	}
+
 	public Object getValue(String inKey) {
 		return this.ruleContext.getValue(inKey);
 	}
 
+	/**
+	 *
+	 */
+	public boolean containsMacroKey(String inKey) {
+		return this.ruleContext.containsMacroKey(inKey);
+	}
+
+	/**
+	 * Run an Expression.  First, check to insure all Marco values are initialized.
+	 *
+	 */
 	public Object getValue(SkExpression inExpression) {
+		//
+		StringBuilder sb = new StringBuilder("\n");
+
+		System.out.println("EXPRESSION MACRO LIST : " + inExpression.getMacroList());
+		System.out.println("RUNNER SET MACRO LIST : " + this.ruleContext.getInternalMap());
+
+		inExpression.getMacroList()
+				.forEach(macro -> {
+					if (!this.containsMacroKey(macro)) {
+						sb.append(String.format("Missing macro '%s'\n", macro));
+					}
+				});
+
+		if (1 < sb.length()) {
+			throw new IllegalArgumentException(sb.toString());
+		}
+
 		return this.ruleContext.getValue(inExpression);
+	}
+
+	/**
+	 *
+	 */
+	public void runExpressions(final List<SkExpression> inExpressions) {
+		if (null != inExpressions) {
+			inExpressions.forEach(e -> {
+				setValue(e);
+			});
+		}
 	}
 }

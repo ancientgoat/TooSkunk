@@ -7,6 +7,7 @@ import com.premierinc.rule.common.JsonMapperHelper;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.io.File;
 import org.springframework.core.io.ClassPathResource;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -15,6 +16,7 @@ import org.testng.annotations.Test;
 public class TestSimpleNumericRuleTest {
 
 	public static final String ONE_RULE_FILE_NAME = "NumericOneRuleTest.json";
+	public static final String ONE_RULE_FAIL_FILE_NAME = "NumericOneRuleTestFail.json";
 	public static final String TWO_RULE_FILE_NAME = "NumericTwoRuleTest.json";
 
 	/**
@@ -26,14 +28,35 @@ public class TestSimpleNumericRuleTest {
 	}
 
 	/**
+	 * Can we read simple JSON without Exception?
+	 */
+	@Test
+	public void testOutputJsonSimpleRuleTest() {
+		SkRuleBase rule = buildRunnerFromFile(ONE_RULE_FILE_NAME);
+		String json = JsonMapperHelper.beanToJson(rule);
+		System.out.println("-------------------- JSON ---------------------");
+		System.out.println(json);
+		System.out.println("-------------------- JSON ---------------------");
+		rule.run();
+	}
+
+	/**
 	 * One rule test.
 	 */
 	@Test
 	public void testSimpleOneRuleExecutionTest() {
-		SkRuleBase rule = buildRunnerFromFile(ONE_RULE_FILE_NAME);
+		SkRuleBase rule = buildRunnerFromFile(ONE_RULE_FAIL_FILE_NAME);
 		SkRuleRunner runner = new SkRuleRunner();
-		runner.setValue("MILK.QTY", 2);
 
+		try {
+			runner.setValue("THIS_MACRO_DOES_NOT_EXIST", "X");
+			rule.run(runner);
+			Assert.fail("We should have thrown an error.");
+		} catch (Exception e) {
+			System.out.println(String.format("We expected this error : '%s'", e.toString()));
+		}
+
+		runner.setValue("MILK.QTY", 2);
 		rule.run(runner);
 	}
 

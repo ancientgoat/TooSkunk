@@ -1,9 +1,0 @@
-# #################################
-# Data Source
-# #################################
-- data_source : TD_ORACLE
-  username : 10
-  password : minutes
-  uri      : jdbc://xxx:yyy/zzz
-  etc      : somethingElseGoesHere
-

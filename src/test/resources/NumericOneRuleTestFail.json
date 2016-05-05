@@ -1,15 +1,7 @@
 {
   "rule": {
-	"name": "MILK_RULE_00001",
+	"name": "MILK_RULE_FAIL_00001",
 	"description": "None of your business",
-	"expressions": [
-	  {
-		"expression": "ORANGE_JUICE = 17"
-	  },
-	  {
-		"expression": "MILK.QTY = ORANGE_JUICE"
-	  }
-	],
 	"condition": [
 	  {
 		"type": "IF",

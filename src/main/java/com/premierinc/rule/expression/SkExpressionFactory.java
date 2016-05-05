@@ -46,10 +46,20 @@ public class SkExpressionFactory {
 					haveMacro = true;
 				}
 			}
+
+			if (haveMacro) {
+				if (SkChar.isBadMacroChar(c)) {
+					sb.append(macro);
+					macro = "";
+					haveMacro = false;
+				}
+			}
+
 			if (haveMacro) {
 				if (SkChar.isMacro(c)) {
 					macro += (char) c;
 				} else {
+
 					// Must be the end of a macro - insures next char is not a 'nonMacroString'
 					if (isStartOfFunction(inInputExpression, i)) {
 						// This - what we thought was a macro - is really a function.
@@ -71,16 +81,21 @@ public class SkExpressionFactory {
 				sb.append((char) c);
 			}
 		}
+
+		if(haveMacro && 0 < macro.length()){
+			macro = macro.toUpperCase();
+			sb.append(String.format("['%s'] ", macro));
+		}
+
 		String spelExpressionString = sb.toString();
 
-		log.error(
-				String.format("Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression, spelExpressionString));
+		log.error(String.format("Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression, spelExpressionString));
 
 		if (log.isTraceEnabled()) {
 			log.trace(
 					String.format("Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression, spelExpressionString));
 		}
-		return new SkExpression(macroList, spelExpressionString);
+		return new SkExpression(macroList, inInputExpression, spelExpressionString);
 	}
 
 	/**

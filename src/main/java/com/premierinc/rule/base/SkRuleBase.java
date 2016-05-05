@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
 import com.premierinc.rule.commands.SkCondition;
-import com.premierinc.rule.run.SkRuleContext;
+import com.premierinc.rule.expression.SkExpression;
+import com.premierinc.rule.expression.SkExpressionFactory;
+import com.premierinc.rule.expression.SkExpressions;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  *
  */
 @JsonRootName("rule")
-public class SkRuleBase implements SkRule{
+public class SkRuleBase implements SkRule {
 	// /////////////////////////////////////////////////////////////////////////
 	// {
 	// 		"Rule": {
@@ -48,6 +50,12 @@ public class SkRuleBase implements SkRule{
 	@JsonProperty("condition")
 	private List<SkCondition> conditionList = Lists.newArrayList();
 
+	@JsonProperty("expressions")
+	private List<SkExpression> expressions = Lists.newArrayList();
+
+	//	@JsonProperty("expressions")
+//	private SkExpressions expressions;
+
 	@JsonIgnore
 	SkRuleRunner runner = new SkRuleRunner();
 
@@ -78,17 +86,28 @@ public class SkRuleBase implements SkRule{
 		conditionList = inConditionList;
 	}
 
-	public void run(){
+	public List<SkExpression> getExpressions() {
+		return expressions;
+	}
+
+	public void setExpressions(final List<SkExpression> inExpressions) {
+		expressions = inExpressions;
+	}
+
+	public void run() {
 		this.runner = new SkRuleRunner();
+		this.runner.runExpressions(this.expressions);
 		this.runner.runRule(this);
 	}
 
-	public void run(SkRuleRunner inRunner){
+	public void run(SkRuleRunner inRunner) {
 		this.runner = inRunner;
+		this.runner.runExpressions(this.expressions);
 		inRunner.runRule(this);
 	}
 
-	public void existingRun(SkRuleRunner inRunner){
+	public void existingRun(SkRuleRunner inRunner) {
+		inRunner.runExpressions(this.expressions);
 		inRunner.runRule(this);
 	}
 }
