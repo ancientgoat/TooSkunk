@@ -1,25 +1,44 @@
 package com.premierinc.rule.expression;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  */
+@JsonRootName("expressions")
 public class SkExpressions {
 
-	@JsonProperty("expression")
-	private List<SkExpression> expressions = Lists.newArrayList();
+	private List<String> expressions = Lists.newArrayList();
 
-	public void sddExpression(String inExpressionString){
+	@JsonIgnore
+	private List<SkExpression> skExpressions = Lists.newArrayList();
+
+	public void addExpression(String inExpressionString) {
 		SkExpression expression = SkExpressionFactory.parseExpression(inExpressionString);
-		expressions.add(expression);
+		this.expressions.add(inExpressionString);
+		this.skExpressions.add(expression);
 	}
 
-	public List<SkExpression> getExpressions() {
+	public List<SkExpression> getSkExpressions() {
+		return this.skExpressions;
+	}
+
+	public List<String> getExpressions() {
 		return expressions;
+	}
+
+	/**
+	 *
+	 */
+	public SkExpressions addExpressions(final List<String> inExpressionList) {
+		if (null != inExpressionList)
+			inExpressionList.forEach(e -> {
+				expressions.add(e);
+				skExpressions.add(SkExpressionFactory.parseExpression(e));
+			});
+		return this;
 	}
 }

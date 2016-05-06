@@ -1,8 +1,10 @@
 package com.premierinc.rule.base;
 
+import com.oracle.webservices.internal.api.databinding.DatabindingModeFeature;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.commands.SkIf;
+import com.premierinc.rule.expression.SkData;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class SkRuleMaster {
 	/**
 	 *
 	 */
-	public SkRuleRunner getRuleRunner(){
+	public SkRuleRunner getRuleRunner() {
 		SkRuleRunner runner = new SkRuleRunner();
 		runner.setMaster(this);
 		return runner;
@@ -45,7 +47,7 @@ public class SkRuleMaster {
 	/**
 	 *
 	 */
-	public SkRuleBase getRule(String inRuleName){
+	public SkRuleBase getRule(String inRuleName) {
 		return this.stats.getRule(inRuleName);
 	}
 
@@ -88,12 +90,21 @@ public class SkRuleMaster {
 
 		/**
 		 *
+		 * @param inData
+		 * @return
+		 */
+		public Builder addData(final SkData inData) {
+			this.statBuilder.addData(inData);
+			return this;
+		}
+
+		/**
+		 *
 		 */
 		public SkRuleMaster build() {
 			SkMasterStats localStats = statBuilder.build();
 			master.stats = localStats;
 			return this.master;
 		}
-
 	}
 }

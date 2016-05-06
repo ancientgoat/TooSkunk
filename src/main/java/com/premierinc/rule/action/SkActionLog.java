@@ -43,7 +43,6 @@ public class SkActionLog extends SkAction {
 	@Override
 	public void execute(SkRuleRunner inRunner) {
 		String newMessage = inRunner.expandMacros(this.message);
-		System.out.println(newMessage);
 
 		switch (logLevel) {
 		case ERROR:
@@ -69,6 +68,5 @@ public class SkActionLog extends SkAction {
 		default:
 			throw new IllegalArgumentException(String.format("Not implemented log level '%s'.", logLevel));
 		}
-		System.out.println(this.message);
 	}
 }

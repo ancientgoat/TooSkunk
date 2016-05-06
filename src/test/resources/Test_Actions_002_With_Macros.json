@@ -29,27 +29,32 @@
 	  {
 		"actiontype": "LOG",
 		"name": "LOG_ERROR",
-		"message": "*** Error : Name : ${Name} ***"
+		"level" : "ERROR",
+		"message": "*** Error: Name: ${Name} ***"
 	  },
 	  {
 		"actiontype": "LOG",
 		"name": "LOG_WARN",
-		"message": "*** Warn : Name : ${Name} ***"
+		"level" : "WARN",
+		"message": "*** Warn: Name: ${Name} ***"
 	  },
 	  {
 		"actiontype": "LOG",
 		"name": "LOG_INFO",
-		"message": "*** Info : Name : ${Name} ***"
+		"level" : "INFO",
+		"message": "*** Info: Name: ${Name} ***"
 	  },
 	  {
 		"actiontype": "LOG",
 		"name": "LOG_DEBUG",
-		"message": "*** Debug : Name : ${Name} ***"
+		"level" : "DEBUG",
+		"message": "*** Debug: Name: ${Name} ***"
 	  },
 	  {
 		"actiontype": "LOG",
 		"name": "LOG_TRACE",
-		"message": "*** Trace : Name : ${Name} ***"
+		"level" : "TRACE",
+		"message": "*** Trace: Name: ${Name} ***"
 	  }
 	]
   }

@@ -9,6 +9,7 @@ import com.premierinc.rule.commands.SkConditionStateMachine;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.commands.enums.SkConditionType;
 import com.premierinc.rule.expression.SkExpression;
+import com.premierinc.rule.expression.SkExpressions;
 import java.util.List;
 import java.util.Map;
 import org.springframework.expression.spel.SpelCompilerMode;
@@ -221,12 +222,19 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
+	public void runExpressions(final SkExpressions inExpressions) {
+		if (null != inExpressions)
+			runExpressions(inExpressions.getSkExpressions());
+	}
+
+	/**
+	 *
+	 */
 	public void runExpressions(final List<SkExpression> inExpressions) {
-		if (null != inExpressions) {
+		if (null != inExpressions)
 			inExpressions.forEach(e -> {
 				setValue(e);
 			});
-		}
 	}
 
 	/**

@@ -9,6 +9,7 @@ import com.premierinc.rule.commands.SkElse;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.commands.SkThen;
 import com.premierinc.rule.expression.SkExpression;
+import com.premierinc.rule.expression.SkExpressions;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
 
@@ -24,8 +25,7 @@ public class SkRuleBase implements SkRule {
 	@JsonProperty("condition")
 	private List<SkCondition> conditionList = Lists.newArrayList();
 
-	@JsonProperty("expressions")
-	private List<SkExpression> expressions = Lists.newArrayList();
+	private SkExpressions expressions;
 
 	@JsonIgnore
 	SkRuleRunner runner = new SkRuleRunner();
@@ -48,6 +48,21 @@ public class SkRuleBase implements SkRule {
 		name = inName;
 	}
 
+	@JsonProperty("expressions")
+	public void setExpressionList(List<String> inExpressionList) {
+		if (null != inExpressionList) {
+			this.expressions = new SkExpressions().addExpressions(inExpressionList);
+		}
+	}
+
+	@JsonProperty("expressions")
+	public List<String> getExpressionList() {
+		if (null != expressions) {
+			return expressions.getExpressions();
+		}
+		return null;
+	}
+
 	@Override
 	public String getDescription() {
 		return description;
@@ -65,11 +80,11 @@ public class SkRuleBase implements SkRule {
 		conditionList = inConditionList;
 	}
 
-	public List<SkExpression> getExpressions() {
+	public SkExpressions getExpressions() {
 		return expressions;
 	}
 
-	public void setExpressions(final List<SkExpression> inExpressions) {
+	public void setExpressions(final SkExpressions inExpressions) {
 		expressions = inExpressions;
 	}
 

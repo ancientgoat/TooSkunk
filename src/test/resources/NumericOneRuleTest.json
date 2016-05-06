@@ -3,12 +3,8 @@
 	"name": "MILK_RULE_00001",
 	"description": "None of your business",
 	"expressions": [
-	  {
-		"expression": "ORANGE_JUICE = 17 + (T(java.lang.Math).PI)"
-	  },
-	  {
-		"expression": "MILK.QTY = ORANGE_JUICE"
-	  }
+	  "ORANGE_JUICE = 17 + (T(java.lang.Math).PI)",
+	  "MILK.QTY = ORANGE_JUICE"
 	],
 	"condition": [
 	  {

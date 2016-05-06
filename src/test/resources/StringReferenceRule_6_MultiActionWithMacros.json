@@ -77,6 +77,18 @@
 					  {
 						"actiontype": "REF",
 						"actionref": "LOG_WARN"
+					  },
+					  {
+						"actiontype": "REF",
+						"actionref": "LOG_INFO"
+					  },
+					  {
+						"actiontype": "REF",
+						"actionref": "LOG_DEBUG"
+					  },
+					  {
+						"actiontype": "REF",
+						"actionref": "LOG_TRACE"
 					  }
 					]
 				  }

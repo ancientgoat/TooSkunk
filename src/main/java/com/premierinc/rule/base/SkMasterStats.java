@@ -6,6 +6,7 @@ import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkIf;
+import com.premierinc.rule.expression.SkData;
 import com.premierinc.rule.expression.SkExpression;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,10 @@ public class SkMasterStats {
 	 * List of actions.
 	 */
 	private List<SkAction> actionList = Lists.newArrayList();
+
+	private List<SkExpression> expressionList = Lists.newArrayList();
+
+	private boolean expresssionsHaveBeenSet = false;
 
 	/**
 	 *
@@ -281,10 +286,17 @@ public class SkMasterStats {
 		/**
 		 *
 		 */
+		public Builder addData(final SkData inData) {
+			this.masterStats.expressionList.addAll(inData.getSkExpressions());
+			return this;
+		}
+
+		/**
+		 *
+		 */
 		public SkMasterStats build() {
 			this.masterStats.buildMaps();
 			return this.masterStats;
 		}
-
 	}
 }

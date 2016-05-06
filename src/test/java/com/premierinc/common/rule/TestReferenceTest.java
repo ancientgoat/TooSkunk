@@ -25,6 +25,7 @@ public class TestReferenceTest {
 	public static final String FIRST_REF_TEST_FILE_NAME = "StringReferenceRule_3_Parter.json";
 	public static final String SECOND_REF_TEST_FILE_NAME = "StringReferenceRule_4_WithOtherRefs.json";
 	public static final String THIRD_REF_TEST_FILE_NAME = "StringReferenceRule_5_MultiAction.json";
+	public static final String FORTH_REF_TEST_FILE_NAME = "StringReferenceRule_6_MultiActionWithMacros.json";
 	public static final String FIRST_ACTION_FILE_NAME = "Test_Actions_001.json";
 	public static final String SECOND_ACTION_FILE_NAME = "Test_Actions_002_With_Macros.json";
 
@@ -121,7 +122,7 @@ public class TestReferenceTest {
 	public void testMultiActionWithMacrosRefRuleRefTest() {
 
 		SkActions actions = buildThings(SECOND_ACTION_FILE_NAME, SkActions.class, "actions");
-		SkRules rules = buildThings(THIRD_REF_TEST_FILE_NAME, SkRules.class, "rules");
+		SkRules rules = buildThings(FORTH_REF_TEST_FILE_NAME, SkRules.class, "rules");
 		SkRuleMaster master = new SkRuleMaster.Builder().addRules(rules)
 				.addActions(actions)
 				.build();
