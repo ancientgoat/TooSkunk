@@ -1,0 +1,21 @@
+{
+  "actions": {
+	"action": [
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_RULE_00003_TRUE_TRUE",
+		"message": "********* Rule:3-COKE_RULE_00001/true & COKE_RULE_00002/true !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_RULE_00003_TRUE_FALSE",
+		"message": "********* Rule:3-COKE_RULE_00001/true & COKE_RULE_00002/false !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_RULE_00003_FALSE",
+		"message": "********* Rule:3-COKE_RULE_00001/false !!!"
+	  }
+	]
+  }
+}

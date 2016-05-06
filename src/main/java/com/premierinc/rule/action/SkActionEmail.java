@@ -2,13 +2,6 @@ package com.premierinc.rule.action;
 
 import com.premierinc.rule.action.enums.SkActionType;
 import com.premierinc.rule.run.SkRuleRunner;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -35,6 +28,7 @@ public class SkActionEmail extends SkAction {
 
 		System.out.println(this.message);
 
+		/*************************************************************
 		// Recipient's email ID needs to be mentioned.
 		String to = "ekamradt@premierinc.com";
 
@@ -75,7 +69,6 @@ public class SkActionEmail extends SkAction {
 		} catch (Exception mex) {
 			mex.printStackTrace();
 		}
-		/*************************************************************
 		 *************************************************************/
 	}
 }

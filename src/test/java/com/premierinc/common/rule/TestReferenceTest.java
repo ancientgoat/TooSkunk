@@ -1,17 +1,14 @@
 package com.premierinc.common.rule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.base.SkRules;
 import com.premierinc.rule.common.JsonMapperHelper;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.io.File;
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import static com.premierinc.common.rule.TestSimpleNumericRuleTest.ONE_RULE_FAIL_FILE_NAME;
 
 /**
  *
@@ -19,6 +16,7 @@ import static com.premierinc.common.rule.TestSimpleNumericRuleTest.ONE_RULE_FAIL
 public class TestReferenceTest {
 
 	public static final String FIRST_REF_TEST_FILE_NAME = "StringReferenceRule_3_Parter.json";
+	public static final String SECOND_REF_TEST_FILE_NAME = "StringReferenceRule_3_Parter_WithOtherRefs.json";
 
 	/**
 	 * Can we read simple JSON without Exception?
@@ -34,10 +32,11 @@ public class TestReferenceTest {
 	}
 
 	/**
-	 * One rule test.
+	 * Three rule reference test.
 	 */
 	@Test
 	public void testRefThreeRuleTest() {
+
 		SkRules rules = buildRunnerFromFile(FIRST_REF_TEST_FILE_NAME);
 		SkRuleMaster master = new SkRuleMaster.Builder().addRules(rules)
 				.build();
@@ -49,7 +48,11 @@ public class TestReferenceTest {
 		} catch (Exception e) {
 			System.out.println(String.format("We expected this error : '%s'", e.toString()));
 		}
-		runner.setValue("nAME", "Fred");
+
+		// Note: All macros are turned into UPPER case.
+		runner.setValue("nAmE", "Fred");
+
+		// Choose only one rule, from the three, to run.
 		runner.runRule(master.getRule("COKE_RULE_00003"));
 	}
 

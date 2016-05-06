@@ -5,9 +5,9 @@ import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.common.JsonMapperHelper;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.io.File;
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  *

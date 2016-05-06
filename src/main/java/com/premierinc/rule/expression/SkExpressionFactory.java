@@ -8,7 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.sun.corba.se.impl.naming.cosnaming.TransientNameServer.trace;
+import static com.premierinc.rule.utils.SkChar.isBadMacroChar;
 
 /**
  *
@@ -48,7 +48,7 @@ public class SkExpressionFactory {
 			}
 
 			if (haveMacro) {
-				if (SkChar.isBadMacroChar(c)) {
+				if (isBadMacroChar(c)) {
 					sb.append(macro);
 					macro = "";
 					haveMacro = false;
@@ -61,7 +61,7 @@ public class SkExpressionFactory {
 				} else {
 
 					// Must be the end of a macro - insures next char is not a 'nonMacroString'
-					if (isStartOfFunction(inInputExpression, i)) {
+					if (isNonMacro(inInputExpression, i)) {
 						// This - what we thought was a macro - is really a function.
 						sb.append(macro);
 						macro = "";
@@ -82,7 +82,7 @@ public class SkExpressionFactory {
 			}
 		}
 
-		if(haveMacro && 0 < macro.length()){
+		if (haveMacro && 0 < macro.length()) {
 			macro = macro.toUpperCase();
 			sb.append(String.format("['%s'] ", macro));
 		}
@@ -99,21 +99,23 @@ public class SkExpressionFactory {
 	}
 
 	/**
-	 * Insure the macro we thought we just read in is not the start of a function.
+	 * Insure the macro we thought we just read in is not the start of a function, or
+	 * 	some other non-macro indicator.
 	 */
-	private static boolean isStartOfFunction(String inInputExpression, int inIndex) {
+	private static boolean isNonMacro(String inInputExpression, int inIndex) {
 
-		boolean foundStartOfFunctionChar = false;
+		boolean foundBadMacroChar = false;
 
 		for (int i = inIndex; i < inInputExpression.length(); i++) {
 			char c = inInputExpression.charAt(i);
-			if (NON_MACRO_CHARS.contains(c)) {
-				foundStartOfFunctionChar = true;
+			//if (NON_MACRO_CHARS.contains(c)) {
+			if (SkChar.isBadMacroChar(c)) {
+				foundBadMacroChar = true;
 			} else if (SkChar.isSpace(c)) {
 				continue;
 			}
 			break;
 		}
-		return foundStartOfFunctionChar;
+		return foundBadMacroChar;
 	}
 }

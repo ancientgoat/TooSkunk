@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.SpelCompilerMode;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  *
@@ -60,7 +60,7 @@ public class SkSpelTest {
 		Expression exp = parser.parseExpression("['a'] + ['b'] + ['c']");
 		BigDecimal answer = exp.getValue(internalMap, BigDecimal.class);
 		System.out.println("********** Answer : " + answer);
-		Assert.assertEquals(answer, BigDecimal.valueOf(120), "Should be 120");
+		Assert.assertEquals("Should be 120",answer, BigDecimal.valueOf(120));
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class SkSpelTest {
 			Expression exp = parser.parseExpression("['a'] + ['b'] + ['c'] + ['MILK']");
 			BigDecimal answer = exp.getValue(internalMap, BigDecimal.class);
 			// System.out.println("********** Answer : " + answer);
-			Assert.assertEquals(answer, BigDecimal.valueOf(200), "Should be 200");
+			Assert.assertEquals("Should be 200", answer, BigDecimal.valueOf(200));
 		});
 		System.out.println(String.format("(%10d) Timer : %d", loopNumber, timer.stopAndDiff()));
 	}
