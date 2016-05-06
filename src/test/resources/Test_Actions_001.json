@@ -3,18 +3,53 @@
 	"action": [
 	  {
 		"actiontype": "PRINT",
-		"name": "COKE_RULE_00003_TRUE_TRUE",
-		"message": "********* Rule:3-COKE_RULE_00001/true & COKE_RULE_00002/true !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		"name": "COKE_ACTION_00002_TRUE",
+		"message": "********* Rule:COKE_ACTION_00002/true/'Betty' !!!!!!!!!!!!!"
 	  },
 	  {
 		"actiontype": "PRINT",
-		"name": "COKE_RULE_00003_TRUE_FALSE",
-		"message": "********* Rule:3-COKE_RULE_00001/true & COKE_RULE_00002/false !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		"name": "COKE_ACTION_00002_FALSE",
+		"message": "********* Rule:COKE_ACTION_00002/false/'Betty' !!!!!!!!!!!!!"
 	  },
 	  {
 		"actiontype": "PRINT",
-		"name": "COKE_RULE_00003_FALSE",
-		"message": "********* Rule:3-COKE_RULE_00001/false !!!"
+		"name": "COKE_ACTION_00003_TRUE_TRUE",
+		"message": "********* Rule:3-COKE_ACTION_00001/true & COKE_ACTION_00002/true !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00003_TRUE_FALSE",
+		"message": "********* Rule:3-COKE_ACTION_00001/true & COKE_ACTION_00002/false !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00003_FALSE",
+		"message": "********* Rule:3-COKE_ACTION_00001/false !!!"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_ERROR",
+		"message": "*** Error ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_WARN",
+		"message": "*** Warn ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_INFO",
+		"message": "*** Info ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_DEBUG",
+		"message": "*** Debug ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_TRACE",
+		"message": "*** Trace ***"
 	  }
 	]
   }

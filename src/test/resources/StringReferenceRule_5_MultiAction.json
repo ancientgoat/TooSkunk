@@ -21,16 +21,20 @@
 		  },
 		  {
 			"type": "THEN",
-			"action": {
-			  "actiontype": "PRINT",
-			  "message": "********* Rule:COKE_RULE_00002/true/'Betty' !!!!!!!!!!!!!"
+			"actions": {
+			  "action": [
+				{
+				  "actiontype": "REF",
+				  "actionref": "COKE_RULE_00002_truE"
+				}
+			  ]
 			}
 		  },
 		  {
 			"type": "ELSE",
 			"action": {
-			  "actiontype": "PRINT",
-			  "message": "********* Rule:COKE_RULE_00002/false/'Betty' !!!!!!!!!!!!!"
+			  "actiontype": "REF",
+			  "actionref": "COKE_ACTION_00002_falSE"
 			}
 		  }
 		]
@@ -53,18 +57,39 @@
 				},
 				{
 				  "type": "THEN",
-				  "actionref": "COKE_RULE_00003_true_true"
+				  "action": {
+					"actiontype": "REF",
+					"actionref": "COKE_ACTION_00003_true_true"
+				  }
 				},
 				{
 				  "type": "ELSE",
-				  "actionref": "COKE_RULE_00003_TRUE_FALSE"
+				  "actions": {
+					"action": [
+					  {
+						"actiontype": "REF",
+						"actionref": "COKE_ACTION_00003_TRUE_FALSE"
+					  },
+					  {
+						"actiontype": "REF",
+						"actionref": "LOG_ERROR"
+					  },
+					  {
+						"actiontype": "REF",
+						"actionref": "LOG_WARN"
+					  }
+					]
+				  }
 				}
 			  ]
 			}
 		  },
 		  {
 			"type": "ELSE",
-			"actionref": "COKE_RULE_00003_FALSE"
+			"action": {
+			  "actiontype": "REF",
+			  "actionref": "COKE_ACTION_00003_FALSE"
+			}
 		  }
 		]
 	  }

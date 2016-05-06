@@ -89,11 +89,10 @@ public class SkExpressionFactory {
 
 		String spelExpressionString = sb.toString();
 
-		log.error(String.format("Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression, spelExpressionString));
-
 		if (log.isTraceEnabled()) {
 			log.trace(
-					String.format("Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression, spelExpressionString));
+					String.format("Parsing Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression,
+							spelExpressionString));
 		}
 		return new SkExpression(macroList, inInputExpression, spelExpressionString);
 	}

@@ -1,0 +1,56 @@
+{
+  "actions": {
+	"action": [
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00002_TRUE",
+		"message": "********* Rule:COKE_ACTION_00002/true/'Betty' : Name : ${Name} !!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00002_FALSE",
+		"message": "********* Rule:COKE_ACTION_00002/false/'Betty' : Name : ${Name} !!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00003_TRUE_TRUE",
+		"message": "********* Rule:3-COKE_ACTION_00001/true & COKE_ACTION_00002/true : Name : ${Name} !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00003_TRUE_FALSE",
+		"message": "********* Rule:3-COKE_ACTION_00001/true & COKE_ACTION_00002/false : Name : ${Name} !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	  },
+	  {
+		"actiontype": "PRINT",
+		"name": "COKE_ACTION_00003_FALSE",
+		"message": "********* Rule:3-COKE_ACTION_00001/false : Name : ${Name} !!!"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_ERROR",
+		"message": "*** Error : Name : ${Name} ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_WARN",
+		"message": "*** Warn : Name : ${Name} ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_INFO",
+		"message": "*** Info : Name : ${Name} ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_DEBUG",
+		"message": "*** Debug : Name : ${Name} ***"
+	  },
+	  {
+		"actiontype": "LOG",
+		"name": "LOG_TRACE",
+		"message": "*** Trace : Name : ${Name} ***"
+	  }
+	]
+  }
+}

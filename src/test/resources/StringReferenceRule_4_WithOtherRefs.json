@@ -1,0 +1,83 @@
+{
+  "rules": {
+	"rule": [
+	  {
+		"name": "COKE_RULE_00001",
+		"description": "Are things really better?  Or are you just hyped up?",
+		"condition": [
+		  {
+			"type": "IF",
+			"expression": "Name == 'Fred' || Name == 'Betty'"
+		  }
+		]
+	  },
+	  {
+		"name": "COKE_RULE_00002",
+		"description": "Are things really better?  Or are you hyped up on caffeine?",
+		"condition": [
+		  {
+			"type": "IF",
+			"expression": "Name == 'Betty'"
+		  },
+		  {
+			"type": "THEN",
+			"action": {
+			  "actiontype": "REF",
+			  "actionref": "COKE_RULE_00002_truE"
+			}
+		  },
+		  {
+			"type": "ELSE",
+			"action": {
+			  "actiontype": "REF",
+			  "actionref": "COKE_ACTION_00002_falSE"
+			}
+		  }
+		]
+	  },
+	  {
+		"name": "COKE_RULE_00003",
+		"description": "Are things really better?  Or are you hyped up on sugar?",
+		"condition": [
+		  {
+			"type": "IF",
+			"ruleref": "COKE_RULE_00001"
+		  },
+		  {
+			"type": "THEN",
+			"rule": {
+			  "condition": [
+				{
+				  "type": "IF",
+				  "ruleref": "COKE_RULE_00002"
+				},
+				{
+				  "type": "THEN",
+				  "action": {
+					"actiontype": "REF",
+					"actionref": "COKE_ACTION_00003_true_true"
+				  }
+				},
+				{
+				  "type": "ELSE",
+				  "action": {
+					"actiontype": "REF",
+					"actionref": "COKE_ACTION_00003_TRUE_FALSE"
+				  }
+				}
+			  ]
+			}
+		  },
+		  {
+			"type": "ELSE",
+			"action": {
+			  "actiontype": "REF",
+			  "actionref": "COKE_ACTION_00003_FALSE"
+			}
+		  }
+		]
+	  }
+	]
+  }
+}
+

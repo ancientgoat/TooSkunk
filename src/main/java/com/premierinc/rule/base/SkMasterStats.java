@@ -2,6 +2,8 @@ package com.premierinc.rule.base;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.premierinc.rule.action.SkAction;
+import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.expression.SkExpression;
@@ -41,16 +43,39 @@ public class SkMasterStats {
 	 */
 	private Map<String, List<SkIf>> macroIfMap = Maps.newHashMap();
 
+	private Map<String, SkAction> actionNameMap = Maps.newHashMap();
+
 	/**
 	 * List of rules, Order matters.
 	 */
 	private List<SkRuleBase> ruleList = Lists.newArrayList();
 
 	/**
+	 * List of actions.
+	 */
+	private List<SkAction> actionList = Lists.newArrayList();
+
+	/**
 	 *
 	 */
 	private SkMasterStats() {
 	}
+
+	/**
+	 *
+	 */
+	public SkAction getAction(final String inActionName) {
+		if (null != inActionName) {
+			SkAction action = this.actionNameMap.get(inActionName);
+			if (null == action) {
+				throw new IllegalArgumentException(String.format("Action name '%s', not found.", inActionName));
+			}
+			return action;
+		} else {
+			throw new IllegalArgumentException("Action name can not be null");
+		}
+	}
+
 
 	/**
 	 *
@@ -73,10 +98,18 @@ public class SkMasterStats {
 	private void buildMaps() {
 		clearMaps();
 
+		// Rules
 		AtomicInteger index = new AtomicInteger(0);
 		for (final SkRuleBase rule : this.ruleList) {
 			rule.setUp();
 			mapsFromRule(index, rule);
+		}
+
+		// Actions
+		index.set(0);
+		for (SkAction action : actionList) {
+			String actionName = getActionNameForMaps(action, index);
+			actionNameMap.put(actionName, action);
 		}
 	}
 
@@ -185,6 +218,24 @@ public class SkMasterStats {
 
 	/**
 	 *
+	 * @param inAction
+	 * @param inIndex
+	 * @return
+	 */
+	private String getActionNameForMaps(final SkAction inAction, AtomicInteger inIndex) {
+		String name = inAction.getName();
+		if (null == name || 0 == name.length()) {
+			int i = inIndex.incrementAndGet();
+			name = String.format("%s%9d", DEFAULT_RULE_NAME_PREFIX, i);
+		}
+		if (this.actionNameMap.containsKey(name)) {
+			throw new IllegalArgumentException(String.format("An action with name '%s' already exists.", name));
+		}
+		return name;
+	}
+
+	/**
+	 *
 	 */
 	private void clearMaps() {
 		this.ruleNameMap.clear();
@@ -192,6 +243,7 @@ public class SkMasterStats {
 		this.ifRuleMap.clear();
 		this.macroIfMap.clear();
 		this.ruleMacroMap.clear();
+		this.actionNameMap.clear();
 	}
 
 	/**
@@ -199,13 +251,13 @@ public class SkMasterStats {
 	 */
 	public static class Builder {
 
-		private SkMasterStats master = new SkMasterStats();
+		private SkMasterStats masterStats = new SkMasterStats();
 
 		/**
 		 *
 		 */
 		public Builder addRules(SkRules inRules) {
-			this.master.ruleList.addAll(inRules.getRuleList());
+			this.masterStats.ruleList.addAll(inRules.getRuleList());
 			return this;
 		}
 
@@ -214,7 +266,15 @@ public class SkMasterStats {
 		 *
 		 */
 		public Builder addRule(SkRuleBase inRule) {
-			this.master.ruleList.add(inRule);
+			this.masterStats.ruleList.add(inRule);
+			return this;
+		}
+
+		/**
+		 *
+		 */
+		public Builder addActions(final SkActions inActions) {
+			this.masterStats.actionList.addAll(inActions.getActionList());
 			return this;
 		}
 
@@ -222,8 +282,9 @@ public class SkMasterStats {
 		 *
 		 */
 		public SkMasterStats build() {
-			this.master.buildMaps();
-			return this.master;
+			this.masterStats.buildMaps();
+			return this.masterStats;
 		}
+
 	}
 }

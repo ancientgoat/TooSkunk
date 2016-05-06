@@ -26,6 +26,7 @@ public class SkActionPrint extends SkAction {
 
 	@Override
 	public void execute(SkRuleRunner inRunner) {
-		System.out.println(this.message);
+		String newMessage = inRunner.expandMacros(this.message);
+		System.out.println(newMessage);
 	}
 }

@@ -8,5 +8,5 @@ import static java.util.Locale.UK;
  * 	needed pre and/or post Action 'execute()' needs.
  */
 public enum SkActionType {
-	PRINT;
+	PRINT, LOG, REFERENCE;
 }

@@ -1,6 +1,7 @@
 package com.premierinc.rule.run;
 
 import com.google.common.collect.Maps;
+import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.base.SkRule;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.commands.SkCondition;
@@ -19,7 +20,6 @@ public class SkRuleRunner {
 
 	private SkRuleContext ruleContext;
 	private Map<SkIf, Boolean> ifAnswerMap = Maps.newHashMap();
-	// private Map<SkIf, Boolean> ifAnswerMap = Maps.newHashMap();
 
 	private SkRuleMaster ruleMaster;
 
@@ -68,7 +68,7 @@ public class SkRuleRunner {
 	 */
 	public void runRules(SkRuleMaster inMaster) {
 		if (null != inMaster) {
-			this.ruleMaster = inMaster;
+			this.setMaster(inMaster);
 			for (SkRule rule : inMaster.getRuleList()) {
 				runRule(rule);
 			}
@@ -234,5 +234,24 @@ public class SkRuleRunner {
 	 */
 	public Boolean runConditionRef(final SkIf inSkIf) {
 		return null;
+	}
+
+	/**
+	 *
+	 */
+	public void setMaster(final SkRuleMaster inMaster) {
+		this.ruleMaster = inMaster;
+	}
+
+	/**
+	 *
+	 */
+	public void executeAction(final String inActionName) {
+		SkAction action = this.ruleMaster.getAction(inActionName);
+		action.execute(this);
+	}
+
+	public String expandMacros(final String inMessage) {
+		return this.ruleContext.expandMacros(inMessage);
 	}
 }

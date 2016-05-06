@@ -7,12 +7,16 @@ import com.premierinc.rule.run.SkRuleRunner;
 import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 /**
  *
  */
 public class TestSimpleNumericRuleTest {
+
+	private Logger log = LoggerFactory.getLogger(TestSimpleNumericRuleTest.class);
 
 	public static final String ONE_RULE_FILE_NAME = "NumericOneRuleTest.json";
 	public static final String ONE_RULE_FAIL_FILE_NAME = "NumericOneRuleTestFail.json";
@@ -33,6 +37,7 @@ public class TestSimpleNumericRuleTest {
 	public void testOutputJsonSimpleRuleTest() {
 		SkRuleBase rule = buildRunnerFromFile(ONE_RULE_FILE_NAME);
 		String json = JsonMapperHelper.beanToJsonPretty(rule);
+
 		System.out.println("-------------------- JSON ---------------------");
 		System.out.println(json);
 		System.out.println("-------------------- JSON ---------------------");

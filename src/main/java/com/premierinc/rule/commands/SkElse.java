@@ -10,35 +10,43 @@ import com.premierinc.rule.run.SkRuleRunner;
 /**
  *
  */
-public class SkElse extends SkCondition<Object> {
-
-	@JsonProperty("action")
-	private SkAction action;
-
-	@JsonProperty("rule")
-	private SkRuleBase rule = null;
-
-	public SkAction getAction() {
-		return action;
-	}
-
-	public void setAction(final SkAction inAction) {
-		action = inAction;
-	}
-
-	@Override
-	public Object execute(SkRuleRunner inRunner) {
-		if (null != this.action) {
-			action.execute(inRunner);
-		}
-		if (null != this.rule) {
-			this.rule.existingRun(inRunner);
-		}
-		return null;
-	}
+public class SkElse extends SkThenElseBase<Object> {
 
 	@Override
 	public SkConditionType getConditionType() {
 		return SkConditionType.ELSE;
 	}
+
 }
+//public class SkElse extends SkCondition<Object> {
+//
+//	@JsonProperty("action")
+//	private SkAction action;
+//
+//	@JsonProperty("rule")
+//	private SkRuleBase rule = null;
+//
+//	public SkAction getAction() {
+//		return action;
+//	}
+//
+//	public void setAction(final SkAction inAction) {
+//		action = inAction;
+//	}
+//
+//	@Override
+//	public Object execute(SkRuleRunner inRunner) {
+//		if (null != this.action) {
+//			action.execute(inRunner);
+//		}
+//		if (null != this.rule) {
+//			this.rule.existingRun(inRunner);
+//		}
+//		return null;
+//	}
+//
+//	@Override
+//	public SkConditionType getConditionType() {
+//		return SkConditionType.ELSE;
+//	}
+//}
