@@ -4,20 +4,39 @@
 	"description": "Are things really better?  Or are you hyped up on sugar?",
 	"condition": [
 	  {
-		"ref": "COKE_RULE_00001"
+		"type": "IF",
+		"conditionref": "COKE_RULE_00001"
 	  },
 	  {
 		"type": "THEN",
-		"action": {
-		  "actiontype": "PRINT",
-		  "message": "********* We Have a THEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		"rule": {
+		  "condition": [
+			{
+			  "type": "IF",
+			  "conditionref": "COKE_RULE_00002"
+			},
+			{
+			  "type": "THEN",
+			  "action": {
+				"actiontype": "PRINT",
+				"message": "********* Rule:3-COKE_RULE_00001/true & COKE_RULE_00002/true !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			  }
+			},
+			{
+			  "type": "ELSE",
+			  "action": {
+				"actiontype": "PRINT",
+				"message": "********* Rule:3-COKE_RULE_00001/true && COKE_RULE_00002/false !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			  }
+			}
+		  ]
 		}
 	  },
 	  {
 		"type": "ELSE",
 		"action": {
 		  "actiontype": "PRINT",
-		  "message": "********* We Have a ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		  "message": "********* Rule:3-COKE_RULE_00001/false !!!"
 		}
 	  }
 	]

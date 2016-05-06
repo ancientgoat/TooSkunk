@@ -1,7 +1,6 @@
 package com.premierinc.rule.commands;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.premierinc.rule.run.SkRuleContext;
 import com.premierinc.rule.commands.enums.SkConditionType;
 import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.expression.SkExpressionFactory;
@@ -18,6 +17,17 @@ public class SkIf extends SkCondition<Boolean> {
 	private String inputExpression;
 	private SkExpression skExpression;
 
+	private String conditionref;
+
+	@JsonProperty("conditionref")
+	public void setConditionref(String inConditionref) {
+		conditionref = inConditionref;
+	}
+
+	public String getConditionref() {
+		return conditionref;
+	}
+
 	/**
 	 *
 	 */
@@ -26,6 +36,10 @@ public class SkIf extends SkCondition<Boolean> {
 		this.inputExpression = inExpression;
 		validateInputExpression();
 		this.skExpression = SkExpressionFactory.parseExpression(this.inputExpression);
+	}
+
+	public SkExpression getSkExpression() {
+		return skExpression;
 	}
 
 	/**
@@ -44,20 +58,34 @@ public class SkIf extends SkCondition<Boolean> {
 
 	@Override
 	public Boolean execute(SkRuleRunner inRunner) {
+		Boolean returnValue = null;
+
+		if (null != conditionref) {
+			returnValue = inRunner.runConditionRef(this);
+		} else {
+			returnValue = runExpression(inRunner);
+		}
+		return returnValue;
+	}
+
+	/**
+	 *
+	 */
+	private boolean runExpression(SkRuleRunner inRunner) {
 
 		// Expression exp = inSkContext.getParser().parseExpression("['a'] + ['b'] + ['c'] + ['MILK']");
-		Object answer = inRunner.getValue(this.skExpression);
+		Object objectAnswer = inRunner.getValue(this.skExpression);
 
-		System.out.println("IF Class : " + answer.getClass()
+		System.out.println("IF Class : " + objectAnswer.getClass()
 				.getName());
-		System.out.println("IF Value : " + answer.toString());
+		System.out.println("IF Value : " + objectAnswer.toString());
 
-		if (answer instanceof Boolean) {
-			return (Boolean) answer;
+		if (objectAnswer instanceof Boolean) {
+			return (Boolean) objectAnswer;
 		}
 
 		throw new IllegalArgumentException(String.format("IF condition mast result in a Boolean, not a %s",
-				answer.getClass()
+				objectAnswer.getClass()
 						.getName()));
 	}
 

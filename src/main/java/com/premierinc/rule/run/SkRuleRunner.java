@@ -1,11 +1,15 @@
 package com.premierinc.rule.run;
 
+import com.google.common.collect.Maps;
 import com.premierinc.rule.base.SkRule;
+import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkConditionStateMachine;
+import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.commands.enums.SkConditionType;
 import com.premierinc.rule.expression.SkExpression;
 import java.util.List;
+import java.util.Map;
 import org.springframework.expression.spel.SpelCompilerMode;
 
 /**
@@ -14,6 +18,10 @@ import org.springframework.expression.spel.SpelCompilerMode;
 public class SkRuleRunner {
 
 	private SkRuleContext ruleContext;
+	private Map<SkIf, Boolean> ifAnswerMap = Maps.newHashMap();
+	// private Map<SkIf, Boolean> ifAnswerMap = Maps.newHashMap();
+
+	private SkRuleMaster ruleMaster;
 
 	/**
 	 *
@@ -73,7 +81,13 @@ public class SkRuleRunner {
 			switch (conditionType) {
 			case IF:
 				System.out.println("SkRuleRunner : Executing IF ");
-				ifCondition = (boolean) condition.execute(this);
+				Boolean previousAnswer = this.ifAnswerMap.get((SkIf) condition);
+				if (null != previousAnswer) {
+					ifCondition = previousAnswer;
+				} else {
+					ifCondition = (boolean) condition.execute(this);
+					addAnswer((SkIf) condition, ifCondition);
+				}
 				break;
 
 			case THEN:
@@ -99,6 +113,15 @@ public class SkRuleRunner {
 						String.format("SkConditionType of '%s' is not implemented.", conditionType));
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @param inCondition
+	 * @param inIfAnswer
+	 */
+	private void addAnswer(final SkIf inCondition, final Boolean inIfAnswer) {
+		this.ifAnswerMap.put(inCondition, inIfAnswer);
 	}
 
 	public void setValue(String inKey, Object inValue) {
@@ -154,5 +177,12 @@ public class SkRuleRunner {
 				setValue(e);
 			});
 		}
+	}
+
+	/**
+	 *
+	 */
+	public Boolean runConditionRef(final SkIf inSkIf) {
+		return null;
 	}
 }

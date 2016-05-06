@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
 import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.expression.SkExpression;
-import com.premierinc.rule.expression.SkExpressionFactory;
-import com.premierinc.rule.expression.SkExpressions;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
 
@@ -53,9 +51,6 @@ public class SkRuleBase implements SkRule {
 	@JsonProperty("expressions")
 	private List<SkExpression> expressions = Lists.newArrayList();
 
-	//	@JsonProperty("expressions")
-//	private SkExpressions expressions;
-
 	@JsonIgnore
 	SkRuleRunner runner = new SkRuleRunner();
 
@@ -77,7 +72,6 @@ public class SkRuleBase implements SkRule {
 		description = inDescription;
 	}
 
-	@Override
 	public List<SkCondition> getConditionList() {
 		return conditionList;
 	}
@@ -95,7 +89,6 @@ public class SkRuleBase implements SkRule {
 	}
 
 	public void run() {
-		this.runner = new SkRuleRunner();
 		this.runner.runExpressions(this.expressions);
 		this.runner.runRule(this);
 	}

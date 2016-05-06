@@ -1,7 +1,7 @@
 {
   "rule": {
 	"name": "COKE_RULE_00001",
-	"description": "Are things really better?  Or are you hyped up on sugar?",
+	"description": "Are things really better?  Or are you just hyped up?",
 	"condition": [
 	  {
 		"type": "IF",
