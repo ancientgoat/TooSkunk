@@ -72,14 +72,14 @@ public class TestSimpleNumericRuleTest {
 	}
 
 	/**
-	 * One rule test.
+	 * One rule fail .
 	 */
 	@Test
-	public void testSimpleOneRuleExecutionWithExternalDataTest() {
-		SkRuleBase rule = buildThings(ONE_RULE_FAIL_FILE_NAME, SkRuleBase.class, "rule");
-		SkData data = buildThings(ONE_DATA_FILE_NAME, SkData.class, "data");
+	public void testSimpleOneRuleFailExecution() {
 
-		SkRuleMaster master = new SkRuleMaster.Builder().addRule(rule).addData(data)
+		SkRuleBase rule = buildThings(ONE_RULE_FAIL_FILE_NAME, SkRuleBase.class, "rule");
+
+		SkRuleMaster master = new SkRuleMaster.Builder().addRule(rule)
 				.build();
 
 		SkRuleRunner runner = master.getRuleRunner();
@@ -92,6 +92,22 @@ public class TestSimpleNumericRuleTest {
 			System.out.println(String.format("We expected this error : '%s'", e.toString()));
 		}
 		runner.setValue("MILK.QTY", 2);
+		rule.run(runner);
+	}
+
+	/**
+	 * One rule test.
+	 */
+	@Test
+	public void testSimpleOneRuleExecutionWithExternalDataTest() {
+		SkRuleBase rule = buildThings(ONE_RULE_FAIL_FILE_NAME, SkRuleBase.class, "rule");
+		SkData data = buildThings(ONE_DATA_FILE_NAME, SkData.class, "data");
+
+		SkRuleMaster master = new SkRuleMaster.Builder().addRule(rule)
+				.addData(data)
+				.build();
+
+		SkRuleRunner runner = master.getRuleRunner();
 		rule.run(runner);
 	}
 

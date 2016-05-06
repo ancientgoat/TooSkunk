@@ -1,12 +1,13 @@
 package com.premierinc.rule.base;
 
-import com.oracle.webservices.internal.api.databinding.DatabindingModeFeature;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.expression.SkData;
+import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 /**
  *
@@ -14,6 +15,7 @@ import java.util.List;
 public class SkRuleMaster {
 
 	private SkMasterStats stats;
+	private DoubleStream expressions;
 
 	/**
 	 *
@@ -61,6 +63,20 @@ public class SkRuleMaster {
 	/**
 	 *
 	 */
+	public boolean needToRunExpressions() {
+		return this.stats.needToRunExpressions();
+	}
+
+	/**
+	 *
+	 */
+	public List<SkExpression> getExpressions() {
+		return this.stats.getExpressions();
+	}
+
+	/**
+	 *
+	 */
 	public static class Builder {
 
 		private SkRuleMaster master = new SkRuleMaster();
@@ -83,6 +99,9 @@ public class SkRuleMaster {
 			return this;
 		}
 
+		/**
+		 *
+		 */
 		public Builder addActions(final SkActions inActions) {
 			this.statBuilder.addActions(inActions);
 			return this;
@@ -90,8 +109,6 @@ public class SkRuleMaster {
 
 		/**
 		 *
-		 * @param inData
-		 * @return
 		 */
 		public Builder addData(final SkData inData) {
 			this.statBuilder.addData(inData);

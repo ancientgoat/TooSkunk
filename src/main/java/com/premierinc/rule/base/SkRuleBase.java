@@ -84,6 +84,13 @@ public class SkRuleBase implements SkRule {
 		return expressions;
 	}
 
+	public List<SkExpression> getSkExpressions() {
+		if (null != this.expressions) {
+			return this.expressions.getSkExpressions();
+		}
+		return Lists.newArrayList();
+	}
+
 	public void setExpressions(final SkExpressions inExpressions) {
 		expressions = inExpressions;
 	}
@@ -101,18 +108,25 @@ public class SkRuleBase implements SkRule {
 	}
 
 	public void run() {
-		this.runner.runExpressions(this.expressions);
+		setupMaster();
 		this.runner.runRule(this);
+	}
+
+	/**
+	 *
+	 */
+	private void setupMaster() {
+		if (null != this.runner) {
+			this.runner.setupMaster(this);
+		}
 	}
 
 	public void run(SkRuleRunner inRunner) {
 		this.runner = inRunner;
-		this.runner.runExpressions(this.expressions);
 		inRunner.runRule(this);
 	}
 
 	public void existingRun(SkRuleRunner inRunner) {
-		inRunner.runExpressions(this.expressions);
 		inRunner.runRule(this);
 	}
 

@@ -1,10 +1,6 @@
 package com.premierinc.rule.action;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.premierinc.rule.action.enums.SkActionType;
-import com.premierinc.rule.action.enums.SkLogLevel;
-import com.premierinc.rule.base.SkMasterStats;
 import com.premierinc.rule.run.SkRuleRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

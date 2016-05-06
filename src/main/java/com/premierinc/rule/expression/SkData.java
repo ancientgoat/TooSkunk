@@ -3,7 +3,6 @@ package com.premierinc.rule.expression;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
@@ -29,7 +28,8 @@ public class SkData {
 		return null;
 	}
 
-	public List<SkExpression> getSkExpressions(){
+	@JsonIgnore
+	public List<SkExpression> getSkExpressions() {
 		return this.expressions.getSkExpressions();
 	}
 }

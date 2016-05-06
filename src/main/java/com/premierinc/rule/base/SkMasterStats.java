@@ -81,7 +81,6 @@ public class SkMasterStats {
 		}
 	}
 
-
 	/**
 	 *
 	 */
@@ -107,6 +106,7 @@ public class SkMasterStats {
 		AtomicInteger index = new AtomicInteger(0);
 		for (final SkRuleBase rule : this.ruleList) {
 			rule.setUp();
+			this.expressionList.addAll(rule.getSkExpressions());
 			mapsFromRule(index, rule);
 		}
 
@@ -249,6 +249,22 @@ public class SkMasterStats {
 		this.macroIfMap.clear();
 		this.ruleMacroMap.clear();
 		this.actionNameMap.clear();
+	}
+
+	/**
+	 *
+	 */
+	public boolean needToRunExpressions() {
+		if (!expresssionsHaveBeenSet) {
+			if (0 < this.expressionList.size()) {
+				expresssionsHaveBeenSet = true;
+			}
+		}
+		return expresssionsHaveBeenSet;
+	}
+
+	public List<SkExpression> getExpressions() {
+		return this.expressionList;
 	}
 
 	/**

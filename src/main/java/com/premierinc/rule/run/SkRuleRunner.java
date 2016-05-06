@@ -3,13 +3,13 @@ package com.premierinc.rule.run;
 import com.google.common.collect.Maps;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.base.SkRule;
+import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkConditionStateMachine;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.commands.enums.SkConditionType;
 import com.premierinc.rule.expression.SkExpression;
-import com.premierinc.rule.expression.SkExpressions;
 import java.util.List;
 import java.util.Map;
 import org.springframework.expression.spel.SpelCompilerMode;
@@ -23,6 +23,8 @@ public class SkRuleRunner {
 	private Map<SkIf, Boolean> ifAnswerMap = Maps.newHashMap();
 
 	private SkRuleMaster ruleMaster;
+
+	private boolean expressionsHaveBeenRun = false;
 
 	/**
 	 *
@@ -51,6 +53,10 @@ public class SkRuleRunner {
 	 *
 	 */
 	public void runRule(SkRule inRule) {
+		if (!this.expressionsHaveBeenRun) {
+			runExpressions();
+			this.expressionsHaveBeenRun = true;
+		}
 		List<SkCondition> conditionList = inRule.getConditionList();
 		runConditions(conditionList);
 	}
@@ -88,9 +94,7 @@ public class SkRuleRunner {
 		Boolean ifCondition = true;
 
 		for (SkCondition condition : inConditionList) {
-
 			SkConditionType conditionType = condition.getConditionType();
-
 			machine.checkState(conditionType);
 
 			switch (conditionType) {
@@ -222,26 +226,24 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
-	public void runExpressions(final SkExpressions inExpressions) {
-		if (null != inExpressions)
-			runExpressions(inExpressions.getSkExpressions());
-	}
-
-	/**
-	 *
-	 */
-	public void runExpressions(final List<SkExpression> inExpressions) {
-		if (null != inExpressions)
-			inExpressions.forEach(e -> {
-				setValue(e);
-			});
+	public void runExpressions() {
+		if (null != this.ruleMaster) {
+			if (this.ruleMaster.needToRunExpressions()) {
+				this.expressionsHaveBeenRun = true;
+				this.ruleMaster.getExpressions()
+						.forEach(e -> {
+							setValue(e);
+						});
+			}
+		}
 	}
 
 	/**
 	 *
 	 */
 	public Boolean runConditionRef(final SkIf inSkIf) {
-		return null;
+		throw new IllegalArgumentException("Not implemented (runConditionRef).");
+		//return null;
 	}
 
 	/**
@@ -249,6 +251,16 @@ public class SkRuleRunner {
 	 */
 	public void setMaster(final SkRuleMaster inMaster) {
 		this.ruleMaster = inMaster;
+	}
+
+	/**
+	 *
+	 */
+	public void setupMaster(final SkRuleBase inRule) {
+		if (null == this.ruleMaster) {
+			this.ruleMaster = new SkRuleMaster.Builder().addRule(inRule)
+					.build();
+		}
 	}
 
 	/**
