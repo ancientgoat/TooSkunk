@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
 import com.premierinc.rule.commands.SkCondition;
+import com.premierinc.rule.commands.SkElse;
+import com.premierinc.rule.commands.SkIf;
+import com.premierinc.rule.commands.SkThen;
 import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
@@ -14,34 +17,7 @@ import java.util.List;
  */
 @JsonRootName("rule")
 public class SkRuleBase implements SkRule {
-	// /////////////////////////////////////////////////////////////////////////
-	// {
-	// 		"Rule": {
-	// 			"name": "XXXXXXXX",
-	// 			"description": "yyyyyyyyyyyyyy",
-	// 			"condition": [
-	// 				{
-	// 					"type": "IF",
-	// 					"expression": "MILK > 1.11 * 1"
-	// 				},
-	// 				{
-	// 					"type": "THEN",
-	// 					"action": {
-	// 				  		"actiontype": "print",
-	// 				  		"message": "xTHENx"
-	// 					}
-	// 				},
-	// 				{
-	// 					"type": "ELSE",
-	// 					"action": {
-	// 				  		"actiontype": "print",
-	// 				  		"message": "xELSEx"
-	// 					}
-	// 				}
-	// 			]
-	//    	}
-	// }
-	// /////////////////////////////////////////////////////////////////////////
+
 	private String name;
 	private String description;
 
@@ -53,6 +29,15 @@ public class SkRuleBase implements SkRule {
 
 	@JsonIgnore
 	SkRuleRunner runner = new SkRuleRunner();
+
+	@JsonIgnore
+	private SkIf skIf;
+
+	@JsonIgnore
+	private SkThen skThen;
+
+	@JsonIgnore
+	private SkElse skElse;
 
 	@Override
 	public String getName() {
@@ -88,6 +73,18 @@ public class SkRuleBase implements SkRule {
 		expressions = inExpressions;
 	}
 
+	public SkIf getSkIf() {
+		return skIf;
+	}
+
+	public SkThen getSkThen() {
+		return skThen;
+	}
+
+	public SkElse getSkElse() {
+		return skElse;
+	}
+
 	public void run() {
 		this.runner.runExpressions(this.expressions);
 		this.runner.runRule(this);
@@ -102,5 +99,21 @@ public class SkRuleBase implements SkRule {
 	public void existingRun(SkRuleRunner inRunner) {
 		inRunner.runExpressions(this.expressions);
 		inRunner.runRule(this);
+	}
+
+	/**
+	 * Do setup things for this Rule
+	 * - Populate the skIf, skThen, skElse attributes from the conditions.
+	 */
+	void setUp() {
+		this.conditionList.forEach(c -> {
+			if (c instanceof SkIf) {
+				this.skIf = (SkIf) c;
+			} else if (c instanceof SkThen) {
+				this.skThen = (SkThen) c;
+			} else if (c instanceof SkElse) {
+				this.skElse = (SkElse) c;
+			}
+		});
 	}
 }

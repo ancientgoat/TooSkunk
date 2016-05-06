@@ -1,5 +1,6 @@
 package com.premierinc.rule.commands;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.rule.commands.enums.SkConditionType;
@@ -15,5 +16,7 @@ import com.premierinc.rule.run.SkRuleRunner;
 })
 public abstract class SkCondition<OBJ> {
 	public abstract OBJ execute(SkRuleRunner inRunner);
+
+	@JsonIgnore
 	public abstract SkConditionType getConditionType();
 }

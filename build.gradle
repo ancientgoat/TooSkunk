@@ -31,6 +31,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.7.3'
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.7.3'
 
+    compile group: 'javax.mail', name: 'mail', version: '1.4.7'
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
     compile group: 'joda-time', name: 'joda-time', version: '2.9.3'
     compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'

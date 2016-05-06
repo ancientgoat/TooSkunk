@@ -3,8 +3,10 @@ package com.premierinc.rule.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.StringWriter;
@@ -27,6 +29,8 @@ public class JsonMapperHelper {
 		// mapper.setPropertyNamingStrategy(new CamelCaseNamingStrategy());
 		// mapper.getDeserializationConfig().findMixInClassFor(InpNodeBase.class);
 
+		//mapper.configure(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE, true);
+		//mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 		mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
 
@@ -61,7 +65,8 @@ public class JsonMapperHelper {
 	 */
 	public static final ObjectMapper jsonMapper() {
 		ObjectMapper mapper = new CustomMapper();
-		mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+		//mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+		mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 		mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
 		return mapper;
@@ -70,6 +75,10 @@ public class JsonMapperHelper {
 	/**
 	 * Take any bean and return as JSON String.
 	 */
+	public static String beanToJsonPretty(final Object inObject) {
+		return prettyPrint(inObject, jsonMapper());
+	}
+
 	public static String beanToJson(final Object inObject) {
 		return prettyPrint(inObject, jsonMapper());
 	}
@@ -89,17 +98,32 @@ public class JsonMapperHelper {
 	/**
 	 * Normal Print (output) the input Object, using the input Jackson ObjectMapper.
 	 */
-	public static String beanToString(Object inObject) {
+	public static String beanToJsonString(Object inObject) {
 		return beanToString(inObject, jsonMapper());
 	}
 
 	/**
 	 * Normal Print (output) the input Object, using the input Jackson ObjectMapper.
 	 */
+	public static String beanToJsonString(Object inObject, String inRootName) {
+		return beanToString(inObject, inRootName, jsonMapper());
+	}
+
+	/**
+	 * Normal Print (output) the input Object, using the input Jackson ObjectMapper.
+	 */
 	public static String beanToString(Object inObject, ObjectMapper inObjectMapper) {
+		return beanToString(inObject, null, inObjectMapper);
+	}
+
+	public static String beanToString(Object inObject, String inRootName, ObjectMapper inObjectMapper) {
 		try {
 			StringWriter w = new StringWriter();
-			inObjectMapper.writeValue(w, inObject);
+			ObjectWriter writer = inObjectMapper.writer();
+			if (null != inRootName) {
+				writer = writer.withRootName(inRootName);
+			}
+			writer.writeValue(w, inObject);
 			return w.toString();
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);

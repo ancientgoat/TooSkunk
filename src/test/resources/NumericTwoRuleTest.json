@@ -5,7 +5,7 @@
 	"condition": [
 	  {
 		"type": "IF",
-		"expression": "MILK > 1.11 * 1"
+		"expression": "MILK > 1.11 * 1 + (T(Math).PI)"
 	  },
 	  {
 		"type": "THEN",

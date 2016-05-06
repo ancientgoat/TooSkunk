@@ -14,6 +14,8 @@ public class SkChar {
 	}};
 	public static final Set<Character> BAD_MACRO_CHARS = new HashSet<Character>() {{
 		add('\'');
+		add(')');
+		add('(');
 	}};
 
 	private SkChar() {

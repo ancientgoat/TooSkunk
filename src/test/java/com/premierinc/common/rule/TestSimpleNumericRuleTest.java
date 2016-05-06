@@ -2,7 +2,6 @@ package com.premierinc.common.rule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.premierinc.rule.base.SkRuleBase;
-import com.premierinc.rule.run.SkRuleContext;
 import com.premierinc.rule.common.JsonMapperHelper;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.io.File;
@@ -33,7 +32,7 @@ public class TestSimpleNumericRuleTest {
 	@Test
 	public void testOutputJsonSimpleRuleTest() {
 		SkRuleBase rule = buildRunnerFromFile(ONE_RULE_FILE_NAME);
-		String json = JsonMapperHelper.beanToJson(rule);
+		String json = JsonMapperHelper.beanToJsonPretty(rule);
 		System.out.println("-------------------- JSON ---------------------");
 		System.out.println(json);
 		System.out.println("-------------------- JSON ---------------------");
@@ -55,7 +54,6 @@ public class TestSimpleNumericRuleTest {
 		} catch (Exception e) {
 			System.out.println(String.format("We expected this error : '%s'", e.toString()));
 		}
-
 		runner.setValue("MILK.QTY", 2);
 		rule.run(runner);
 	}

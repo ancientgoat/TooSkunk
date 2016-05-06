@@ -66,6 +66,20 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
+	public void runRules(SkRuleMaster inMaster) {
+		if (null != inMaster) {
+			this.ruleMaster = inMaster;
+			for (SkRule rule : inMaster.getRuleList()) {
+				runRule(rule);
+			}
+		} else {
+			throw new IllegalArgumentException("InMaster was null!");
+		}
+	}
+
+	/**
+	 *
+	 */
 	public void runConditions(List<SkCondition> inConditionList) {
 
 		// State machine
@@ -80,14 +94,7 @@ public class SkRuleRunner {
 
 			switch (conditionType) {
 			case IF:
-				System.out.println("SkRuleRunner : Executing IF ");
-				Boolean previousAnswer = this.ifAnswerMap.get((SkIf) condition);
-				if (null != previousAnswer) {
-					ifCondition = previousAnswer;
-				} else {
-					ifCondition = (boolean) condition.execute(this);
-					addAnswer((SkIf) condition, ifCondition);
-				}
+				ifCondition = executeIf((SkIf) condition);
 				break;
 
 			case THEN:
@@ -117,6 +124,44 @@ public class SkRuleRunner {
 
 	/**
 	 *
+	 */
+	private Boolean executeIf(final SkIf condition) {
+		final Boolean ifCondition;
+		SkIf skIf = condition;
+
+		String ruleRef = skIf.getRuleRef();
+		if (null != ruleRef) {
+			// Find the referenced SkIf statement
+			skIf = findIf(ruleRef);
+		}
+		System.out.println(String.format("SkRuleRunner : Executing IF : %s ", skIf.getSkExpression()
+				.getExpressionString()));
+		Boolean previousAnswer = this.ifAnswerMap.get(skIf);
+		if (null != previousAnswer) {
+			ifCondition = previousAnswer;
+		} else {
+			ifCondition = (boolean) skIf.execute(this);
+			addAnswer(condition, ifCondition);
+		}
+		return ifCondition;
+	}
+
+	/**
+	 *
+	 */
+	private SkIf findIf(final String inRuleRef) {
+		SkIf skIf = null;
+		if (null != this.ruleMaster) {
+			skIf = this.ruleMaster.findIfFromReference(inRuleRef);
+		}
+		if (null == skIf) {
+			throw new IllegalArgumentException(String.format("Can not find Rule name of '%s'.", inRuleRef));
+		}
+		return skIf;
+	}
+
+	/**
+	 *
 	 * @param inCondition
 	 * @param inIfAnswer
 	 */
@@ -124,8 +169,13 @@ public class SkRuleRunner {
 		this.ifAnswerMap.put(inCondition, inIfAnswer);
 	}
 
+	/**
+	 *
+	 */
 	public void setValue(String inKey, Object inValue) {
-		this.ruleContext.setValue(inKey, inValue);
+		if (null != inKey) {
+			this.ruleContext.setValue(inKey.toUpperCase(), inValue);
+		}
 	}
 
 	public void setValue(SkExpression inExpression) {

@@ -17,15 +17,15 @@ public class SkIf extends SkCondition<Boolean> {
 	private String inputExpression;
 	private SkExpression skExpression;
 
-	private String conditionref;
+	private String ruleRef;
 
-	@JsonProperty("conditionref")
-	public void setConditionref(String inConditionref) {
-		conditionref = inConditionref;
+	@JsonProperty("ruleref")
+	public void setRuleRef(String inRuleRef) {
+		ruleRef = inRuleRef;
 	}
 
-	public String getConditionref() {
-		return conditionref;
+	public String getRuleRef() {
+		return ruleRef;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class SkIf extends SkCondition<Boolean> {
 	public Boolean execute(SkRuleRunner inRunner) {
 		Boolean returnValue = null;
 
-		if (null != conditionref) {
+		if (null != ruleRef) {
 			returnValue = inRunner.runConditionRef(this);
 		} else {
 			returnValue = runExpression(inRunner);
@@ -84,9 +84,10 @@ public class SkIf extends SkCondition<Boolean> {
 			return (Boolean) objectAnswer;
 		}
 
-		throw new IllegalArgumentException(String.format("IF condition mast result in a Boolean, not a %s",
+		throw new IllegalArgumentException(String.format("IF condition mast result in a Boolean, not a "
+				+ "%s\nOriginal: %s\nSpEL Exp: %s",
 				objectAnswer.getClass()
-						.getName()));
+						.getName(), this.skExpression.getOriginalString(), this.skExpression.getExpressionString()));
 	}
 
 	@Override
