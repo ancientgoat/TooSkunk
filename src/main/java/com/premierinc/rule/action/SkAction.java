@@ -3,6 +3,7 @@ package com.premierinc.rule.action;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.premierinc.rule.action.enums.SkActionContext;
 import com.premierinc.rule.action.enums.SkActionType;
 import com.premierinc.rule.run.SkRuleRunner;
 
@@ -13,7 +14,8 @@ import com.premierinc.rule.run.SkRuleRunner;
 @JsonSubTypes({//
 		@JsonSubTypes.Type(value = SkActionPrint.class, name = "PRINT"),
 		@JsonSubTypes.Type(value = SkActionLog.class, name = "LOG"),
-		@JsonSubTypes.Type(value = SkActionReference.class, name = "REF")  //
+		@JsonSubTypes.Type(value = SkActionReference.class, name = "REF"),
+		@JsonSubTypes.Type(value = SkActionReadPropertyFile.class, name = "READPROPERTYFILE") //
 })
 public abstract class SkAction {
 
@@ -39,5 +41,9 @@ public abstract class SkAction {
 
 	public void setActionRef(final String inActionRef) {
 		actionRef = inActionRef;
+	}
+
+	public SkActionContext getActionContext() {
+		return SkActionContext.NORMAL;
 	}
 }
