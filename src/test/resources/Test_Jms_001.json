@@ -1,0 +1,40 @@
+{
+  "actions": {
+	"action": [
+	  {
+		"actiontype": "READPROPERTYFILE",
+		"filename": "skunk.test.001.properties"
+	  },
+	  {
+		"actiontype": "DATA",
+		"expressions": [
+		  "JMS.MESSAGE = 'Elmo was here?'"
+		]
+	  },
+	  {
+		"actiontype": "JMSPRODUCER",
+		"host": "SKUNK.JMS.HOST",
+		"port": "SKUNK.JMS.PORT",
+		"queue": "SKUNK.JMS.QUEUE",
+		"message": "JMS.MESSAGE"
+	  },
+	  {
+		"actiontype": "JMSCONSUMER",
+		"host": "SKUNK.JMS.HOST",
+		"port": "SKUNK.JMS.PORT",
+		"queue": "SKUNK.JMS.QUEUE",
+		"macro": "JMS.MESSAGE.CONSUMED"
+	  },
+	  {
+		"actiontype": "DATA",
+		"expressions": [
+		  "JMS.MESSAGE.CONSUMED = 'Begin-' + JMS.MESSAGE.CONSUMED + '-End'"
+		]
+	  },
+	  {
+		"actiontype": "PRINT",
+		"message": "JMS.MESSAGE.CONSUMED"
+	  }
+	]
+  }
+}

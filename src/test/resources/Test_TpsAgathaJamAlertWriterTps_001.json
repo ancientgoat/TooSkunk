@@ -1,0 +1,30 @@
+{
+  "rule": {
+	"name": "KITCHEN_SINK_00001",
+	"description": "Whow",
+	"actions": {
+	  "action": [
+		{
+		  "actiontype": "READPROPERTYFILE",
+		  "filename": "skunk.test.001.properties"
+		}
+	  ]
+	},
+	"condition": {
+	  "if": "MILK.QTY > 1.11 * 1 + 0.003",
+	  "then": {
+		"action": {
+		  "actiontype": "PRINT",
+		  "message": "********* We Have a THEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		}
+	  },
+	  "else": {
+		"action": {
+		  "actiontype": "PRINT",
+		  "message": "********* We Have a ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		}
+	  }
+	}
+  }
+}
+

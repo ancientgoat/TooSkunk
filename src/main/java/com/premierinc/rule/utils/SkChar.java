@@ -40,4 +40,8 @@ public class SkChar {
 	public static boolean isBadMacroChar(final char c) {
 		return BAD_MACRO_CHARS.contains(c);
 	}
+
+	public static boolean isQuote(char c){
+		return '\'' == c;
+	}
 }

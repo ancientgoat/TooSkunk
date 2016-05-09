@@ -104,7 +104,22 @@ public class SkRuleRunner {
 	}
 
 	public Object getValue(String inKey) {
-		return this.ruleContext.getValue(inKey);
+		Object value = this.ruleContext.getValue(inKey);
+		if (null == value && SkGlobalContext.containsMacroKey(inKey)) {
+			value = SkGlobalContext.getValue(inKey);
+		}
+		return value;
+	}
+
+	public Object getValue(String inKey, Object inDefaultValue) {
+		Object value = this.ruleContext.getValue(inKey);
+		if (null == value && SkGlobalContext.containsMacroKey(inKey)) {
+			value = SkGlobalContext.getValue(inKey);
+		}
+		if (null != value) {
+			return value;
+		}
+		return inDefaultValue;
 	}
 
 	public Object getValue(SkExpression inExpression) {

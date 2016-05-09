@@ -14,6 +14,8 @@ import com.premierinc.rule.run.SkRuleRunner;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actiontype")
 @JsonSubTypes({//
 		@JsonSubTypes.Type(value = SkActionData.class, name = "DATA"),
+		@JsonSubTypes.Type(value = SkActionJmsProducer.class, name = "JMSPRODUCER"),
+		@JsonSubTypes.Type(value = SkActionJmsConsumer.class, name = "JMSCONSUMER"),
 		@JsonSubTypes.Type(value = SkActionLog.class, name = "LOG"),
 		@JsonSubTypes.Type(value = SkActionPrint.class, name = "PRINT"),
 		@JsonSubTypes.Type(value = SkActionReference.class, name = "REF"),

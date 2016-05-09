@@ -1,23 +1,26 @@
 package com.premierinc.rule.action;
 
+import com.premierinc.rule.run.SkGlobalContext;
 import com.premierinc.rule.run.SkRuleRunner;
+import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
 import javax.jms.ObjectMessage;
+import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 
 /**
  *
  */
-public class SkActionJmsProducer extends SkAction {
+public class SkActionJmsConsumer extends SkAction {
 
 	private String host;
 	private String port = "61616";
 	private String queue;
-	private String message;
+	private String macro;
 
 	@Override
 	public void run(final SkRuleRunner inRunner) {
@@ -25,33 +28,45 @@ public class SkActionJmsProducer extends SkAction {
 		String newHost = (String) inRunner.getValue(this.host, this.host);
 		String newPort = (String) inRunner.getValue(this.port, this.port);
 		String newQueue = (String) inRunner.getValue(this.queue, this.queue);
-		String newMessage = (String) inRunner.getValue(this.message, this.message);
 
-		validate(newHost, newPort, newQueue, newMessage);
+		validate(newHost, newPort, newQueue, macro);
 
 		try {
 			String urlString = String.format("tcp://%s:%s", newHost, newPort);
+			Connection connection = null;
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(urlString);
+			connection = connectionFactory.createConnection();
+			connection.start();
+			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			try {
+				Queue localQueue = session.createQueue(newQueue);
 
-			JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-			jmsTemplate.setDefaultDestinationName(newQueue);
+				// Consumer
+				MessageConsumer consumer = session.createConsumer(localQueue);
 
-			jmsTemplate.send(new MessageCreator() {
-				public ObjectMessage createMessage(Session session) throws JMSException {
-					ObjectMessage objectMessage = session.createObjectMessage();
-					System.out.println("NEW MESSAGE : " + newMessage);
-					System.out.println("NEW MESSAGE : " + newMessage);
-					System.out.println("NEW MESSAGE : " + newMessage);
-					objectMessage.setObject(newMessage);
-					return objectMessage;
+				Message receive = consumer.receive();
+				String stringProperty = receive.getStringProperty("");
+				ObjectMessage textMsg = (ObjectMessage) receive;
+				System.out.println(textMsg);
+				System.out.println("Received: " + textMsg.getObject());
+
+				inRunner.setValue(macro, textMsg.getObject());
+
+			} finally {
+				if (session != null) {
+					session.close();
 				}
-			});
+				if (connection != null) {
+					connection.close();
+				}
+			}
+
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
-	private void validate(String inNewHost, String inNewPort, String inNewQueue, String inMessage) {
+	private void validate(String inNewHost, String inNewPort, String inNewQueue, String inMacro) {
 		StringBuilder sb = new StringBuilder();
 
 		if (null == inNewHost) {
@@ -63,8 +78,8 @@ public class SkActionJmsProducer extends SkAction {
 		if (null == inNewQueue) {
 			sb.append("\nQueue can NOT be null.");
 		}
-		if (null == inMessage) {
-			sb.append("\nMessage can NOT be null.");
+		if (null == inMacro) {
+			sb.append("\nMacro can NOT be null.");
 		}
 
 		if (0 < sb.length()) {
@@ -96,11 +111,11 @@ public class SkActionJmsProducer extends SkAction {
 		queue = inQueue;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getMacro() {
+		return macro;
 	}
 
-	public void setMessage(final String inMessage) {
-		message = inMessage;
+	public void setMacro(final String inMacro) {
+		macro = inMacro;
 	}
 }

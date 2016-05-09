@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.premierinc.rule.utils.SkChar.isBadMacroChar;
+import static com.premierinc.rule.utils.SkChar.isQuote;
 
 /**
  *
@@ -33,6 +34,7 @@ public class SkExpressionFactory {
 
 		StringBuilder sb = new StringBuilder();
 		boolean haveMacro = false;
+		boolean haveQuote = false;
 		String macro = "";
 		List<String> macroList = Lists.newArrayList();
 
@@ -55,7 +57,11 @@ public class SkExpressionFactory {
 				}
 			}
 
-			if (haveMacro) {
+			if (isQuote(c)) {
+				haveQuote = !haveQuote;
+			}
+
+			if (haveMacro && !haveQuote) {
 				if (SkChar.isMacro(c)) {
 					macro += (char) c;
 				} else {
@@ -90,9 +96,8 @@ public class SkExpressionFactory {
 		String spelExpressionString = sb.toString();
 
 		if (log.isTraceEnabled()) {
-			log.trace(
-					String.format("Parsing Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression,
-							spelExpressionString));
+			log.trace(String.format("Parsing Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression,
+					spelExpressionString));
 		}
 		return new SkExpression(macroList, inInputExpression, spelExpressionString);
 	}

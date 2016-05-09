@@ -1,27 +1,13 @@
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//        mavenLocal()
-////        jcenter()
-//    }
-////    dependencies {
-////        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-////    }
-//}
-
 apply plugin: 'java'
-//apply plugin: 'eclipse'
 apply plugin: 'idea'
-//apply plugin: 'spring-boot'
-//mainClassName = "com.premierinc.SrtApplication"
 
 repositories {
     mavenCentral()
     mavenLocal()
-    // maven { url "someUrl" }
 }
 
 dependencies {
+    compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.13.3'
     compile group: 'org.springframework', name: 'spring-expression', version: '4.2.5.RELEASE'
     compile group: 'org.springframework', name: 'spring-jms', version: '4.2.5.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.3.3.RELEASE'
