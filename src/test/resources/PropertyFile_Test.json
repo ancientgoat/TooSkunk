@@ -1,0 +1,11 @@
+{
+  "actions": {
+	"action": [
+	  {
+		"actiontype": "READPROPERTYFILE",
+		"context": "NOW",
+		"filename": "skunk.test.001.properties"
+	  }
+	]
+  }
+}

@@ -2,26 +2,21 @@
   "rule": {
 	"name": "MILK_RULE_FAIL_00001",
 	"description": "None of your business",
-	"condition": [
-	  {
-		"type": "IF",
-		"expression": "MILK.QTY > 1.11 * 1 + 0.003"
-	  },
-	  {
-		"type": "THEN",
+	"condition": {
+	  "if": "MILK.QTY > 1.11 * 1 + 0.003",
+	  "then": {
 		"action": {
 		  "actiontype": "PRINT",
 		  "message": "********* We Have a THEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 		}
 	  },
-	  {
-		"type": "ELSE",
+	  "else": {
 		"action": {
 		  "actiontype": "PRINT",
 		  "message": "********* We Have a ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 		}
 	  }
-	]
+	}
   }
 }
 

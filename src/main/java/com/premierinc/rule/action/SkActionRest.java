@@ -1,23 +1,20 @@
 package com.premierinc.rule.action;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.premierinc.rule.action.enums.SkActionType;
+import com.premierinc.rule.run.SkGlobalContext;
 import com.premierinc.rule.run.SkRuleRunner;
-import com.sun.istack.internal.logging.Logger;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
-import static org.apache.naming.SelectorContext.prefix;
 
 /**
  *
  */
 public class SkActionRest extends SkAction {
 
-	private Logger log = Logger.getLogger(SkActionRest.class);
+	private Logger log = LoggerFactory.getLogger(SkActionRest.class);
 
 	private String host;
 	private String port;
@@ -26,12 +23,21 @@ public class SkActionRest extends SkAction {
 	private String where;
 
 	@Override
-	public SkActionType getActionType() {
-		return SkActionType.PRINT;
-	}
+	public void run(SkRuleRunner inRunner) {
 
-	@Override
-	public void execute(SkRuleRunner inRunner) {
+		if (log.isDebugEnabled()) {
+			log.debug(String.format("Before :\n%s", dumpToString()));
+		}
+
+		host = (String) SkGlobalContext.getValue(host, host);
+		port = (String) SkGlobalContext.getValue(port, port);
+		prefix = (String) SkGlobalContext.getValue(prefix, prefix);
+		tablename = (String) SkGlobalContext.getValue(tablename, tablename);
+		where = (String) SkGlobalContext.getValue(where, where);
+
+		if (log.isDebugEnabled()) {
+			log.debug(String.format("After :\n%s", dumpToString()));
+		}
 
 		RestTemplate restTemplate = new RestTemplate();
 		List<Map<String, Object>> list = Lists.newArrayList();
@@ -41,7 +47,6 @@ public class SkActionRest extends SkAction {
 
 		System.out.println(returnList);
 		System.out.println(returnList.toArray());
-
 	}
 
 	public String getHost() {
@@ -82,5 +87,16 @@ public class SkActionRest extends SkAction {
 
 	public void setWhere(final String inWhere) {
 		where = inWhere;
+	}
+
+	public String dumpToString() {
+		return new StringBuilder()//
+				.append(String.format("host      : %s \n", host))
+				.append(String.format("port      : %s \n", port))
+				.append(String.format("prefix    : %s \n", prefix))
+				.append(String.format("tablename : %s \n", tablename))
+				.append(String.format("where     : %s \n", where))
+				.toString();
+
 	}
 }

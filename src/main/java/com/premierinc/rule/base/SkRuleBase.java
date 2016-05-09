@@ -1,34 +1,40 @@
 package com.premierinc.rule.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.google.common.collect.Lists;
+import com.premierinc.rule.action.SkAction;
+import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkElse;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.commands.SkThen;
-import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.expression.SkExpressions;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  *
  */
 @JsonRootName("rule")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkRuleBase implements SkRule {
 
 	private String name;
 	private String description;
 
+	@JsonProperty("actions")
+	private SkActions actions;
+
 	@JsonProperty("condition")
-	private List<SkCondition> conditionList = Lists.newArrayList();
+	private SkCondition condition;
 
 	private SkExpressions expressions;
 
-	@JsonIgnore
-	SkRuleRunner runner = new SkRuleRunner();
+	//	@JsonIgnore
+	//	SkRuleRunner runner = new SkRuleRunner();
 
 	@JsonIgnore
 	private SkIf skIf;
@@ -39,15 +45,24 @@ public class SkRuleBase implements SkRule {
 	@JsonIgnore
 	private SkElse skElse;
 
+	/**
+	 *
+	 */
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 *
+	 */
 	public void setName(final String inName) {
 		name = inName;
 	}
 
+	/**
+	 *
+	 */
 	@JsonProperty("expressions")
 	public void setExpressionList(List<String> inExpressionList) {
 		if (null != inExpressionList) {
@@ -55,6 +70,9 @@ public class SkRuleBase implements SkRule {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@JsonProperty("expressions")
 	public List<String> getExpressionList() {
 		if (null != expressions) {
@@ -63,86 +81,83 @@ public class SkRuleBase implements SkRule {
 		return null;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(final String inDescription) {
-		description = inDescription;
-	}
-
-	public List<SkCondition> getConditionList() {
-		return conditionList;
-	}
-
-	public void setConditionList(final List<SkCondition> inConditionList) {
-		conditionList = inConditionList;
-	}
-
-	public SkExpressions getExpressions() {
-		return expressions;
-	}
-
-	public List<SkExpression> getSkExpressions() {
-		if (null != this.expressions) {
-			return this.expressions.getSkExpressions();
-		}
-		return Lists.newArrayList();
-	}
-
-	public void setExpressions(final SkExpressions inExpressions) {
-		expressions = inExpressions;
-	}
-
-	public SkIf getSkIf() {
-		return skIf;
-	}
-
-	public SkThen getSkThen() {
-		return skThen;
-	}
-
-	public SkElse getSkElse() {
-		return skElse;
-	}
-
-	public void run() {
-		setupMaster();
-		this.runner.runRule(this);
+	@Override
+	public SkCondition getCondition() {
+		return this.condition;
 	}
 
 	/**
 	 *
 	 */
-	private void setupMaster() {
-		if (null != this.runner) {
-			this.runner.setupMaster(this);
-		}
-	}
-
-	public void run(SkRuleRunner inRunner) {
-		this.runner = inRunner;
-		inRunner.runRule(this);
-	}
-
-	public void existingRun(SkRuleRunner inRunner) {
-		inRunner.runRule(this);
+	public void setDescription(final String inDescription) {
+		description = inDescription;
 	}
 
 	/**
-	 * Do setup things for this Rule
-	 * - Populate the skIf, skThen, skElse attributes from the conditions.
+	 *
 	 */
-	void setUp() {
-		this.conditionList.forEach(c -> {
-			if (c instanceof SkIf) {
-				this.skIf = (SkIf) c;
-			} else if (c instanceof SkThen) {
-				this.skThen = (SkThen) c;
-			} else if (c instanceof SkElse) {
-				this.skElse = (SkElse) c;
-			}
-		});
+	public SkExpressions getExpressions() {
+		return expressions;
+	}
+
+	@Override
+	public Boolean run(final SkRuleRunner inRunner) {
+		if (null == this.condition) {
+			throw new IllegalArgumentException("condition seems to be missing?");
+		}
+		if (null != expressions) {
+			this.expressions.run(inRunner);
+		}
+		if (null != this.actions) {
+			this.actions.run(inRunner);
+		}
+		return this.condition.run(inRunner);
+	}
+
+	/**
+	 *
+	 */
+	public void setExpressions(final SkExpressions inExpressions) {
+		expressions = inExpressions;
+	}
+
+	/**
+	 *
+	 */
+	public SkElse getSkElse() {
+		return skElse;
+	}
+
+	/**
+	 *
+	 */
+	public SkActions getActions() {
+		return actions;
+	}
+
+	/**
+	 *
+	 */
+	public void setActions(@NotNull SkActions inActions) {
+		actions = inActions;
+	}
+
+	/**
+	 *
+	 */
+	@JsonProperty("action")
+	public void setAction(@NotNull SkAction inAction) {
+		if (null == this.actions) {
+			this.actions = new SkActions();
+		}
+		this.actions.addAction(inAction);
 	}
 }

@@ -1,14 +1,20 @@
 package com.premierinc.common.rule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.common.JsonMapperHelper;
 import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 /**
  *
  */
 public class TstFileHelper {
+
+	private static Logger log = LoggerFactory.getLogger(TstFileHelper.class);
+
 	private TstFileHelper() {
 	}
 
@@ -31,6 +37,12 @@ public class TstFileHelper {
 			// This part is only for the tests.
 			// Add 'actions' as the root name.
 			json = JsonMapperHelper.beanToJsonString(things, inRootName);
+
+			if (log.isInfoEnabled()) {
+				log.info(json);
+			}
+			System.out.println(json);
+
 			C things2 = (C) objectMapper.readValue(json, inClazz);
 			return things2;
 

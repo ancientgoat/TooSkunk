@@ -1,22 +1,96 @@
 package com.premierinc.rule.commands;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.premierinc.rule.commands.enums.SkConditionType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.run.SkRuleRunner;
+import javax.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value = SkIf.class, name = "IF"),
-		@JsonSubTypes.Type(value = SkThen.class, name = "THEN"),
-		@JsonSubTypes.Type(value = SkElse.class, name = "ELSE"),
-})
-public abstract class SkCondition<OBJ> {
-	public abstract OBJ execute(SkRuleRunner inRunner);
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SkCondition {
 
-	@JsonIgnore
-	public abstract SkConditionType getConditionType();
+	private Logger log = LoggerFactory.getLogger(SkCondition.class);
+
+	private SkIf skIf;
+
+	@JsonProperty("then")
+	private SkThen skThen;
+
+	@JsonProperty("else")
+	private SkElse skElse;
+
+	public SkIf getSkIf() {
+		return skIf;
+	}
+
+	public void setSkIf(@NotNull SkIf inSkIf) {
+		skIf = inSkIf;
+	}
+
+	@JsonProperty("if")
+	public void setSkIf(@NotNull String inIfString) {
+		this.skIf = new SkIf(inIfString);
+	}
+
+	@JsonProperty("if")
+	public String getIf() {
+		SkExpression skExpression = this.skIf.getSkExpression();
+		return (null != skExpression ? skExpression.getOriginalString() : null);
+	}
+
+	@JsonProperty("ifRef")
+	public void setIfRef(@NotNull String inIfRef) {
+		if (null != inIfRef) {
+			if (null == this.skIf) {
+				this.skIf = new SkIf();
+			}
+			this.skIf.setRuleRef(inIfRef);
+		}
+	}
+
+	@JsonProperty("ifRef")
+	public String getIfRef() {
+		return (null != this.skIf ? this.skIf.getRuleRef() : null);
+	}
+
+	public SkThen getSkThen() {
+		return skThen;
+	}
+
+	public void setSkThen(final SkThen inSkThen) {
+		skThen = inSkThen;
+	}
+
+	public SkElse getSkElse() {
+		return skElse;
+	}
+
+	public void setSkElse(final SkElse inSkElse) {
+		skElse = inSkElse;
+	}
+
+	/**
+	 *
+	 */
+	public Boolean run(SkRuleRunner inRunner) {
+		Boolean returnAnswer = null;
+		if (null != this.skIf) {
+			returnAnswer = this.skIf.run(inRunner);
+			if (returnAnswer) {
+				if (null != this.skThen) {
+					this.skThen.run(inRunner);
+				}
+			} else {
+				if (null != this.skElse) {
+					this.skElse.run(inRunner);
+				}
+			}
+		}
+		return returnAnswer;
+	}
 }

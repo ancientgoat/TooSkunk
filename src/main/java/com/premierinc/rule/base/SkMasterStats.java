@@ -4,9 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
-import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkIf;
-import com.premierinc.rule.expression.SkData;
+import com.premierinc.rule.exception.SkRuleNotFoundException;
 import com.premierinc.rule.expression.SkExpression;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +34,6 @@ public class SkMasterStats {
 	private Map<String, List<String>> ruleMacroMap = Maps.newHashMap();
 
 	/**
-	 * Map of SkIf/Rule
-	 */
-	private Map<SkIf, SkRuleBase> ifRuleMap = Maps.newHashMap();
-
-	/**
 	 * Map of Macro/SkIf
 	 */
 	private Map<String, List<SkIf>> macroIfMap = Maps.newHashMap();
@@ -56,10 +50,6 @@ public class SkMasterStats {
 	 */
 	private List<SkAction> actionList = Lists.newArrayList();
 
-	private List<SkExpression> expressionList = Lists.newArrayList();
-
-	private boolean expresssionsHaveBeenSet = false;
-
 	/**
 	 *
 	 */
@@ -71,9 +61,10 @@ public class SkMasterStats {
 	 */
 	public SkAction getAction(final String inActionName) {
 		if (null != inActionName) {
-			SkAction action = this.actionNameMap.get(inActionName);
+			String actionNameUpper = inActionName.toUpperCase();
+			SkAction action = this.actionNameMap.get(actionNameUpper);
 			if (null == action) {
-				throw new IllegalArgumentException(String.format("Action name '%s', not found.", inActionName));
+				throw new IllegalArgumentException(String.format("Action name '%s', not found.", actionNameUpper));
 			}
 			return action;
 		} else {
@@ -84,11 +75,11 @@ public class SkMasterStats {
 	/**
 	 *
 	 */
-	public SkRuleBase getRule(String inRuleName) {
+	public SkRule getRule(String inRuleName) {
 		if (null != inRuleName) {
 			SkRuleBase rule = this.ruleNameMap.get(inRuleName);
 			if (null == rule) {
-				throw new IllegalArgumentException(String.format("Rule name '%s', not found.", inRuleName));
+				throw new SkRuleNotFoundException(String.format("Rule name '%s', not found.", inRuleName));
 			}
 			return rule;
 		} else {
@@ -105,8 +96,6 @@ public class SkMasterStats {
 		// Rules
 		AtomicInteger index = new AtomicInteger(0);
 		for (final SkRuleBase rule : this.ruleList) {
-			rule.setUp();
-			this.expressionList.addAll(rule.getSkExpressions());
 			mapsFromRule(index, rule);
 		}
 
@@ -128,11 +117,19 @@ public class SkMasterStats {
 	/**
 	 *
 	 */
+	List<SkAction> getActionList() {
+		return actionList;
+	}
+
+	/**
+	 *
+	 */
 	SkIf findIfFromReference(String inRuleName) {
 		if (null != inRuleName) {
 			SkRuleBase rule = this.ruleNameMap.get(inRuleName.toUpperCase());
 			if (null != rule) {
-				return rule.getSkIf();
+				return rule.getCondition()
+						.getSkIf();
 			}
 		}
 		return null;
@@ -144,32 +141,28 @@ public class SkMasterStats {
 	private void mapsFromRule(final AtomicInteger inIndex, final SkRuleBase rule) {
 
 		// Name/Rule Map
-		String name = getRuleNameForMaps(rule, inIndex);
-		this.ruleNameMap.put(name, rule);
-
 		// Macro/Rule Map
 		// Rule/Macro Map
 		// Macro/SkIf Map
-		// SkIf/Rule Map
-		List<SkIf> ifList = Lists.newArrayList();
-		List<SkCondition> conditionList = rule.getConditionList();
-		conditionList.stream()
-				.filter(c -> c instanceof SkIf)
-				.forEach(c -> ifList.add((SkIf) c));
-
-		for (SkIf skIf : ifList) {
-			this.ifRuleMap.put(skIf, rule);
-			mapsFromRuleIfs(rule, name, skIf);
-		}
+		String name = getRuleNameForMaps(rule, inIndex);
+		this.ruleNameMap.put(name, rule);
+		mapsFromRuleIfs(rule, name);
 	}
 
 	/**
 	 *
 	 */
-	private void mapsFromRuleIfs(final SkRuleBase rule, final String inName, final SkIf skIf) {
+	private void mapsFromRuleIfs(final SkRuleBase rule, final String inName) {
 		// Macro/Rule Map
 		// Rule/Macro Map
 		// Macro/SkIf Map
+		SkIf skIf = rule.getCondition()
+				.getSkIf();
+
+		if (null == skIf) {
+			throw new IllegalArgumentException(String.format("Rule '%s' is missing an IF statement.", rule.getName()));
+		}
+
 		SkExpression exp = skIf.getSkExpression();
 
 		if (null != exp) {
@@ -245,26 +238,9 @@ public class SkMasterStats {
 	private void clearMaps() {
 		this.ruleNameMap.clear();
 		this.macroRuleMap.clear();
-		this.ifRuleMap.clear();
 		this.macroIfMap.clear();
 		this.ruleMacroMap.clear();
 		this.actionNameMap.clear();
-	}
-
-	/**
-	 *
-	 */
-	public boolean needToRunExpressions() {
-		if (!expresssionsHaveBeenSet) {
-			if (0 < this.expressionList.size()) {
-				expresssionsHaveBeenSet = true;
-			}
-		}
-		return expresssionsHaveBeenSet;
-	}
-
-	public List<SkExpression> getExpressions() {
-		return this.expressionList;
 	}
 
 	/**
@@ -296,14 +272,6 @@ public class SkMasterStats {
 		 */
 		public Builder addActions(final SkActions inActions) {
 			this.masterStats.actionList.addAll(inActions.getActionList());
-			return this;
-		}
-
-		/**
-		 *
-		 */
-		public Builder addData(final SkData inData) {
-			this.masterStats.expressionList.addAll(inData.getSkExpressions());
 			return this;
 		}
 

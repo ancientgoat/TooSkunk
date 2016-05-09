@@ -1,6 +1,5 @@
 package com.premierinc.rule.action;
 
-import com.premierinc.rule.action.enums.SkActionType;
 import com.premierinc.rule.run.SkRuleRunner;
 
 /**
@@ -19,12 +18,7 @@ public class SkActionEmail extends SkAction {
 	}
 
 	@Override
-	public SkActionType getActionType() {
-		return SkActionType.PRINT;
-	}
-
-	@Override
-	public void execute(SkRuleRunner inRunner) {
+	public void run(SkRuleRunner inRunner) {
 
 		System.out.println(this.message);
 

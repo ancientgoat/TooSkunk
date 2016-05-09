@@ -1,8 +1,0 @@
-{
-  "data": {
-	"expressions": [
-	  "ORANGE_JUICE = 17 + (T(java.lang.Math).PI)",
-	  "MILK.QTY = ORANGE_JUICE"
-	]
-  }
-}

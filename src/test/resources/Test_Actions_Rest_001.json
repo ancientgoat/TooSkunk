@@ -3,10 +3,12 @@
 	"action": [
 	  {
 		"actiontype": "READPROPERTYFILE",
+		"context": "NOW",
 		"filename": "skunk.properties"
 	  },
 	  {
 		"actiontype": "REST",
+		"name":"ACTION_REST",
 		"host": "TOOREST.HOST",
 		"port": "TOOREST.PORT",
 		"prefix": "TOOREST.PREFIX",

@@ -1,17 +1,13 @@
 package com.premierinc.rule.run;
 
-import com.google.common.collect.Maps;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.base.SkRule;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
-import com.premierinc.rule.commands.SkCondition;
-import com.premierinc.rule.commands.SkConditionStateMachine;
-import com.premierinc.rule.commands.SkIf;
-import com.premierinc.rule.commands.enums.SkConditionType;
 import com.premierinc.rule.expression.SkExpression;
 import java.util.List;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.expression.spel.SpelCompilerMode;
 
 /**
@@ -19,12 +15,10 @@ import org.springframework.expression.spel.SpelCompilerMode;
  */
 public class SkRuleRunner {
 
+	private Logger log = LoggerFactory.getLogger(SkRuleRunner.class);
+
 	private SkRuleContext ruleContext;
-	private Map<SkIf, Boolean> ifAnswerMap = Maps.newHashMap();
-
 	private SkRuleMaster ruleMaster;
-
-	private boolean expressionsHaveBeenRun = false;
 
 	/**
 	 *
@@ -49,16 +43,26 @@ public class SkRuleRunner {
 		this.ruleContext.setRunner(this);
 	}
 
-	/**
-	 *
-	 */
-	public void runRule(SkRule inRule) {
-		if (!this.expressionsHaveBeenRun) {
-			runExpressions();
-			this.expressionsHaveBeenRun = true;
-		}
-		List<SkCondition> conditionList = inRule.getConditionList();
-		runConditions(conditionList);
+	//	/**
+	//	 *
+	//	 */
+	//	public void runRules(SkRuleMaster inMaster) {
+	//		if (null != inMaster) {
+	//			this.setMaster(inMaster);
+	//			for (SkRule rule : inMaster.getRuleList()) {
+	//				runRule(rule);
+	//			}
+	//		} else {
+	//			throw new IllegalArgumentException("InMaster was null!");
+	//		}
+	//	}
+
+	public SkRuleContext getRuleContext() {
+		return ruleContext;
+	}
+
+	public SkRuleMaster getRuleMaster() {
+		return ruleMaster;
 	}
 
 	/**
@@ -73,105 +77,17 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
-	public void runRules(SkRuleMaster inMaster) {
-		if (null != inMaster) {
-			this.setMaster(inMaster);
-			for (SkRule rule : inMaster.getRuleList()) {
-				runRule(rule);
-			}
-		} else {
-			throw new IllegalArgumentException("InMaster was null!");
-		}
+	public void runRule(SkRule inRule) {
+		inRule.run(this);
+		//		List<SkCondition> conditionList = inRule.getConditionList();
+		//		runConditions(conditionList);
 	}
 
 	/**
 	 *
 	 */
-	public void runConditions(List<SkCondition> inConditionList) {
-
-		// State machine
-		SkConditionStateMachine machine = new SkConditionStateMachine();
-		Boolean ifCondition = true;
-
-		for (SkCondition condition : inConditionList) {
-			SkConditionType conditionType = condition.getConditionType();
-			machine.checkState(conditionType);
-
-			switch (conditionType) {
-			case IF:
-				ifCondition = executeIf((SkIf) condition);
-				break;
-
-			case THEN:
-				if (ifCondition) {
-					System.out.println("SkRuleRunner : Executing THEN ");
-					condition.execute(this);
-				} else {
-					System.out.println("SkRuleRunner : Skipping THEN ");
-				}
-				break;
-
-			case ELSE:
-				if (!ifCondition) {
-					System.out.println("SkRuleRunner : Executing ELSE ");
-					condition.execute(this);
-				} else {
-					System.out.println("SkRuleRunner : Skipping ELSE ");
-				}
-				break;
-
-			default:
-				throw new IllegalArgumentException(
-						String.format("SkConditionType of '%s' is not implemented.", conditionType));
-			}
-		}
-	}
-
-	/**
-	 *
-	 */
-	private Boolean executeIf(final SkIf condition) {
-		final Boolean ifCondition;
-		SkIf skIf = condition;
-
-		String ruleRef = skIf.getRuleRef();
-		if (null != ruleRef) {
-			// Find the referenced SkIf statement
-			skIf = findIf(ruleRef);
-		}
-		System.out.println(String.format("SkRuleRunner : Executing IF : %s ", skIf.getSkExpression()
-				.getExpressionString()));
-		Boolean previousAnswer = this.ifAnswerMap.get(skIf);
-		if (null != previousAnswer) {
-			ifCondition = previousAnswer;
-		} else {
-			ifCondition = (boolean) skIf.execute(this);
-			addAnswer(condition, ifCondition);
-		}
-		return ifCondition;
-	}
-
-	/**
-	 *
-	 */
-	private SkIf findIf(final String inRuleRef) {
-		SkIf skIf = null;
-		if (null != this.ruleMaster) {
-			skIf = this.ruleMaster.findIfFromReference(inRuleRef);
-		}
-		if (null == skIf) {
-			throw new IllegalArgumentException(String.format("Can not find Rule name of '%s'.", inRuleRef));
-		}
-		return skIf;
-	}
-
-	/**
-	 *
-	 * @param inCondition
-	 * @param inIfAnswer
-	 */
-	private void addAnswer(final SkIf inCondition, final Boolean inIfAnswer) {
-		this.ifAnswerMap.put(inCondition, inIfAnswer);
+	public SkAction getAction(String inActionName) {
+		return this.ruleMaster.getAction(inActionName);
 	}
 
 	/**
@@ -191,59 +107,15 @@ public class SkRuleRunner {
 		return this.ruleContext.getValue(inKey);
 	}
 
-	/**
-	 *
-	 */
-	public boolean containsMacroKey(String inKey) {
-		return this.ruleContext.containsMacroKey(inKey);
-	}
-
-	/**
-	 * Run an Expression.  First, check to insure all Marco values are initialized.
-	 *
-	 */
 	public Object getValue(SkExpression inExpression) {
-		//
-		StringBuilder sb = new StringBuilder("\n");
-
-		System.out.println("EXPRESSION MACRO LIST : " + inExpression.getMacroList());
-		System.out.println("RUNNER SET MACRO LIST : " + this.ruleContext.getInternalMap());
-
-		inExpression.getMacroList()
-				.forEach(macro -> {
-					if (!this.containsMacroKey(macro)) {
-						sb.append(String.format("Missing macro '%s'\n", macro));
-					}
-				});
-
-		if (1 < sb.length()) {
-			throw new IllegalArgumentException(sb.toString());
-		}
-
 		return this.ruleContext.getValue(inExpression);
 	}
 
 	/**
 	 *
 	 */
-	public void runExpressions() {
-		if (null != this.ruleMaster) {
-			if (this.ruleMaster.needToRunExpressions()) {
-				this.expressionsHaveBeenRun = true;
-				this.ruleMaster.getExpressions()
-						.forEach(e -> {
-							setValue(e);
-						});
-			}
-		}
-	}
-
-	/**
-	 *
-	 */
-	public Boolean runConditionRef(final SkIf inSkIf) {
-		throw new IllegalArgumentException("Not implemented (runConditionRef).");
-		//return null;
+	public boolean containsMacroKey(String inKey) {
+		return this.ruleContext.containsMacroKey(inKey);
 	}
 
 	/**
@@ -266,9 +138,16 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
+	public SkRule getRule(String inRuleName) {
+		return this.ruleMaster.getRule(inRuleName);
+	}
+
+	/**
+	 *
+	 */
 	public void executeAction(final String inActionName) {
 		SkAction action = this.ruleMaster.getAction(inActionName);
-		action.execute(this);
+		action.run(this);
 	}
 
 	public String expandMacros(final String inMessage) {

@@ -1,26 +1,23 @@
 package com.premierinc.common.rule;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.base.SkRules;
 import com.premierinc.rule.common.JsonMapperHelper;
 import com.premierinc.rule.run.SkRuleRunner;
-import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
+
+import static com.premierinc.common.rule.TstFileHelper.buildThings;
 
 /**
  *
  */
-public class TestReferenceTest {
+public class Test00002ReferenceTest {
 
-	private Logger log = LoggerFactory.getLogger(TestReferenceTest.class);
+	private Logger log = LoggerFactory.getLogger(Test00002ReferenceTest.class);
 
 	public static final String FIRST_REF_TEST_FILE_NAME = "StringReferenceRule_3_Parter.json";
 	public static final String SECOND_REF_TEST_FILE_NAME = "StringReferenceRule_4_WithOtherRefs.json";
@@ -39,7 +36,7 @@ public class TestReferenceTest {
 		System.out.println("-------------------- xJSON ---------------------");
 		System.out.println(json);
 		System.out.println("-------------------- xJSON ---------------------");
-		// rule.run();
+		// rule.setValue();
 	}
 
 	/**
@@ -54,7 +51,7 @@ public class TestReferenceTest {
 		SkRuleRunner runner = master.getRuleRunner();
 		try {
 			runner.setValue("THIS_MACRO_DOES_NOT_EXIST", "X");
-			runner.runRules(master);
+			runner.runRule(master.getRule("COKE_RULE_00003"));
 			Assert.fail("We should have thrown an error.");
 		} catch (Exception e) {
 			System.out.println(String.format("We expected this error : '%s'", e.toString()));
@@ -63,7 +60,7 @@ public class TestReferenceTest {
 		// Note: All macros are turned into UPPER case.
 		runner.setValue("nAmE", "Fred");
 
-		// Choose only one rule, from the three, to run.
+		// Choose only one rule, from the three, to setValue.
 		runner.runRule(master.getRule("COKE_RULE_00003"));
 	}
 
@@ -76,7 +73,7 @@ public class TestReferenceTest {
 	}
 
 	/**
-	 * Read in actions - run with Three rule action-ref test.
+	 * Read in actions - setValue with Three rule action-ref test.
 	 */
 	@Test
 	public void testActionRefRuleRefTest() {
@@ -91,12 +88,12 @@ public class TestReferenceTest {
 		// Note: All macros are turned into UPPER case.
 		runner.setValue("nAmE", "Fred");
 
-		// Choose only one rule, from the three, to run.
+		// Choose only one rule, from the three, to setValue.
 		runner.runRule(master.getRule("COKE_RULE_00003"));
 	}
 
 	/**
-	 * Read in actions - run with Three rule action-ref test.
+	 * Read in actions - setValue with Three rule action-ref test.
 	 */
 	@Test
 	public void testMultiActionRefRuleRefTest() {
@@ -111,16 +108,15 @@ public class TestReferenceTest {
 		// Note: All macros are turned into UPPER case.
 		runner.setValue("nAmE", "Fred");
 
-		// Choose only one rule, from the three, to run.
+		// Choose only one rule, from the three, to setValue.
 		runner.runRule(master.getRule("COKE_RULE_00003"));
 	}
 
 	/**
-	 * Read in actions - run with Three rule action-ref test.
+	 * Read in actions - setValue with Three rule action-ref test.
 	 */
 	@Test
 	public void testMultiActionWithMacrosRefRuleRefTest() {
-
 		SkActions actions = buildThings(SECOND_ACTION_FILE_NAME, SkActions.class, "actions");
 		SkRules rules = buildThings(FORTH_REF_TEST_FILE_NAME, SkRules.class, "rules");
 		SkRuleMaster master = new SkRuleMaster.Builder().addRules(rules)
@@ -131,33 +127,7 @@ public class TestReferenceTest {
 		// Note: All macros are turned into UPPER case.
 		runner.setValue("nAmE", "Fred");
 
-		// Choose only one rule, from the three, to run.
+		// Choose only one rule, from the three, to setValue.
 		runner.runRule(master.getRule("COKE_RULE_00003"));
-	}
-
-	/**
-	 * Read Actions from file.
-	 */
-	private <C> C buildThings(String filePath, Class inClazz, String inRootName) {
-		try {
-			ObjectMapper objectMapper;
-			ClassPathResource resource = new ClassPathResource(filePath);
-			File file = resource.getFile();
-			if (!file.exists()) {
-				throw new IllegalArgumentException(String.format("File '%s' does NOT exist.", file.getAbsolutePath()));
-			}
-			objectMapper = JsonMapperHelper.jsonMapper();
-			C things = (C) objectMapper.readValue(file, inClazz);
-
-			// Now turn the bean to json and back to a second bean.
-			// This part is only for the tests.
-			// Add 'actions' as the root name.
-			String json = JsonMapperHelper.beanToJsonString(things, inRootName);
-			C things2 = (C) objectMapper.readValue(json, inClazz);
-			return things2;
-
-		} catch (Exception e) {
-			throw new IllegalArgumentException(e);
-		}
 	}
 }

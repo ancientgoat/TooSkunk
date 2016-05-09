@@ -1,6 +1,5 @@
 package com.premierinc.rule.action;
 
-import com.premierinc.rule.action.enums.SkActionType;
 import com.premierinc.rule.run.SkRuleRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +22,7 @@ public class SkActionReference extends SkAction {
 	}
 
 	@Override
-	public SkActionType getActionType() {
-		return SkActionType.REFERENCE;
-	}
-
-	@Override
-	public void execute(SkRuleRunner inRunner) {
+	public void run(SkRuleRunner inRunner) {
 		inRunner.executeAction(this.actionref);
 	}
 }

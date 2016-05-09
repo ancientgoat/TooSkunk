@@ -1,10 +1,11 @@
 package com.premierinc.rule.action;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.rule.action.enums.SkActionContext;
-import com.premierinc.rule.action.enums.SkActionType;
 import com.premierinc.rule.run.SkRuleRunner;
 
 /**
@@ -12,22 +13,21 @@ import com.premierinc.rule.run.SkRuleRunner;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actiontype")
 @JsonSubTypes({//
-		@JsonSubTypes.Type(value = SkActionPrint.class, name = "PRINT"),
+		@JsonSubTypes.Type(value = SkActionData.class, name = "DATA"),
 		@JsonSubTypes.Type(value = SkActionLog.class, name = "LOG"),
+		@JsonSubTypes.Type(value = SkActionPrint.class, name = "PRINT"),
 		@JsonSubTypes.Type(value = SkActionReference.class, name = "REF"),
 		@JsonSubTypes.Type(value = SkActionRest.class, name = "REST"),
 		@JsonSubTypes.Type(value = SkActionReadPropertyFile.class, name = "READPROPERTYFILE") //
 })
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class SkAction {
 
 	private String name;
 	private String actionRef;
 	private SkActionContext actionContext = SkActionContext.NORMAL;
 
-	public abstract void execute(SkRuleRunner inRunner);
-
-	@JsonIgnore
-	public abstract SkActionType getActionType();
+	public abstract void run(SkRuleRunner inRunner);
 
 	public String getName() {
 		return name;
@@ -45,10 +45,12 @@ public abstract class SkAction {
 		actionRef = inActionRef;
 	}
 
+	@JsonProperty("context")
 	public void setActionContext(final SkActionContext inActionContext) {
 		actionContext = inActionContext;
 	}
 
+	@JsonProperty("context")
 	public SkActionContext getActionContext() {
 		return actionContext;
 	}

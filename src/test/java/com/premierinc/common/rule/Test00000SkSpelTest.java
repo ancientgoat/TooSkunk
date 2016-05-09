@@ -20,7 +20,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 /**
  *
  */
-public class SkSpelTest {
+public class Test00000SkSpelTest {
 
 	@Test
 	public void simpleTest() {

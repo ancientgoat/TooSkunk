@@ -6,6 +6,7 @@ import com.premierinc.rule.expression.SkExpression;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.expression.Expression;
@@ -13,7 +14,6 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.SpelCompilerMode;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-
 
 /**
  *
@@ -72,16 +72,8 @@ public class SkRuleContext {
 	/**
 	 *
 	 */
-	Map<String, Object> getInternalMap() {
+	public Map<String, Object> getInternalMap() {
 		return internalMap;
-	}
-
-	/**
-	 *
-	 */
-	Object getValue(SkExpression inExpression) {
-		Expression exp = this.parser.parseExpression(inExpression.getExpressionString());
-		return exp.getValue(internalMap);
 	}
 
 	/**
@@ -119,21 +111,78 @@ public class SkRuleContext {
 		return this.internalMap.containsKey(inKey);
 	}
 
-	public void setValue(final SkExpression inExpression) {
+	/**
+	 *
+	 */
+	public Object setValue(final SkExpression inExpression) {
 		String expressionString = inExpression.getExpressionString();
-		if (null == expressionString) {
-			throw new IllegalArgumentException("ExpressionString can not be null.");
+		if (null == expressionString || 0 == expressionString.length()) {
+			throw new IllegalArgumentException("ExpressionString can not be null, or of length zero (0).");
 		}
-		System.out.println("__________________________");
-		System.out.println(expressionString);
-		System.out.println(expressionString);
-		System.out.println(expressionString);
-		System.out.println(expressionString);
-		System.out.println("__________________________");
-		Expression exp = this.parser.parseExpression(expressionString);
-		Object value = exp.getValue(internalMap);
+		if (log.isDebugEnabled()) {
+			log.debug(expressionString);
+		}
+		return runExpression(expressionString);
 	}
 
+	/**
+	 *
+	 */
+	public Object getValue(SkExpression inExpression) {
+		//
+		StringBuilder sb = new StringBuilder("\n");
+
+		System.out.println("EXPRESSION MACRO LIST : " + inExpression.getMacroList());
+		System.out.println("RUNNER SET MACRO LIST : " + this.internalMap);
+
+		inExpression.getMacroList()
+				.forEach(macro -> {
+					if (!containsMacroKey(macro) && !SkGlobalContext.containsMacroKey(macro)) {
+						sb.append(String.format("Missing macro '%s'\n", macro));
+					}
+				});
+
+		if (1 < sb.length()) {
+			throw new IllegalArgumentException(sb.toString());
+		}
+		return runExpression(inExpression.getExpressionString());
+	}
+
+	/**
+	 *
+	 */
+	private Object runExpression(String inExpressionString) {
+		Expression exp = this.parser.parseExpression(inExpressionString);
+
+		// Use a combined Global and local map.
+		Map<String, Object> globalMap = SkGlobalContext.getGlobalMap();
+		Map<String, Object> combinedMap = Maps.newHashMap();
+		combinedMap.putAll(globalMap);
+		combinedMap.putAll(internalMap);
+		// Run the expression
+		Object value = exp.getValue(combinedMap);
+		// Move all objects that belong in the local map, back to the local map.
+		combinedMap.keySet()
+				.forEach(k -> {
+					if (!globalMap.containsKey(k) || internalMap.containsKey(k)) {
+						internalMap.put(k, combinedMap.get(k));
+					}
+				});
+		// Move all objects that belong in the global map, back to the local map.
+		combinedMap.keySet()
+				.forEach(k -> {
+					// Do not update an item found in both internal and global maps
+					// 	only the local map changes.
+					if (!internalMap.containsKey(k)) {
+						globalMap.put(k, combinedMap.get(k));
+					}
+				});
+		return value;
+	}
+
+	/**
+	 *
+	 */
 	public String expandMacros(final String inMessage) {
 		if (null == inMessage) {
 			return inMessage;

@@ -1,23 +1,26 @@
 package com.premierinc.rule.commands;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.base.SkRuleBase;
-import com.premierinc.rule.commands.enums.SkConditionType;
+import com.premierinc.rule.expression.SkExpression;
+import com.premierinc.rule.expression.SkExpressions;
 import com.premierinc.rule.run.SkRuleRunner;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  *
  */
-public class SkThenElseBase<C extends Object> extends SkCondition<C> {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SkThenElseBase {
 
-	@JsonProperty("action")
-	private SkAction action;
+	@JsonProperty("expressions")
+	private SkExpressions expressions;
 
 	@JsonProperty("actions")
-	private SkActions actions;
+	private SkActions actions = new SkActions();
 
 	@JsonProperty("rule")
 	private SkRuleBase rule = null;
@@ -26,38 +29,36 @@ public class SkThenElseBase<C extends Object> extends SkCondition<C> {
 		return actions;
 	}
 
-	public void setActions(final SkActions inActions) {
+	public void setActions(@NotNull SkActions inActions) {
 		actions = inActions;
 	}
 
-	public SkAction getAction() {
-		return action;
+	@JsonProperty("action")
+	public void setAction(@NotNull SkAction inAction) {
+		this.actions.addAction(inAction);
 	}
 
-	public void setAction(final SkAction inAction) {
-		action = inAction;
-	}
-
-	@Override
-	public C execute(SkRuleRunner inRunner) {
-		if (null != actions) {
-			for (SkAction localAction : actions.getActionList()) {
-				if (null != localAction) {
-					localAction.execute(inRunner);
-				}
-			}
+	@JsonProperty("expression")
+	public void addExpression(@NotNull SkExpression inExpression) {
+		if (null == this.expressions) {
+			this.expressions = new SkExpressions();
 		}
-		if (null != this.action) {
-			this.action.execute(inRunner);
+		this.expressions.addExpression(inExpression);
+	}
+
+	/**
+	 *
+	 * @param inRunner
+	 */
+	public void run(@NotNull SkRuleRunner inRunner) {
+		if (null != expressions) {
+			this.expressions.run(inRunner);
+		}
+		if (null != actions) {
+			this.actions.run(inRunner);
 		}
 		if (null != this.rule) {
-			this.rule.existingRun(inRunner);
+			inRunner.runRule(this.rule);
 		}
-		return null;
-	}
-
-	@Override
-	public SkConditionType getConditionType() {
-		throw new IllegalArgumentException("Not implemeted, this class needs to be extended.");
 	}
 }

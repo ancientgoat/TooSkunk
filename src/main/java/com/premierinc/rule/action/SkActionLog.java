@@ -1,7 +1,6 @@
 package com.premierinc.rule.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.premierinc.rule.action.enums.SkActionType;
 import com.premierinc.rule.action.enums.SkLogLevel;
 import com.premierinc.rule.run.SkRuleRunner;
 import org.slf4j.Logger;
@@ -36,12 +35,7 @@ public class SkActionLog extends SkAction {
 	}
 
 	@Override
-	public SkActionType getActionType() {
-		return SkActionType.LOG;
-	}
-
-	@Override
-	public void execute(SkRuleRunner inRunner) {
+	public void run(SkRuleRunner inRunner) {
 		String newMessage = inRunner.expandMacros(this.message);
 
 		switch (logLevel) {

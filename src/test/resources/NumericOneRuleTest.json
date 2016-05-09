@@ -6,26 +6,29 @@
 	  "ORANGE_JUICE = 17 + (T(java.lang.Math).PI)",
 	  "MILK.QTY = ORANGE_JUICE"
 	],
-	"condition": [
-	  {
-		"type": "IF",
-		"expression": "MILK.QTY > 1.11 * 1 + 0.003"
-	  },
-	  {
-		"type": "THEN",
+	"actions": {
+	  "action": [
+		{
+		  "actiontype": "PRINT",
+		  "message": "*************** PRE RULE ***********************"
+		}
+	  ]
+	},
+	"condition": {
+	  "if": "MILK.QTY > 1.11 * 1 + 0.003",
+	  "then": {
 		"action": {
 		  "actiontype": "PRINT",
 		  "message": "********* We Have a THEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 		}
 	  },
-	  {
-		"type": "ELSE",
+	  "else": {
 		"action": {
 		  "actiontype": "PRINT",
 		  "message": "********* We Have a ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 		}
 	  }
-	]
+	}
   }
 }
 

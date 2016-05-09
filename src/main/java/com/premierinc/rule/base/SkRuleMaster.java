@@ -2,9 +2,8 @@ package com.premierinc.rule.base;
 
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
+import com.premierinc.rule.action.enums.SkActionContext;
 import com.premierinc.rule.commands.SkIf;
-import com.premierinc.rule.expression.SkData;
-import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
 import java.util.stream.DoubleStream;
@@ -16,6 +15,7 @@ public class SkRuleMaster {
 
 	private SkMasterStats stats;
 	private DoubleStream expressions;
+	private SkRuleRunner runner;
 
 	/**
 	 *
@@ -27,8 +27,10 @@ public class SkRuleMaster {
 	 *
 	 */
 	public SkRuleRunner getRuleRunner() {
-		SkRuleRunner runner = new SkRuleRunner();
-		runner.setMaster(this);
+		if (null == this.runner) {
+			runner = new SkRuleRunner();
+			runner.setMaster(this);
+		}
 		return runner;
 	}
 
@@ -49,7 +51,7 @@ public class SkRuleMaster {
 	/**
 	 *
 	 */
-	public SkRuleBase getRule(String inRuleName) {
+	public SkRule getRule(String inRuleName) {
 		return this.stats.getRule(inRuleName);
 	}
 
@@ -58,20 +60,6 @@ public class SkRuleMaster {
 	 */
 	public SkAction getAction(final String inActionName) {
 		return this.stats.getAction(inActionName);
-	}
-
-	/**
-	 *
-	 */
-	public boolean needToRunExpressions() {
-		return this.stats.needToRunExpressions();
-	}
-
-	/**
-	 *
-	 */
-	public List<SkExpression> getExpressions() {
-		return this.stats.getExpressions();
 	}
 
 	/**
@@ -110,17 +98,20 @@ public class SkRuleMaster {
 		/**
 		 *
 		 */
-		public Builder addData(final SkData inData) {
-			this.statBuilder.addData(inData);
-			return this;
-		}
-
-		/**
-		 *
-		 */
 		public SkRuleMaster build() {
 			SkMasterStats localStats = statBuilder.build();
-			master.stats = localStats;
+			this.master.stats = localStats;
+
+			// See if any actions are to be run now?
+			SkRuleRunner ruleRunner = this.master.getRuleRunner();
+			List<SkAction> actionList = this.master.stats.getActionList();
+			if (null != actionList && 0 < actionList.size()) {
+				actionList.forEach(a -> {
+					if (SkActionContext.NOW == a.getActionContext()) {
+						a.run(ruleRunner);
+					}
+				});
+			}
 			return this.master;
 		}
 	}
