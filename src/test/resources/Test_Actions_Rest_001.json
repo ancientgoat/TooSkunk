@@ -1,0 +1,18 @@
+{
+  "actions": {
+	"action": [
+	  {
+		"actiontype": "READPROPERTYFILE",
+		"filename": "skunk.properties"
+	  },
+	  {
+		"actiontype": "REST",
+		"host": "TOOREST.HOST",
+		"port": "TOOREST.PORT",
+		"prefix": "TOOREST.PREFIX",
+		"tablename": "TEST_TEST_02",
+		"where": ""
+	  }
+	]
+  }
+}

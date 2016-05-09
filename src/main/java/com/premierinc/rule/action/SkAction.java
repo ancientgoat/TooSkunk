@@ -15,12 +15,14 @@ import com.premierinc.rule.run.SkRuleRunner;
 		@JsonSubTypes.Type(value = SkActionPrint.class, name = "PRINT"),
 		@JsonSubTypes.Type(value = SkActionLog.class, name = "LOG"),
 		@JsonSubTypes.Type(value = SkActionReference.class, name = "REF"),
+		@JsonSubTypes.Type(value = SkActionRest.class, name = "REST"),
 		@JsonSubTypes.Type(value = SkActionReadPropertyFile.class, name = "READPROPERTYFILE") //
 })
 public abstract class SkAction {
 
 	private String name;
 	private String actionRef;
+	private SkActionContext actionContext = SkActionContext.NORMAL;
 
 	public abstract void execute(SkRuleRunner inRunner);
 
@@ -43,7 +45,11 @@ public abstract class SkAction {
 		actionRef = inActionRef;
 	}
 
+	public void setActionContext(final SkActionContext inActionContext) {
+		actionContext = inActionContext;
+	}
+
 	public SkActionContext getActionContext() {
-		return SkActionContext.NORMAL;
+		return actionContext;
 	}
 }

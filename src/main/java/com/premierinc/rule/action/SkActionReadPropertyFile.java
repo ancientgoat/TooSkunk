@@ -33,7 +33,7 @@ public class SkActionReadPropertyFile extends SkAction {
 			properties.stringPropertyNames()
 					.forEach(name -> {
 						String value = properties.getProperty(name);
-						SkGlobalContext.addValue(name, value);
+						SkGlobalContext.addValue(name.toUpperCase(), value);
 					});
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
