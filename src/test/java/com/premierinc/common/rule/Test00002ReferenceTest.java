@@ -27,7 +27,7 @@ public class Test00002ReferenceTest {
 	public static final String SECOND_ACTION_FILE_NAME = "Test_Actions_002_With_Macros.json";
 
 	/**
-	 * Can we read simple JSON without Exception?
+	 * Can we read a several rules simple JSON without Exception?
 	 */
 	@Test
 	public void testOutputJsonSimpleRuleTest() {
@@ -36,11 +36,10 @@ public class Test00002ReferenceTest {
 		System.out.println("-------------------- xJSON ---------------------");
 		System.out.println(json);
 		System.out.println("-------------------- xJSON ---------------------");
-		// rule.setValue();
 	}
 
 	/**
-	 * Three rule reference test.
+	 * Three rule reference test.  Just call the 3rd rule, and the other two are referenced.
 	 */
 	@Test
 	public void testRefThreeRuleTest() {
@@ -50,6 +49,8 @@ public class Test00002ReferenceTest {
 				.build();
 		SkRuleRunner runner = master.getRuleRunner();
 		try {
+			// First, force a fail due to missing macro value.  We are missing setting
+			//	of the macro 'NAME'
 			runner.setValue("THIS_MACRO_DOES_NOT_EXIST", "X");
 			runner.runRule(master.getRule("COKE_RULE_00003"));
 			Assert.fail("We should have thrown an error.");
@@ -65,7 +66,7 @@ public class Test00002ReferenceTest {
 	}
 
 	/**
-	 * Read in actions
+	 * Can we read in an Action file without Exception?
 	 */
 	@Test
 	public void testReadActionsTest() {
@@ -93,7 +94,7 @@ public class Test00002ReferenceTest {
 	}
 
 	/**
-	 * Read in actions - setValue with Three rule action-ref test.
+	 * Read in actions - setValue with Three rule action-ref test.  Just more actions.
 	 */
 	@Test
 	public void testMultiActionRefRuleRefTest() {
@@ -113,7 +114,7 @@ public class Test00002ReferenceTest {
 	}
 
 	/**
-	 * Read in actions - setValue with Three rule action-ref test.
+	 * Read in actions - setValue with Three rule action-ref test.  Just more actions.
 	 */
 	@Test
 	public void testMultiActionWithMacrosRefRuleRefTest() {

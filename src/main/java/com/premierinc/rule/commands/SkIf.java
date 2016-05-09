@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Representation of an 'if' condition
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkIf {
@@ -21,21 +21,29 @@ public class SkIf {
 
 	private String inputExpression;
 	private SkExpression skExpression;
-
 	private String ruleRef;
 
 	public SkIf() {
 	}
 
+	/**
+	 *
+	 */
 	public SkIf(@NotNull String inIfExpression) {
 		setExpression(inIfExpression);
 	}
 
+	/**
+	 *
+	 */
 	@JsonProperty("ruleref")
 	public void setRuleRef(String inRuleRef) {
 		ruleRef = inRuleRef;
 	}
 
+	/**
+	 *
+	 */
 	public String getRuleRef() {
 		return ruleRef;
 	}
@@ -73,6 +81,9 @@ public class SkIf {
 		}
 	}
 
+	/**
+	 * Run this 'if', or run another rule reference.
+	 */
 	public Boolean run(SkRuleRunner inRunner) {
 		Boolean returnValue = null;
 
@@ -90,23 +101,14 @@ public class SkIf {
 	 */
 	private Boolean runThis(SkRuleRunner inRunner) {
 
-		String warning = null;
-
 		Object objectAnswer = inRunner.getValue(this.skExpression);
 
 		if (objectAnswer instanceof Boolean) {
 			return (Boolean) objectAnswer;
-		} else {
-			warning = String.format("IF condition mast result in a Boolean, not a " + "%s\nOriginal: %s\nSpEL Exp: %s",
-					(null != objectAnswer ?
-							objectAnswer.getClass()
-									.getName() :
-							"null"), this.skExpression.getOriginalString(), this.skExpression.getExpressionString());
-
 		}
 
 		if (null == objectAnswer) {
-			// Maybe this is a rule reference
+			// Maybe this is a rule reference, and the author used 'if' instead of 'ifRef'.
 			try {
 				objectAnswer = inRunner.getRule(this.skExpression.getOriginalString())
 						.run(inRunner);
@@ -130,12 +132,14 @@ public class SkIf {
 			log.debug(String.format("IF Value : %s", objectAnswer.toString()));
 		}
 
-		throw new IllegalArgumentException(
+		String warning =
 				String.format("IF condition mast result in a Boolean, not a " + "%s\nOriginal: %s\nSpEL Exp: %s",
 						(null != objectAnswer ?
 								objectAnswer.getClass()
 										.getName() :
 								"null"), this.skExpression.getOriginalString(),
-						this.skExpression.getExpressionString()));
+						this.skExpression.getExpressionString());
+
+		throw new IllegalArgumentException(warning);
 	}
 }

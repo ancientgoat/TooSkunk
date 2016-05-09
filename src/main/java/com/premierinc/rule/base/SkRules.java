@@ -6,10 +6,10 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
- *
+ * Small shell around more than on rule.
  */
 @JsonRootName("rules")
-public class SkRules  {
+public class SkRules {
 
 	@JsonProperty("rule")
 	private List<SkRuleBase> ruleList = Lists.newArrayList();

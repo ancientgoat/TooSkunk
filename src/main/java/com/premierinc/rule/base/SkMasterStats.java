@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- *
+ * Hold a lot of maps of Rule Names, Action Names, and others.  Used in convience
+ * 	methods to find references and others things fast.
  */
 public class SkMasterStats {
 
@@ -38,6 +39,9 @@ public class SkMasterStats {
 	 */
 	private Map<String, List<SkIf>> macroIfMap = Maps.newHashMap();
 
+	/**
+	 * Map of Name/Action
+	 */
 	private Map<String, SkAction> actionNameMap = Maps.newHashMap();
 
 	/**

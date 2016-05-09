@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
- *
+ * Make a rest call and return some data - very crude.
  */
 public class SkActionRest extends SkAction {
 
@@ -29,11 +29,11 @@ public class SkActionRest extends SkAction {
 			log.debug(String.format("Before :\n%s", dumpToString()));
 		}
 
-		host = (String) SkGlobalContext.getValue(host, host);
-		port = (String) SkGlobalContext.getValue(port, port);
-		prefix = (String) SkGlobalContext.getValue(prefix, prefix);
-		tablename = (String) SkGlobalContext.getValue(tablename, tablename);
-		where = (String) SkGlobalContext.getValue(where, where);
+		host = (String) inRunner.getValue(host, host);
+		port = (String) inRunner.getValue(port, port);
+		prefix = (String) inRunner.getValue(prefix, prefix);
+		tablename = (String) inRunner.getValue(tablename, tablename);
+		where = (String) inRunner.getValue(where, where);
 
 		if (log.isDebugEnabled()) {
 			log.debug(String.format("After :\n%s", dumpToString()));

@@ -25,7 +25,10 @@ public class SkActionJmsProducer extends SkAction {
 		String newHost = (String) inRunner.getValue(this.host, this.host);
 		String newPort = (String) inRunner.getValue(this.port, this.port);
 		String newQueue = (String) inRunner.getValue(this.queue, this.queue);
-		String newMessage = (String) inRunner.getValue(this.message, this.message);
+		String msg = (String) inRunner.getValue(this.message, this.message);
+
+		// Does this have embedded macros in the format '${macro}'
+		String newMessage = inRunner.expandMacros(msg);
 
 		validate(newHost, newPort, newQueue, newMessage);
 

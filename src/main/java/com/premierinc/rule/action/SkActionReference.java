@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Different action - write to standard java logging.
+ * Different action - run a reference to an action.
  */
 public class SkActionReference extends SkAction {
 

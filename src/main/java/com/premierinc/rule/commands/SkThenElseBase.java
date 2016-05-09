@@ -11,7 +11,7 @@ import com.premierinc.rule.run.SkRuleRunner;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * ase class for a 'SkThen' and a 'SkElse', as they do the exact same thing.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkThenElseBase {
@@ -47,8 +47,7 @@ public class SkThenElseBase {
 	}
 
 	/**
-	 *
-	 * @param inRunner
+	 * Run this 'Then' or 'Else'.
 	 */
 	public void run(@NotNull SkRuleRunner inRunner) {
 		if (null != expressions) {

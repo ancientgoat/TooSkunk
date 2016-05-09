@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Holder and executor of the if/then/else sequence.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkCondition {
@@ -24,25 +24,40 @@ public class SkCondition {
 	@JsonProperty("else")
 	private SkElse skElse;
 
+	/**
+	 *
+	 */
 	public SkIf getSkIf() {
 		return skIf;
 	}
 
+	/**
+	 *
+	 */
 	public void setSkIf(@NotNull SkIf inSkIf) {
 		skIf = inSkIf;
 	}
 
+	/**
+	 * setter interacting with the json
+	 */
 	@JsonProperty("if")
 	public void setSkIf(@NotNull String inIfString) {
 		this.skIf = new SkIf(inIfString);
 	}
 
+	/**
+	 * getter interacting with the json
+	 */
 	@JsonProperty("if")
 	public String getIf() {
 		SkExpression skExpression = this.skIf.getSkExpression();
 		return (null != skExpression ? skExpression.getOriginalString() : null);
 	}
 
+	/**
+	 * Rule reference setter
+	 */
 	@JsonProperty("ifRef")
 	public void setIfRef(@NotNull String inIfRef) {
 		if (null != inIfRef) {
@@ -53,6 +68,9 @@ public class SkCondition {
 		}
 	}
 
+	/**
+	 * Rule reference getter
+	 */
 	@JsonProperty("ifRef")
 	public String getIfRef() {
 		return (null != this.skIf ? this.skIf.getRuleRef() : null);
@@ -75,7 +93,7 @@ public class SkCondition {
 	}
 
 	/**
-	 *
+	 * Run the if/then/else
 	 */
 	public Boolean run(SkRuleRunner inRunner) {
 		Boolean returnAnswer = null;

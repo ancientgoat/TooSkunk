@@ -36,7 +36,11 @@ public class SkActionLog extends SkAction {
 
 	@Override
 	public void run(SkRuleRunner inRunner) {
-		String newMessage = inRunner.expandMacros(this.message);
+
+		// Is this a macro?
+		String newMessage = (String) inRunner.getValue(this.message, this.message);
+		// Does this have embedded macros in the format '${macro}'
+		newMessage = inRunner.expandMacros(newMessage);
 
 		switch (logLevel) {
 		case ERROR:

@@ -16,7 +16,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * The first simple SkRule implementation.
  */
 @JsonRootName("rule")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,9 +32,6 @@ public class SkRuleBase implements SkRule {
 	private SkCondition condition;
 
 	private SkExpressions expressions;
-
-	//	@JsonIgnore
-	//	SkRuleRunner runner = new SkRuleRunner();
 
 	@JsonIgnore
 	private SkIf skIf;
@@ -110,15 +107,19 @@ public class SkRuleBase implements SkRule {
 
 	@Override
 	public Boolean run(final SkRuleRunner inRunner) {
+		// Every rule must have a condition, otherwise just use an SkAction.
 		if (null == this.condition) {
 			throw new IllegalArgumentException("condition seems to be missing?");
 		}
+		// Run any expressions, before the rule.
 		if (null != expressions) {
 			this.expressions.run(inRunner);
 		}
+		// Run any actions, before the rules.
 		if (null != this.actions) {
 			this.actions.run(inRunner);
 		}
+		// Finally run the if/then/else
 		return this.condition.run(inRunner);
 	}
 

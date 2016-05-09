@@ -7,7 +7,7 @@ import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
 
 /**
- *
+ * Holder for many SkExpression.
  */
 @JsonRootName("expressions")
 public class SkExpressions {

@@ -6,15 +6,16 @@ import com.premierinc.rule.action.enums.SkActionContext;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 /**
+ * TODO: Maybe I don't really need this, maybe SkRuleRunner can just interact with SkRuleMasterStats.
  *
+ * This class was to be a Rule helper, to make convience methods, and to separate
+ * 	some work away from SkRuleRunner.
  */
 public class SkRuleMaster {
 
 	private SkMasterStats stats;
-	private DoubleStream expressions;
 	private SkRuleRunner runner;
 
 	/**

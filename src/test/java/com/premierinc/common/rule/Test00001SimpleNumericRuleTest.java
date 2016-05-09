@@ -33,7 +33,7 @@ public class Test00001SimpleNumericRuleTest {
 	}
 
 	/**
-	 * Can we read simple JSON without Exception?
+	 * Can we read and run simple JSON without Exception?
 	 */
 	@Test
 	public void testOutputJsonSimpleRuleTest() {
@@ -48,7 +48,7 @@ public class Test00001SimpleNumericRuleTest {
 	}
 
 	/**
-	 * One rule fail .
+	 * Force a fail due to not setting a needed macro value.
 	 */
 	@Test
 	public void testSimpleOneRuleFailExecution() {
@@ -71,7 +71,7 @@ public class Test00001SimpleNumericRuleTest {
 	}
 
 	/**
-	 * One rule test.
+	 * Run the fail rule, but add the needed macro value through an Action.
 	 */
 	@Test
 	public void testSimpleOneRuleExecutionWithExternalDataTest() {
