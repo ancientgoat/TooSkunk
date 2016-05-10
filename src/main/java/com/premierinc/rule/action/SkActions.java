@@ -26,6 +26,17 @@ public class SkActions {
 	/**
 	 *
 	 */
+	@JsonProperty("expression")
+	public void addExpression(@NotNull SkExpression inExpression) {
+		if (null == this.expressions) {
+			this.expressions = new SkExpressions();
+		}
+		this.expressions.addExpression(inExpression);
+	}
+
+	/**
+	 *
+	 */
 	public List<SkAction> getActionList() {
 		return actionList;
 	}
@@ -40,25 +51,38 @@ public class SkActions {
 	/**
 	 *
 	 */
+	public void addActionList(@NotNull List<SkAction> inActionList) {
+		initList();
+		actionList.addAll(inActionList);
+	}
+
+	/**
+	 *
+	 */
 	public void addAction(@NotNull SkAction inAction) {
-		if (null == actionList) {
-			this.actionList = Lists.newArrayList();
-		}
+		initList();
 		this.actionList.add(inAction);
 	}
 
+	/**
+	 *
+	 */
+	private void initList() {
+		if (null == actionList) {
+			this.actionList = Lists.newArrayList();
+		}
+	}
+
+	/**
+	 *
+	 */
 	public SkExpressions getExpressions() {
 		return expressions;
 	}
 
-	@JsonProperty("expression")
-	public void addExpression(@NotNull SkExpression inExpression) {
-		if (null == this.expressions) {
-			this.expressions = new SkExpressions();
-		}
-		this.expressions.addExpression(inExpression);
-	}
-
+	/**
+	 *
+	 */
 	public void setExpressions(@NotNull SkExpressions inExpressions) {
 		expressions = inExpressions;
 	}

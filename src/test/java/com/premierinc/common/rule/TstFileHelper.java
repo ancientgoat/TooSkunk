@@ -1,7 +1,6 @@
 package com.premierinc.common.rule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.common.JsonMapperHelper;
 import java.io.File;
 import org.slf4j.Logger;
@@ -35,20 +34,19 @@ public class TstFileHelper {
 
 			// Now turn the bean to json and back to a second bean.
 			// This part is only for the tests.
-			// Add 'actions' as the root name.
+			// Add inRootName as the root name.
 			json = JsonMapperHelper.beanToJsonString(things, inRootName);
 
 			if (log.isInfoEnabled()) {
 				log.info(json);
 			}
-			System.out.println(json);
 
 			C things2 = (C) objectMapper.readValue(json, inClazz);
 			return things2;
 
 		} catch (Exception e) {
+			log.error(String.format("\n%s\n%s", e.toString(), json));
 			throw new IllegalArgumentException(json, e);
 		}
 	}
-
 }

@@ -3,10 +3,10 @@ package com.premierinc.rule.run;
 import com.google.common.collect.Maps;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.expression.SkExpression;
+import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.expression.Expression;
@@ -22,7 +22,7 @@ public class SkRuleContext {
 
 	private Logger log = LoggerFactory.getLogger(SkRuleContext.class);
 
-	private Map<String, Object> internalMap = Maps.newHashMap();
+	private Map<String, Object> internalMap = Collections.synchronizedMap(Maps.newHashMap());
 
 	private SpelParserConfiguration spelConfig;
 	private ExpressionParser parser;

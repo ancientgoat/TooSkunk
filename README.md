@@ -21,6 +21,6 @@ IF 'Rule Alpha'
 Order of execution when running 'Rule Beta'
  * Rule Alpha runs and outputs something.
  * Then depending on the true false status of 'Rule Alpha',
-    'Rule Beta' then outputs something.
+    'Rule Beta' outputs something.
 
 
