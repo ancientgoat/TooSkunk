@@ -1,0 +1,27 @@
+{
+  "rule": {
+	"name": "CUSTOM_ACTION_RULE_00001",
+	"description": "Whow, step back now and don't get hurt.",
+	"condition": {
+	  "if": "17 > 1.11 * 1 + 0.003",
+	  "then": {
+		"action": {
+		  "actiontype": "CUSTOM",
+		  "customname": "TEST_CUSTOM",
+		  "map": {
+			"CUSTOM_MESSAGE": "TRUE: This is a custom message."
+		  }
+		}
+	  },
+	  "else": {
+		"action": {
+		  "actiontype": "CUSTOM",
+		  "customname": "TEST_CUSTOM",
+		  "map": {
+			"CUSTOM_MESSAGE": "FALSE: This is a custom message."
+		  }
+		}
+	  }
+	}
+  }
+}

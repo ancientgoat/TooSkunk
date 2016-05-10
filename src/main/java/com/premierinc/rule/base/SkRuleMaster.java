@@ -38,7 +38,7 @@ public class SkRuleMaster {
 	/**
 	 *
 	 */
-	public List<SkRuleBase> getRuleList() {
+	public List<SkRule> getRuleList() {
 		return this.stats.getRuleList();
 	}
 
@@ -83,7 +83,7 @@ public class SkRuleMaster {
 		 /**
 		 *
 		 */
-		public Builder addRule(SkRuleBase inRule) {
+		public Builder addRule(SkRule inRule) {
 			this.statBuilder.addRule(inRule);
 			return this;
 		}

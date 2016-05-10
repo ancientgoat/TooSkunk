@@ -22,12 +22,12 @@ public class SkMasterStats {
 	/**
 	 * Map of RuleName/Rule
 	 */
-	private Map<String, SkRuleBase> ruleNameMap = Maps.newHashMap();
+	private Map<String, SkRule> ruleNameMap = Maps.newHashMap();
 
 	/**
 	 * Map of Macro/Rule
 	 */
-	private Map<String, List<SkRuleBase>> macroRuleMap = Maps.newHashMap();
+	private Map<String, List<SkRule>> macroRuleMap = Maps.newHashMap();
 
 	/**
 	 * Map of Rule/Macro
@@ -47,7 +47,7 @@ public class SkMasterStats {
 	/**
 	 * List of rules, Order matters.
 	 */
-	private List<SkRuleBase> ruleList = Lists.newArrayList();
+	private List<SkRule> ruleList = Lists.newArrayList();
 
 	/**
 	 * List of actions.
@@ -81,7 +81,7 @@ public class SkMasterStats {
 	 */
 	public SkRule getRule(String inRuleName) {
 		if (null != inRuleName) {
-			SkRuleBase rule = this.ruleNameMap.get(inRuleName);
+			SkRule rule = this.ruleNameMap.get(inRuleName);
 			if (null == rule) {
 				throw new SkRuleNotFoundException(String.format("Rule name '%s', not found.", inRuleName));
 			}
@@ -99,7 +99,7 @@ public class SkMasterStats {
 
 		// Rules
 		AtomicInteger index = new AtomicInteger(0);
-		for (final SkRuleBase rule : this.ruleList) {
+		for (final SkRule rule : this.ruleList) {
 			mapsFromRule(index, rule);
 		}
 
@@ -114,7 +114,7 @@ public class SkMasterStats {
 	/**
 	 *
 	 */
-	List<SkRuleBase> getRuleList() {
+	List<SkRule> getRuleList() {
 		return ruleList;
 	}
 
@@ -130,7 +130,7 @@ public class SkMasterStats {
 	 */
 	SkIf findIfFromReference(String inRuleName) {
 		if (null != inRuleName) {
-			SkRuleBase rule = this.ruleNameMap.get(inRuleName.toUpperCase());
+			SkRule rule = this.ruleNameMap.get(inRuleName.toUpperCase());
 			if (null != rule) {
 				return rule.getCondition()
 						.getSkIf();
@@ -142,7 +142,7 @@ public class SkMasterStats {
 	/**
 	 *
 	 */
-	private void mapsFromRule(final AtomicInteger inIndex, final SkRuleBase rule) {
+	private void mapsFromRule(final AtomicInteger inIndex, final SkRule rule) {
 
 		// Name/Rule Map
 		// Macro/Rule Map
@@ -156,7 +156,7 @@ public class SkMasterStats {
 	/**
 	 *
 	 */
-	private void mapsFromRuleIfs(final SkRuleBase rule, final String inName) {
+	private void mapsFromRuleIfs(final SkRule rule, final String inName) {
 		// Macro/Rule Map
 		// Rule/Macro Map
 		// Macro/SkIf Map
@@ -174,7 +174,7 @@ public class SkMasterStats {
 			for (String macro : macroList) {
 
 				// Macro/Rules Map
-				List<SkRuleBase> rules = this.macroRuleMap.get(macro);
+				List<SkRule> rules = this.macroRuleMap.get(macro);
 				if (null == rules) {
 					rules = Lists.newArrayList();
 				}
@@ -206,7 +206,7 @@ public class SkMasterStats {
 	 * @param inIndex
 	 * @return
 	 */
-	private String getRuleNameForMaps(final SkRuleBase inRule, AtomicInteger inIndex) {
+	private String getRuleNameForMaps(final SkRule inRule, AtomicInteger inIndex) {
 		String name = inRule.getName();
 		if (null == name || 0 == name.length()) {
 			int i = inIndex.incrementAndGet();
@@ -266,7 +266,7 @@ public class SkMasterStats {
 		 /**
 		 *
 		 */
-		public Builder addRule(SkRuleBase inRule) {
+		public Builder addRule(SkRule inRule) {
 			this.masterStats.ruleList.add(inRule);
 			return this;
 		}
