@@ -77,8 +77,8 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
-	public void runRule(SkRule inRule) {
-		inRule.run(this);
+	public Boolean runRule(SkRule inRule) {
+		return inRule.run(this);
 		//		List<SkCondition> conditionList = inRule.getConditionList();
 		//		runConditions(conditionList);
 	}
@@ -96,6 +96,15 @@ public class SkRuleRunner {
 	public void setValue(String inKey, Object inValue) {
 		if (null != inKey) {
 			this.ruleContext.setValue(inKey.toUpperCase(), inValue);
+		}
+	}
+
+	/**
+	 *
+	 */
+	public void setGlobalValue(String inKey, Object inValue) {
+		if (null != inKey) {
+			SkGlobalContext.setValue(inKey.toUpperCase(), inValue);
 		}
 	}
 

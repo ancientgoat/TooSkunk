@@ -67,7 +67,7 @@ public class SkExpressionFactory {
 				} else {
 
 					// Must be the end of a macro - insures next char is not a 'nonMacroString'
-					if (isNonMacro(inInputExpression, i)) {
+					if (isNonMacro(inInputExpression, i) || !SkChar.isMacro(macro)) {
 						// This - what we thought was a macro - is really a function.
 						sb.append(macro);
 						macro = "";
@@ -82,6 +82,7 @@ public class SkExpressionFactory {
 						macro = "";
 						haveMacro = false;
 					}
+					sb.append((char) c);
 				}
 			} else {
 				sb.append((char) c);

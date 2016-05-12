@@ -63,7 +63,7 @@ public class SkGlobalContext {
 	/**
 	 *
 	 */
-	public static void addValue(String inKey, Object inValue) {
+	public static void setValue(String inKey, Object inValue) {
 		globalMap.put(inKey, inValue);
 	}
 

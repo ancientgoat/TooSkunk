@@ -26,7 +26,6 @@ public class Test00003PropertyFileTest {
 	 */
 	@Test
 	public void testPropertyFileTest() {
-
 		SkActions actions = buildThings(PROPERTY_FILE_TEST_NAME, SkActions.class, "actions");
 		SkRuleMaster master = new SkRuleMaster.Builder().addActions(actions)
 				.build();

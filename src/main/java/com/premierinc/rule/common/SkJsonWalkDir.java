@@ -35,12 +35,27 @@ public class SkJsonWalkDir implements FileVisitor<Path>, SkJsonReader<Path> {
 	/**
 	 *
 	 */
+	public SkJsonWalkDir(@NotNull File inTopDir) {
+		initInstance(inTopDir, new SkJsonFilenameFilter() {
+		});
+	}
+
+	/**
+	 *
+	 */
 	public SkJsonWalkDir(@NotNull File inTopDir, @NotNull SkJsonFilenameFilter inFilenameFilter) {
+		initInstance(inTopDir, inFilenameFilter);
+	}
+
+	/**
+	 *
+	 */
+	private void initInstance(File inTopDir, SkJsonFilenameFilter inFilenameFilter) {
 		if (!inTopDir.exists()) {
 			throw new IllegalArgumentException(
 					String.format("The directory '%s' doesn't exist", inTopDir.getAbsolutePath()));
 		}
-		filenameFilter = inFilenameFilter;
+		this.filenameFilter = inFilenameFilter;
 		try {
 			Files.walkFileTree(Paths.get(inTopDir.getAbsolutePath()), this);
 		} catch (IOException e) {
