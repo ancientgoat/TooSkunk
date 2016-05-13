@@ -15,9 +15,9 @@ import static com.premierinc.common.rule.TstFileHelper.buildThings;
 /**
  *
  */
-public class Test00002ReferenceTest {
+public class Test_00002_ReferenceTest {
 
-	private Logger log = LoggerFactory.getLogger(Test00002ReferenceTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00002_ReferenceTest.class);
 
 	public static final String FIRST_REF_TEST_FILE_NAME = "StringReferenceRule_3_Parter.json";
 	public static final String SECOND_REF_TEST_FILE_NAME = "StringReferenceRule_4_WithOtherRefs.json";

@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Any custom Action must extend this class.
  */
-public class SkActionCustomHelper extends SkAction {
+public class SkActionCustomImpl extends SkAction {
 
 	private Map<String, Object> map = Maps.newHashMap();
 	private String customname;

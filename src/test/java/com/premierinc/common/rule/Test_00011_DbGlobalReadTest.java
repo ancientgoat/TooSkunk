@@ -14,17 +14,18 @@ import static com.premierinc.common.rule.TstFileHelper.buildThings;
 /**
  *
  */
-public class Test00004RestTest {
+public class Test_00011_DbGlobalReadTest {
 
-	private Logger log = LoggerFactory.getLogger(Test00004RestTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00011_DbGlobalReadTest.class);
 
-	public static final String REST_FILE_NAME = "Test_Actions_Rest_001.json";
+	public static final String REST_FILE_NAME = "Test_Actions_Rest_002.json";
 
 	/**
 	 * Three rule reference test.
 	 */
 	@Test
 	public void testRestSimpleTest() {
+
 		SkActions actions = buildThings(REST_FILE_NAME, SkActions.class, "actions");
 		List<SkAction> actionList = actions.getActionList();
 		SkRuleMaster master = new SkRuleMaster.Builder().addActions(actions)

@@ -14,9 +14,9 @@ import static com.premierinc.common.rule.TstFileHelper.buildThings;
 /**
  *
  */
-public class Test00005JmsSimpleTest {
+public class Test_00005_JmsSimpleTest {
 
-	private Logger log = LoggerFactory.getLogger(Test00005JmsSimpleTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00005_JmsSimpleTest.class);
 
 	public static final String JMS_FILE_NAME = "Test_Jms_001.json";
 

@@ -13,7 +13,7 @@
 		"port": "TOOREST.PORT",
 		"prefix": "TOOREST.PREFIX",
 		"tablename": "TEST_TEST_02",
-		"where": ""
+		"where": []
 	  }
 	]
   }

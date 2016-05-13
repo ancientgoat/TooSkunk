@@ -15,9 +15,9 @@ import static com.premierinc.common.rule.TstFileHelper.buildThings;
 /**
  *
  */
-public class Test00003PropertyFileTest {
+public class Test_00003_PropertyFileTest {
 
-	private Logger log = LoggerFactory.getLogger(Test00003PropertyFileTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00003_PropertyFileTest.class);
 
 	public static final String PROPERTY_FILE_TEST_NAME = "PropertyFile_Test.json";
 

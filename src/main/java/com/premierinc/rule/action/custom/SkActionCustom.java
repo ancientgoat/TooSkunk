@@ -1,6 +1,5 @@
 package com.premierinc.rule.action.custom;
 
-import com.google.common.collect.Maps;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.Map;
 

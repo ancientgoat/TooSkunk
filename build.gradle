@@ -8,6 +8,8 @@ repositories {
 }
 
 dependencies {
+    compile group: 'org.saul', name: 'one-call-saul', version: '1.1'
+
     compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.13.3'
     compile group: 'org.springframework', name: 'spring-expression', version: '4.2.5.RELEASE'
     compile group: 'org.springframework', name: 'spring-jms', version: '4.2.5.RELEASE'

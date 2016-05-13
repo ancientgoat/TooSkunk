@@ -1,15 +1,12 @@
 package com.premierinc.common.rule;
 
 import com.google.common.collect.Maps;
-import com.premierinc.rule.action.SkAction;
-import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.action.custom.SkActionCustom;
 import com.premierinc.rule.action.custom.SkActionCustomGlobal;
 import com.premierinc.rule.base.SkRule;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.run.SkRuleRunner;
-import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import org.junit.Test;
@@ -22,9 +19,9 @@ import static org.springframework.boot.SpringApplication.run;
 /**
  *
  */
-public class Test00010CustomActionTest {
+public class Test_00010_CustomActionTest {
 
-	private Logger log = LoggerFactory.getLogger(Test00010CustomActionTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00010_CustomActionTest.class);
 
 	public static final String CUSTOM_ACTION_FILE_NAME = "Test_Custom_Action_001.json";
 

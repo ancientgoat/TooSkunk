@@ -15,9 +15,9 @@ import static com.premierinc.common.rule.TstFileHelper.buildThings;
 /**
  *
  */
-public class Test00001SimpleNumericRuleTest {
+public class Test_00001_SimpleNumericRuleTest {
 
-	private Logger log = LoggerFactory.getLogger(Test00001SimpleNumericRuleTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00001_SimpleNumericRuleTest.class);
 
 	public static final String ONE_RULE_FILE_NAME = "NumericOneRuleTest.json";
 	public static final String ONE_RULE_FAIL_FILE_NAME = "NumericOneRuleTestFail.json";
