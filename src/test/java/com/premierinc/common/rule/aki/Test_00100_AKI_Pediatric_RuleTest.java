@@ -52,9 +52,11 @@ public class Test_00100_AKI_Pediatric_RuleTest {
 		runPediatricNoAlert(rules, valueMap);
 		runPediatricStage3_Elevated(rules, valueMap);
 		runPediatricStage3_300_Increase(rules, valueMap);
+		runPediatricStage3_Low_EGFR(rules, valueMap);
 		runPediatricStage2_200_Increase(rules, valueMap);
 		runPediatricStage1_RapidRise(rules, valueMap);
 		runPediatricStage1_50_Increase(rules, valueMap);
+
 	}
 
 	/**
@@ -102,8 +104,9 @@ public class Test_00100_AKI_Pediatric_RuleTest {
 	 */
 	private void runPediatricStage2_200_Increase(final SkRules inRules, final Map<String, Object> inValueMap) {
 		//Expecting something like - "Stage 2 AKI : based on 200% increase above reference SCr"
-		inValueMap.put("SCR.N.SAVED", 2.5);
+		inValueMap.put("SCR.N.SAVED", 2.9);
 		inValueMap.put("SCR.N-1.48HOURS.FROM.SCR.N.SAVED", false);
+		inValueMap.put("PATIENT.HEIGHT.CM", 180);
 
 		SkBreadcrumbs breadcrumbs = runTest(inRules, inValueMap);
 		SkBreadcrumb lastBreadcrumb = breadcrumbs.getLastCrumb();
@@ -121,10 +124,9 @@ public class Test_00100_AKI_Pediatric_RuleTest {
 	 */
 	private void runPediatricStage3_300_Increase(final SkRules inRules, final Map<String, Object> inValueMap) {
 		//Expecting something like - "Stage 3 AKI : based on 300% increase above reference SCr"
-		inValueMap.put("SCR.N.SAVED", 3.9);
+		inValueMap.put("SCR.N.SAVED", 3.999);
 		inValueMap.put("SCR.N-1.48HOURS.FROM.SCR.N.SAVED", false);
 
-		inValueMap.put("PATIENT.AGE", 21);
 		inValueMap.put("PATIENT.BLACK", false);
 		inValueMap.put("PATIENT.FEMALE", false);
 
@@ -158,6 +160,29 @@ public class Test_00100_AKI_Pediatric_RuleTest {
 		Assert.assertTrue("should have an alert stage 3", upperDesc.contains("STAGE 3"));
 		Assert.assertTrue("should have an alert stage 3 elevated", upperDesc.contains("ELEVATED"));
 	}
+
+	/**
+	 *
+	 */
+	private void runPediatricStage3_Low_EGFR(final SkRules inRules, final Map<String, Object> inValueMap) {
+		//Expecting something like - "Stage 3 AKI : based on low eGFR"
+		inValueMap.put("SCR.N.SAVED", 3.5);
+		inValueMap.put("SCR.N-1.48HOURS.FROM.SCR.N.SAVED", false);
+
+		inValueMap.put("PATIENT.BLACK", false);
+		inValueMap.put("PATIENT.FEMALE", false);
+
+		SkBreadcrumbs breadcrumbs = runTest(inRules, inValueMap);
+		SkBreadcrumb lastBreadcrumb = breadcrumbs.getLastCrumb();
+		Assert.assertTrue("should have an alert", SkBreadcrumbType.BC_ALERT == lastBreadcrumb.getBreadcrumbType());
+
+		String upperDesc = lastBreadcrumb.getDescription()
+				.toUpperCase();
+
+		Assert.assertTrue("should have an alert stage 3", upperDesc.contains("STAGE 3"));
+		Assert.assertTrue("should have an alert stage 3 Low eGFR", upperDesc.contains("LOW EGFR"));
+	}
+
 
 	/**
 	 *
