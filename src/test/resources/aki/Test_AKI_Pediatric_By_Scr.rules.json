@@ -4,7 +4,8 @@
 	  {
 		"name": "AKI_RULE_PEDIATRIC_BY_SCR",
 		"expressions": [
-		  "['eGFR.PEDIATRIC'] = ( 0413 * ['PATIENT.HEIGHT_CM'] ) / ['SCR'] "
+		  "['SCR.N'] = ['SCR.N.SAVED']",
+		  "['eGFR.PEDIATRIC'] = ( 0.413 * ['PATIENT.HEIGHT.CM'] ) / ['SCR.N'] "
 		],
 		"condition": {
 		  "if": "['SCR.N-N-1.48.HOURS>=0.3'] || ['SCR.N-GE-1.5']",

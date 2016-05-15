@@ -1,8 +1,6 @@
 package com.premierinc.common.rule.aki;
 
 import com.google.common.collect.Maps;
-import com.premierinc.common.rule.aki.beans.DumbChart;
-import com.premierinc.common.rule.aki.beans.DumbPatient;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.base.SkRules;
 import com.premierinc.rule.breadcrumbs.SkBreadcrumb;
@@ -21,18 +19,11 @@ import static com.premierinc.common.rule.TstFileHelper.buildThingsFromDirectory;
 /**
  *
  */
-public class Test_00100_AKI_RuleTest {
+public class Test_00100_AKI_Adult_RuleTest {
 
-	private Logger log = LoggerFactory.getLogger(Test_00100_AKI_RuleTest.class);
+	private Logger log = LoggerFactory.getLogger(Test_00100_AKI_Adult_RuleTest.class);
 
-	public static final String AKI_ONE = "aki/Test_AKI_PArt_001.rules.json";
 	public static final String AKI_DIR = "/aki/";
-
-	//	{
-	//		"actiontype": "READPROPERTYFILE_LOCAL",
-	//			"context": "NOW",
-	//			"filename": "['AKI_PROPERTY_FILE']"
-	//	},
 
 	/**
 	 * Can we read and run simple JSON without Exception?
@@ -215,14 +206,5 @@ public class Test_00100_AKI_RuleTest {
 
 		runner.runRuleRef("AKI_RULE_START_EVALUATION");
 		return runner.getBreadcrumbs();
-	}
-
-	/**
-	 *
-	 */
-	public DumbChart getDumbChart() {
-		DumbChart dumbChart = new DumbChart();
-		dumbChart.setPatient(new DumbPatient());
-		return dumbChart;
 	}
 }
