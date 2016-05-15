@@ -1,5 +1,6 @@
 package com.premierinc.rule.breadcrumbs;
 
+import com.premierinc.rule.expression.SkExpression;
 import org.saul.gradle.util.ExceptionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ public class SkBreadcrumb {
 	private String error;
 	private Exception exception;
 	private SkBreadcrumbType breadcrumbType;
+	private SkExpression expression;
 
 	public SkBreadcrumb(final String inDescription, final Object inResult, SkBreadcrumbType inBreadcrumbType) {
 		this.description = inDescription;
@@ -24,10 +26,36 @@ public class SkBreadcrumb {
 		logThis();
 	}
 
-	public SkBreadcrumb(final String inError, Exception inException, SkBreadcrumbType inBreadcrumbType) {
+	public SkBreadcrumb(String inDesc, SkExpression inExpression, final Object inResult,
+			SkBreadcrumbType inBreadcrumbType) {
+		this.description = inDesc;
+		this.expression = inExpression;
+		this.result = inResult;
+		this.breadcrumbType = inBreadcrumbType;
+		logThis();
+	}
+
+	public SkBreadcrumb(final SkExpression inExpression, final Object inResult, SkBreadcrumbType inBreadcrumbType) {
+		this.expression = inExpression;
+		this.result = inResult;
+		this.breadcrumbType = inBreadcrumbType;
+		logThis();
+	}
+
+	public SkBreadcrumb(String inError, Exception inException, SkBreadcrumbType inBreadcrumbType) {
 		this.error = inError;
 		this.exception = inException;
 		this.breadcrumbType = inBreadcrumbType;
+		logThis();
+	}
+
+	public SkBreadcrumb(SkExpression inExpression, Exception inException, SkBreadcrumbType inBreadcrumbType) {
+		this.exception = inException;
+		this.breadcrumbType = inBreadcrumbType;
+		this.expression = inExpression;
+		if (null != this.expression) {
+			this.error = this.expression.toString();
+		}
 		logThis();
 	}
 
@@ -62,33 +90,38 @@ public class SkBreadcrumb {
 		return ExceptionHelper.toString(exception);
 	}
 
+	public SkExpression getExpression() {
+		return expression;
+	}
+
+	public SkBreadcrumb setExpression(final SkExpression inExpression) {
+		expression = inExpression;
+		return this;
+	}
+
 	private void logThis() {
 		switch (this.breadcrumbType) {
+		case BC_ALERT:
 		case BC_FATAL:
 		case BC_ERROR:
-			if (log.isErrorEnabled()) {
+			if (log.isErrorEnabled())
 				log.error(getLogMessage());
-			}
 			break;
 		case BC_WARN:
-			if (log.isWarnEnabled()) {
+			if (log.isWarnEnabled())
 				log.warn(getLogMessage());
-			}
 			break;
 		case BC_INFO:
-			if (log.isWarnEnabled()) {
+			if (log.isWarnEnabled())
 				log.warn(getLogMessage());
-			}
 			break;
 		case BC_DEBUG:
-			if (log.isDebugEnabled()) {
+			if (log.isDebugEnabled())
 				log.debug(getLogMessage());
-			}
 			break;
 		case BC_TRACE:
-			if (log.isTraceEnabled()) {
+			if (log.isTraceEnabled())
 				log.trace(getLogMessage());
-			}
 			break;
 
 		default:
@@ -97,18 +130,17 @@ public class SkBreadcrumb {
 		}
 	}
 
-	/*8
-
+	/**
+	 *
 	 */
 	public String getLogMessage() {
-		// String description;
-		// Object result;
-		// String error;
-		// Exception exception;
 
 		StringBuilder sb = new StringBuilder();
 
 		if (null != this.description || null != this.result || null != this.error || null != this.exception) {
+			if (null != this.expression) {
+				sb.append(String.format("%s : ", this.expression.getExpressionString()));
+			}
 			if (null != this.description) {
 				sb.append(String.format("Description : %s", this.description));
 			}

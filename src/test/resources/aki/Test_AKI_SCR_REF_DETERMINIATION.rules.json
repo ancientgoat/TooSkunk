@@ -44,8 +44,8 @@
 		  "['SCR.N'] = ['SCR.N.SAVED']",
 		  "['SCR.N-1'] = ['SCR.N-1.SAVED']",
 		  "['SCR.N-1.48HOURS.FROM.SCR.N'] = ['SCR.N-1.48HOURS.FROM.SCR.N.SAVED']",
-		  "['SCR.N-N-1.48.HOURS'] = ( 0.3 <= ['SCR.N'] - ['SCR.n-1'] && ['SCR.N-1.48HOURS.FROM.SCR.N'] )",
-		  "['SCR.N-GE-1.5'] = ( ['SCR.N'] >= 1.5 * ['SCR.REF'] )"
+		  "['SCR.N-N-1.48.HOURS>=0.3'] = ( 0.3 <= ['SCR.N'] - ['SCR.N-1'] && ['SCR.N-1.48HOURS.FROM.SCR.N'] )",
+		  "['SCR.N-GE-1.5'] = ( 0 < ['SCR.N'] && 0 < ['SCR.REF'] && ['SCR.N'] >= 1.5 * ['SCR.REF'] )"
 		]
 	  }
 	]

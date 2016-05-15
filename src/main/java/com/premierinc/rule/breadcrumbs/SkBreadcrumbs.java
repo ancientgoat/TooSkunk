@@ -1,6 +1,7 @@
 package com.premierinc.rule.breadcrumbs;
 
 import com.google.common.collect.Lists;
+import com.premierinc.rule.expression.SkExpression;
 import java.util.List;
 
 import static com.premierinc.rule.breadcrumbs.SkBreadcrumbType.BC_ALERT;
@@ -24,74 +25,210 @@ public class SkBreadcrumbs {
 		return crumbs;
 	}
 
-	public void addCrumb(final SkBreadcrumb inCrumb) {
+	public SkBreadcrumb addCrumb(final SkBreadcrumb inCrumb) {
 		crumbs.add(inCrumb);
 		this.lastCrumb = inCrumb;
+		return inCrumb;
 	}
 
-	public void addAlertCrumb(final String inError, Exception inException) {
+	public SkBreadcrumb addAlertCrumb(final SkExpression inExpression, Exception inException) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inException, BC_ALERT);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addFatalCrumb(final SkExpression inExpression, Exception inException) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inException, BC_FATAL);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addErrorCrumb(final SkExpression inExpression, Exception inException) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inException, BC_ERROR);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addWarnCrumb(final SkExpression inExpression, Exception inException) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inException, BC_WARN);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addDebugCrumb(final SkExpression inExpression, Exception inException) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inException, BC_DEBUG);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addTraceCrumb(final SkExpression inExpression, Exception inException) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inException, BC_TRACE);
+		addCrumb(crumb);
+		return crumb;
+	}
+	/////////////////////////////////////////////////////////////////////////////////
+
+	public SkBreadcrumb addAlertCrumb(final String inError, Exception inException) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inError, inException, BC_ALERT);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addFatalCrumb(final String inError, Exception inException) {
+	public SkBreadcrumb addFatalCrumb(final String inError, Exception inException) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inError, inException, BC_FATAL);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addErrorCrumb(final String inError, Exception inException) {
+	public SkBreadcrumb addErrorCrumb(final String inError, Exception inException) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inError, inException, BC_ERROR);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addWarnCrumb(final String inError, Exception inException) {
+	public SkBreadcrumb addWarnCrumb(final String inError, Exception inException) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inError, inException, BC_WARN);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addDebugCrumb(final String inError, Exception inException) {
+	public SkBreadcrumb addDebugCrumb(final String inError, Exception inException) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inError, inException, BC_DEBUG);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addTraceCrumb(final String inError, Exception inException) {
+	public SkBreadcrumb addTraceCrumb(final String inError, Exception inException) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inError, inException, BC_TRACE);
 		addCrumb(crumb);
+		return crumb;
 	}
+	/////////////////////////////////////////////////////////////////////////////////
 
-	public void addAlertCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addAlertCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_ALERT);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addFatalCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addFatalCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_FATAL);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addErrorCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addErrorCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_ERROR);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addWarnCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addWarnCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_WARN);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addInfoCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addInfoCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_INFO);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addDebugCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addDebugCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_DEBUG);
 		addCrumb(crumb);
+		return crumb;
 	}
 
-	public void addTraceCrumb(final String inDescription, Object inResult) {
+	public SkBreadcrumb addTraceCrumb(final String inDescription, Object inResult) {
 		SkBreadcrumb crumb = new SkBreadcrumb(inDescription, inResult, BC_TRACE);
 		addCrumb(crumb);
+		return crumb;
+	}
+	/////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_ALERT);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addFatalCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_FATAL);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addErrorCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_ERROR);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addWarnCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_WARN);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addInfoCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_INFO);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addDebugCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_DEBUG);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addTraceCrumb(final SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inExpression, inResult, BC_TRACE);
+		addCrumb(crumb);
+		return crumb;
+	}
+	/////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_ALERT);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addFatalCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_FATAL);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addErrorCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_ERROR);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addWarnCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_WARN);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addInfoCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_INFO);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addDebugCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_DEBUG);
+		addCrumb(crumb);
+		return crumb;
+	}
+
+	public SkBreadcrumb addTraceCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		SkBreadcrumb crumb = new SkBreadcrumb(inDesc, inExpression, inResult, BC_TRACE);
+		addCrumb(crumb);
+		return crumb;
 	}
 
 	public Boolean getLastBooleanResult() {
@@ -99,5 +236,9 @@ public class SkBreadcrumbs {
 			return this.lastCrumb.getBooleanResult();
 		}
 		return null;
+	}
+
+	public SkBreadcrumb getLastCrumb() {
+		return lastCrumb;
 	}
 }

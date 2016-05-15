@@ -105,7 +105,6 @@ public class SkIf {
 
 		if (objectAnswer instanceof Boolean) {
 			Boolean answer = (Boolean) objectAnswer;
-			inRunner.addDebugCrumb(this.ruleRef, answer);
 			return answer;
 		}
 
@@ -144,7 +143,8 @@ public class SkIf {
 								"null"), this.skExpression.getOriginalString(),
 						this.skExpression.getExpressionString());
 
-		inRunner.addErrorCrumb(warning, null);
-		throw new IllegalArgumentException(warning);
+		IllegalArgumentException e = new IllegalArgumentException(warning);
+		inRunner.addErrorCrumb(this.skExpression, e);
+		throw e;
 	}
 }

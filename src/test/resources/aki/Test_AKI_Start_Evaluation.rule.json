@@ -4,38 +4,32 @@
 	  {
 		"name": "AKI_RULE_START_EVALUATION",
 		"description": "You asked for it.",
-		"actions": {
-		  "action": [
-			{
-			  "actiontype": "READPROPERTYFILE_LOCAL",
-			  "context": "NOW",
-			  "filename": "['AKI_PROPERTY_FILE']"
-			},
-			{
-			  "actiontype": "DATA",
-			  "context": "NOW",
+		"condition": {
+		  "if": "null != ['PATIENT.AGE'] && null != ['SCR.NEW.RESULT']",
+		  "then": {
+			"ruleref": "AKI_SCR.REF_DETERMINATION",
+			"rule": {
 			  "expressions": [
-				"['RACE_FACTOR'] = (['PATENT.BLACK'] ? 1.212 : 1 )",
+				"['RACE_FACTOR'] = (['PATIENT.BLACK'] ? 1.212 : 1 )",
 				"['SEX_FACTOR'] = (['PATIENT.FEMALE'] ? 0.742 : 1 )",
 				"['AGE_FACTOR'] = 175 * (T(Math)).pow(['PATIENT.AGE'], -0.203)",
 				"['GFR'] = 75",
 				"['DENOMINATOR'] = (['AGE_FACTOR'] * ['RACE_FACTOR'] * ['SEX_FACTOR'])",
-				"['SCR.REF'] = new java.math.BigDecimal(T(Math).pow(['GFR'] / ['DENOMINATOR'], 1 / -1.154)).setScale(2, T(java.math.BigDecimal).ROUND_HALF_UP )"
-			  ]
-			}
-		  ]
-		},
-		"condition": {
-		  "if": "null != ['SCR.NEW.RESULT']",
-		  "then": {
-			"ruleref": "AKI_SCR.REF_DETERMINATION",
-			"condition": {
-			  "if": "18 <= ['PATIENT.AGE'}",
-			  "then": {
-				"ruleref": "AKI_RULE_ADULT_BY_SCR"
-			  },
-			  "else": {
-				"ruleref": "AKI_RULE_PEDIATRIC_BY_SCR"
+				"['TEMP.POW'] = 1 / -1.154",
+				"['TEMP.GFR.DEM'] = ['GFR'] / ['DENOMINATOR']",
+				"['TEMP.POW.2'] = T(Math).pow( ['TEMP.GFR.DEM'], ['TEMP.POW'] )",
+				"['TEMP.BD'] = new java.math.BigDecimal( ['TEMP.POW.2'] )",
+				"['SCR.REF'] = ['TEMP.BD'].setScale(2, T(java.math.BigDecimal).ROUND_HALF_UP )",
+				"['SCR.N-GE-1.5'] = ( 0 < ['SCR.N'] && 0 < ['SCR.REF'] && ['SCR.N'] >= 1.5 * ['SCR.REF'] )"
+			  ],
+			  "condition": {
+				"if": "18 <= ['PATIENT.AGE']",
+				"then": {
+				  "ruleref": "AKI_RULE_ADULT_BY_SCR"
+				},
+				"else": {
+				  "ruleref": "AKI_RULE_PEDIATRIC_BY_SCR"
+				}
 			  }
 			}
 		  }

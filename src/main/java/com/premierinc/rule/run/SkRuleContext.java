@@ -130,7 +130,7 @@ public class SkRuleContext {
 			throw new IllegalArgumentException("ExpressionString can not be null, or of length zero (0).");
 		}
 		try {
-			Object answer = runExpression(expressionString);
+			Object answer = runExpression(inExpression);
 			this.runner.addDebugCrumb(
 					String.format("%s => %s", expressionString, findExpressionMacrosWithValues(expressionString),
 							answer));
@@ -160,14 +160,16 @@ public class SkRuleContext {
 		if (1 < sb.length()) {
 			throw new IllegalArgumentException(sb.toString());
 		}
-		return runExpression(inExpression.getExpressionString());
+		return runExpression(inExpression);
 	}
 
 	/**
 	 *
 	 */
-	private Object runExpression(String inExpressionString) {
-		Expression exp = this.parser.parseExpression(inExpressionString);
+	private Object runExpression(SkExpression inExpression) {
+		String expressionString = inExpression.getExpressionString();
+		this.runner.addDebugCrumb("Before", inExpression, findExpressionMacrosWithValues(expressionString));
+		Expression exp = this.parser.parseExpression(expressionString);
 
 		// Use a combined Global and local map.
 		Map<String, Object> globalMap = SkGlobalContext.getGlobalMap();
@@ -175,16 +177,13 @@ public class SkRuleContext {
 		combinedMap.putAll(globalMap);
 		combinedMap.putAll(internalMap);
 
-		this.runner.addDebugCrumb(String.format("Before: %s => %s", inExpressionString,
-				findExpressionMacrosWithValues(inExpressionString)));
 		// Run the expression
-		Object value = null;
+		Object answer = null;
 		try {
-			value = exp.getValue(combinedMap);
+			answer = exp.getValue(combinedMap);
 		} catch (Exception e) {
-			IllegalArgumentException e2 = new IllegalArgumentException(String.format("\"%s\"", inExpressionString), e);
-			this.runner.addFatalCrumb(String.format("Error: %s\n%s : %s", e.toString(), inExpressionString,
-					findExpressionMacrosWithValues(inExpressionString)), e2);
+			IllegalArgumentException e2 = new IllegalArgumentException(String.format("\"%s\"", expressionString), e);
+			this.runner.addFatalCrumb(inExpression, e2);
 			throw e2;
 		}
 		// Move all objects that belong in the local map, back to the local map.
@@ -203,8 +202,9 @@ public class SkRuleContext {
 						globalMap.put(k, combinedMap.get(k));
 					}
 				});
-		this.runner.addDebugCrumb(String.format("After: => %s", findExpressionMacrosWithValues(inExpressionString)));
-		return value;
+		String msg = String.format("After: %s", findExpressionMacrosWithValues(expressionString));
+		this.runner.addDebugCrumb(msg, inExpression, answer);
+		return answer;
 	}
 
 	/**

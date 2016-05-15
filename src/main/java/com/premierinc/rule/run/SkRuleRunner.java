@@ -4,9 +4,9 @@ import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.base.SkRule;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
+import com.premierinc.rule.breadcrumbs.SkBreadcrumb;
 import com.premierinc.rule.breadcrumbs.SkBreadcrumbs;
 import com.premierinc.rule.expression.SkExpression;
-import java.lang.reflect.Type;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,83 +195,173 @@ public class SkRuleRunner {
 	/**
 	 *
 	 */
-	public void addAlertCrumb(final String inError, Exception inException) {
-		this.breadcrumbs.addAlertCrumb(inError, inException);
+	//////////////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(final String inError, Exception inException) {
+		return this.breadcrumbs.addAlertCrumb(inError, inException);
 	}
 
-	public void addFatalCrumb(final String inError, Exception inException) {
-		this.breadcrumbs.addFatalCrumb(inError, inException);
+	public SkBreadcrumb addFatalCrumb(final String inError, Exception inException) {
+		return this.breadcrumbs.addFatalCrumb(inError, inException);
 	}
 
-	public void addErrorCrumb(final String inError, Exception inException) {
-		this.breadcrumbs.addErrorCrumb(inError, inException);
+	public SkBreadcrumb addErrorCrumb(final String inError, Exception inException) {
+		return this.breadcrumbs.addErrorCrumb(inError, inException);
 	}
 
-	public void addWarnCrumb(final String inError, Exception inException) {
-		this.breadcrumbs.addWarnCrumb(inError, inException);
+	public SkBreadcrumb addWarnCrumb(final String inError, Exception inException) {
+		return this.breadcrumbs.addWarnCrumb(inError, inException);
 	}
 
-	public void addDebugCrumb(final String inError, Exception inException) {
-		this.breadcrumbs.addDebugCrumb(inError, inException);
+	public SkBreadcrumb addDebugCrumb(final String inError, Exception inException) {
+		return this.breadcrumbs.addDebugCrumb(inError, inException);
 	}
 
-	public void addTraceCrumb(final String inError, Exception inException) {
-		this.breadcrumbs.addTraceCrumb(inError, inException);
+	public SkBreadcrumb addTraceCrumb(final String inError, Exception inException) {
+		return this.breadcrumbs.addTraceCrumb(inError, inException);
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(SkExpression inExpression, Exception inException) {
+		return this.breadcrumbs.addAlertCrumb(inExpression, inException);
 	}
 
-	public void addAlertCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addAlertCrumb(inDescription, inResult);
+	public SkBreadcrumb addFatalCrumb(SkExpression inExpression, Exception inException) {
+		return this.breadcrumbs.addFatalCrumb(inExpression, inException);
 	}
 
-	public void addFatalCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addFatalCrumb(inDescription, inResult);
+	public SkBreadcrumb addErrorCrumb(SkExpression inExpression, Exception inException) {
+		return this.breadcrumbs.addErrorCrumb(inExpression, inException);
 	}
 
-	public void addErrorCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addErrorCrumb(inDescription, inResult);
+	public SkBreadcrumb addWarnCrumb(SkExpression inExpression, Exception inException) {
+		return this.breadcrumbs.addWarnCrumb(inExpression, inException);
 	}
 
-	public void addWarnCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addWarnCrumb(inDescription, inResult);
+	public SkBreadcrumb addDebugCrumb(SkExpression inExpression, Exception inException) {
+		return this.breadcrumbs.addDebugCrumb(inExpression, inException);
 	}
 
-	public void addInfoCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addInfoCrumb(inDescription, inResult);
+	public SkBreadcrumb addTraceCrumb(SkExpression inExpression, Exception inException) {
+		return this.breadcrumbs.addTraceCrumb(inExpression, inException);
 	}
 
-	public void addDebugCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addDebugCrumb(inDescription, inResult);
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addAlertCrumb(inDescription, inResult);
 	}
 
-	public void addTraceCrumb(final String inDescription, Object inResult) {
-		this.breadcrumbs.addTraceCrumb(inDescription, inResult);
+	public SkBreadcrumb addFatalCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addFatalCrumb(inDescription, inResult);
 	}
 
-	public void addAlertCrumb(final String inDescription) {
-		this.breadcrumbs.addAlertCrumb(inDescription, (Object) null);
+	public SkBreadcrumb addErrorCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addErrorCrumb(inDescription, inResult);
 	}
 
-	public void addFatalCrumb(final String inDescription) {
-		this.breadcrumbs.addFatalCrumb(inDescription, (Object) null);
+	public SkBreadcrumb addWarnCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addWarnCrumb(inDescription, inResult);
 	}
 
-	public void addErrorCrumb(final String inDescription) {
-		this.breadcrumbs.addErrorCrumb(inDescription, (Object) null);
+	public SkBreadcrumb addInfoCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addInfoCrumb(inDescription, inResult);
 	}
 
-	public void addWarnCrumb(final String inDescription) {
-		this.breadcrumbs.addWarnCrumb(inDescription, (Object) null);
+	public SkBreadcrumb addDebugCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addDebugCrumb(inDescription, inResult);
 	}
 
-	public void addInfoCrumb(final String inDescription) {
-		this.breadcrumbs.addInfoCrumb(inDescription, (Object) null);
+	public SkBreadcrumb addTraceCrumb(final String inDescription, Object inResult) {
+		return this.breadcrumbs.addTraceCrumb(inDescription, inResult);
 	}
 
-	public void addDebugCrumb(final String inDescription) {
-		this.breadcrumbs.addDebugCrumb(inDescription, (Object) null);
+	//////////////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(final String inDescription) {
+		return this.breadcrumbs.addAlertCrumb(inDescription, (Object) null);
 	}
 
-	public void addTraceCrumb(final String inDescription) {
-		this.breadcrumbs.addTraceCrumb(inDescription, (Object) null);
+	public SkBreadcrumb addFatalCrumb(final String inDescription) {
+		return this.breadcrumbs.addFatalCrumb(inDescription, (Object) null);
+	}
+
+	public SkBreadcrumb addErrorCrumb(final String inDescription) {
+		return this.breadcrumbs.addErrorCrumb(inDescription, (Object) null);
+	}
+
+	public SkBreadcrumb addWarnCrumb(final String inDescription) {
+		return this.breadcrumbs.addWarnCrumb(inDescription, (Object) null);
+	}
+
+	public SkBreadcrumb addInfoCrumb(final String inDescription) {
+		return this.breadcrumbs.addInfoCrumb(inDescription, (Object) null);
+	}
+
+	public SkBreadcrumb addDebugCrumb(final String inDescription) {
+		return this.breadcrumbs.addDebugCrumb(inDescription, (Object) null);
+	}
+
+	public SkBreadcrumb addTraceCrumb(final String inDescription) {
+		return this.breadcrumbs.addTraceCrumb(inDescription, (Object) null);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addAlertCrumb(inExpression, (Object) null);
+	}
+
+	public SkBreadcrumb addFatalCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addFatalCrumb(inExpression, (Object) null);
+	}
+
+	public SkBreadcrumb addErrorCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addErrorCrumb(inExpression, (Object) null);
+	}
+
+	public SkBreadcrumb addWarnCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addWarnCrumb(inExpression, (Object) null);
+	}
+
+	public SkBreadcrumb addInfoCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addInfoCrumb(inExpression, (Object) null);
+	}
+
+	public SkBreadcrumb addDebugCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addDebugCrumb(inExpression, (Object) null);
+	}
+
+	public SkBreadcrumb addTraceCrumb(String inDesc, SkExpression inExpression) {
+		return this.breadcrumbs.addTraceCrumb(inExpression, (Object) null);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	public SkBreadcrumb addAlertCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addAlertCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumb addFatalCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addFatalCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumb addErrorCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addErrorCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumb addWarnCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addWarnCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumb addInfoCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addInfoCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumb addDebugCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addDebugCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumb addTraceCrumb(String inDesc, SkExpression inExpression, Object inResult) {
+		return this.breadcrumbs.addTraceCrumb(inDesc, inExpression, inResult);
+	}
+
+	public SkBreadcrumbs getBreadcrumbs() {
+		return breadcrumbs;
 	}
 }

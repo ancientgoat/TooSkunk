@@ -7,10 +7,10 @@
 		  "['eGFR.PEDIATRIC'] = ( 0413 * ['PATIENT.HEIGHT_CM'] ) / ['SCR'] "
 		],
 		"condition": {
-		  "if": "['SCR.N-N-1.48.HOURS'] || ['SCR.N-GE-1.5']",
+		  "if": "['SCR.N-N-1.48.HOURS>=0.3'] || ['SCR.N-GE-1.5']",
 		  "then": {
 			"condition": {
-			  "if": "4.0 <= [SCR.N']",
+			  "if": "4.0 <= ['SCR.N']",
 			  "then": {
 				"action": {
 				  "actiontype": "AKI",
@@ -19,7 +19,7 @@
 			  },
 			  "else": {
 				"condition": {
-				  "if": "['SCR.N'] >= 3 * ['SCR.REF'']",
+				  "if": "['SCR.N'] >= 3 * ['SCR.REF']",
 				  "then": {
 					"action": {
 					  "actiontype": "AKI",
@@ -58,7 +58,7 @@
 		  },
 		  "else": {
 			"condition": {
-			  "if": "['SCR.N-N-1.48.HOURS']",
+			  "if": "['SCR.N-N-1.48.HOURS>=0.3']",
 			  "then": {
 				"action": {
 				  "actiontype": "AKI",

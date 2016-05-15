@@ -89,10 +89,18 @@ public class SkExpression {
 	 *
 	 */
 	public String dumpToString() {
-		return new StringBuilder()//
-				.append("\n")
-				.append(String.format("originalString   : %s \n", originalString))
-				.append(String.format("expressionString : %s \n", expressionString))
-				.toString();
+
+		if (null != originalString && null != expressionString && originalString.equals(expressionString)) {
+			return new StringBuilder()//
+					.append("\n")
+					.append(String.format("expressionString : %s \n", expressionString))
+					.toString();
+		} else {
+			return new StringBuilder()//
+					.append("\n")
+					.append(String.format("originalString   : %s \n", originalString))
+					.append(String.format("expressionString : %s \n", expressionString))
+					.toString();
+		}
 	}
 }
