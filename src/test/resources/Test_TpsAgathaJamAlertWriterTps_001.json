@@ -5,7 +5,7 @@
 	"actions": {
 	  "action": [
 		{
-		  "actiontype": "READPROPERTYFILE",
+		  "actiontype": "READPROPERTYFILE_GLOBAL",
 		  "filename": "skunk.test.001.properties"
 		}
 	  ]

@@ -13,6 +13,7 @@ import com.premierinc.rule.run.SkRuleRunner;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actiontype")
 @JsonSubTypes({//
+		@JsonSubTypes.Type(value = SkActionAki.class, name = "AKI"),
 		@JsonSubTypes.Type(value = SkActionCustomImpl.class, name = "CUSTOM"),
 		@JsonSubTypes.Type(value = SkActionData.class, name = "DATA"),
 		@JsonSubTypes.Type(value = SkActionJmsProducer.class, name = "JMSPRODUCER"),
@@ -22,7 +23,8 @@ import com.premierinc.rule.run.SkRuleRunner;
 		@JsonSubTypes.Type(value = SkActionReference.class, name = "REF"),
 		@JsonSubTypes.Type(value = SkActionRest.class, name = "REST"),
 		@JsonSubTypes.Type(value = SkActionDbGlobalRead.class, name = "GLOBALREST"),
-		@JsonSubTypes.Type(value = SkActionReadPropertyFile.class, name = "READPROPERTYFILE") //
+		@JsonSubTypes.Type(value = SkActionReadPropertyFileLocal.class, name = "READPROPERTYFILE_LOCAL"),
+		@JsonSubTypes.Type(value = SkActionReadPropertyFileGlobal.class, name = "READPROPERTYFILE_GLOBAL") //
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class SkAction {

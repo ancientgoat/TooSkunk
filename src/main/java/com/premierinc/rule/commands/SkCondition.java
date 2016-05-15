@@ -24,6 +24,9 @@ public class SkCondition {
 	@JsonProperty("else")
 	private SkElse skElse;
 
+	@JsonProperty("finally")
+	private SkElse skFinally;
+
 	/**
 	 *
 	 */
@@ -58,7 +61,7 @@ public class SkCondition {
 	/**
 	 * Rule reference setter
 	 */
-	@JsonProperty("ifRef")
+	@JsonProperty("ruleref")
 	public void setIfRef(@NotNull String inIfRef) {
 		if (null != inIfRef) {
 			if (null == this.skIf) {
@@ -71,7 +74,7 @@ public class SkCondition {
 	/**
 	 * Rule reference getter
 	 */
-	@JsonProperty("ifRef")
+	@JsonProperty("ruleref")
 	public String getIfRef() {
 		return (null != this.skIf ? this.skIf.getRuleRef() : null);
 	}
@@ -92,6 +95,14 @@ public class SkCondition {
 		skElse = inSkElse;
 	}
 
+	public SkElse getSkFinally() {
+		return skFinally;
+	}
+
+	public void setSkFinally(final SkElse inSkFinally) {
+		skFinally = inSkFinally;
+	}
+
 	/**
 	 * Run the if/then/else
 	 */
@@ -108,6 +119,9 @@ public class SkCondition {
 					this.skElse.run(inRunner);
 				}
 			}
+		}
+		if (null != this.skFinally) {
+			this.skFinally.run(inRunner);
 		}
 		return returnAnswer;
 	}

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.base.SkRuleBase;
-import com.premierinc.rule.expression.SkExpression;
 import com.premierinc.rule.expression.SkExpressions;
 import com.premierinc.rule.run.SkRuleRunner;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -22,11 +22,38 @@ public class SkThenElseBase {
 	@JsonProperty("actions")
 	private SkActions actions = new SkActions();
 
+	@JsonProperty("postactions")
+	private SkActions postActions = new SkActions();
+
+	@JsonProperty("condition")
+	private SkCondition condition = null;
+
 	@JsonProperty("rule")
 	private SkRuleBase rule = null;
 
+	private String ruleRef;
+
+	/**
+	 *
+	 */
+	@JsonProperty("ruleref")
+	public void setRuleRef(String inRuleRef) {
+		ruleRef = inRuleRef;
+	}
+
+	/**
+	 *
+	 */
+	public String getRuleRef() {
+		return ruleRef;
+	}
+
 	public SkActions getActions() {
 		return actions;
+	}
+
+	public void setPostActions(final SkActions inPostActions) {
+		postActions = inPostActions;
 	}
 
 	public void setActions(@NotNull SkActions inActions) {
@@ -38,12 +65,46 @@ public class SkThenElseBase {
 		this.actions.addAction(inAction);
 	}
 
-	@JsonProperty("expression")
-	public void addExpression(@NotNull SkExpression inExpression) {
-		if (null == this.expressions) {
-			this.expressions = new SkExpressions();
+	@JsonProperty("postaction")
+	public void setPostAction(@NotNull SkAction inPostAction) {
+		this.actions.addPostAction(inPostAction);
+	}
+
+	/**
+	 *
+	 */
+	@JsonProperty("expressions")
+	public void setExpressionList(List<String> inExpressionList) {
+		if (null != inExpressionList) {
+			this.expressions = new SkExpressions().addExpressions(inExpressionList);
 		}
-		this.expressions.addExpression(inExpression);
+	}
+
+	public void setCondition(final SkCondition inCondition) {
+		condition = inCondition;
+	}
+
+	public void setRule(final SkRuleBase inRule) {
+		rule = inRule;
+	}
+
+	/**
+	 *
+	 */
+	@JsonProperty("expressions")
+	public List<String> getExpressionList() {
+		if (null != expressions) {
+			return expressions.getExpressions();
+		}
+		return null;
+	}
+
+	public SkCondition getCondition() {
+		return condition;
+	}
+
+	public SkRuleBase getRule() {
+		return rule;
 	}
 
 	/**
@@ -56,8 +117,17 @@ public class SkThenElseBase {
 		if (null != actions) {
 			this.actions.run(inRunner);
 		}
+		if (null != ruleRef) {
+			inRunner.runRuleRef(this.ruleRef);
+		}
 		if (null != this.rule) {
-			inRunner.runRule(this.rule);
+			this.rule.run(inRunner);
+		}
+		if (null != this.condition) {
+			this.condition.run(inRunner);
+		}
+		if (null != postActions) {
+			this.postActions.run(inRunner);
 		}
 	}
 }

@@ -38,69 +38,86 @@ public class SkExpressionFactory {
 		String macro = "";
 		List<String> macroList = Lists.newArrayList();
 
-		// Old style for loops have their uses.
-		for (int i = 0; i < inInputExpression.length(); i++) {
+		String spelExpressionString = inInputExpression;
 
-			char c = inInputExpression.charAt(i);
-
-			if (!haveMacro) {
-				if (SkChar.isAlpha(c)) {
-					haveMacro = true;
-				}
-			}
-
-			if (haveMacro) {
-				if (isBadMacroChar(c)) {
-					sb.append(macro);
-					macro = "";
-					haveMacro = false;
-				}
-			}
-
-			if (isQuote(c)) {
-				haveQuote = !haveQuote;
-			}
-
-			if (haveMacro && !haveQuote) {
-				if (SkChar.isMacro(c)) {
-					macro += (char) c;
-				} else {
-
-					// Must be the end of a macro - insures next char is not a 'nonMacroString'
-					if (isNonMacro(inInputExpression, i) || !SkChar.isMacro(macro)) {
-						// This - what we thought was a macro - is really a function.
-						sb.append(macro);
-						macro = "";
-						haveMacro = false;
-					} else {
-						// We now assume this is a Macro
-						if (!macro.isEmpty()) {
-							macro = macro.toUpperCase();
-							sb.append(String.format("['%s'] ", macro));
-						}
-						macroList.add(macro);
-						macro = "";
-						haveMacro = false;
-					}
-					sb.append((char) c);
-				}
-			} else {
-				sb.append((char) c);
-			}
+		if (!spelExpressionString.startsWith("//")) {
+			// do convert
+			//~~  Commented out for now :
+			//~~ spelExpressionString = convertExpression(inInputExpression, sb, haveMacro, haveQuote, macro,  macroList);
+		} else {
+			// do NOT convert
 		}
-
-		if (haveMacro && 0 < macro.length()) {
-			macro = macro.toUpperCase();
-			sb.append(String.format("['%s'] ", macro));
-		}
-
-		String spelExpressionString = sb.toString();
 
 		if (log.isTraceEnabled()) {
 			log.trace(String.format("Parsing Expression:\nOriginal: %s\nSpEL Exp: %s", inInputExpression,
 					spelExpressionString));
 		}
 		return new SkExpression(macroList, inInputExpression, spelExpressionString);
+	}
+
+	/**
+	 * Saved - but not used.
+	 */
+	private static String convertExpression(final String inInputExpression, final StringBuilder inSb,
+			boolean inHaveMacro, boolean inHaveQuote, String inMacro, final List<String> inMacroList) {
+
+		// Old style for loops have their uses.
+		for (int i = 0; i < inInputExpression.length(); i++) {
+
+			char c = inInputExpression.charAt(i);
+
+			if (!inHaveMacro) {
+				if (SkChar.isAlpha(c)) {
+					inHaveMacro = true;
+				}
+			}
+
+			if (inHaveMacro) {
+				if (isBadMacroChar(c)) {
+					inSb.append(inMacro);
+					inMacro = "";
+					inHaveMacro = false;
+				}
+			}
+
+			if (isQuote(c)) {
+				inHaveQuote = !inHaveQuote;
+			}
+
+			if (inHaveMacro && !inHaveQuote) {
+				if (SkChar.isMacro(c)) {
+					inMacro += (char) c;
+				} else {
+
+					// Must be the end of a macro - insures next char is not a 'nonMacroString'
+					if (isNonMacro(inInputExpression, i) || !SkChar.isMacro(inMacro)) {
+						// This - what we thought was a macro - is really a function.
+						inSb.append(inMacro);
+						inMacro = "";
+						inHaveMacro = false;
+					} else {
+						// We now assume this is a Macro
+						if (!inMacro.isEmpty()) {
+							inMacro = inMacro.toUpperCase();
+							inSb.append(String.format("['%s'] ", inMacro));
+						}
+						inMacroList.add(inMacro);
+						inMacro = "";
+						inHaveMacro = false;
+					}
+					inSb.append((char) c);
+				}
+			} else {
+				inSb.append((char) c);
+			}
+		}
+
+		if (inHaveMacro && 0 < inMacro.length()) {
+			inMacro = inMacro.toUpperCase();
+			inSb.append(String.format("['%s'] ", inMacro));
+		}
+
+		return inSb.toString();
 	}
 
 	/**

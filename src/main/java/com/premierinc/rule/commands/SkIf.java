@@ -88,8 +88,8 @@ public class SkIf {
 		Boolean returnValue = null;
 
 		if (null != ruleRef) {
-			returnValue = inRunner.getRule(this.ruleRef)
-					.run(inRunner);
+			returnValue = inRunner.runRuleRef(this.ruleRef);
+			inRunner.addDebugCrumb(this.ruleRef, returnValue);
 		} else {
 			returnValue = runThis(inRunner);
 		}
@@ -104,21 +104,24 @@ public class SkIf {
 		Object objectAnswer = inRunner.getValue(this.skExpression);
 
 		if (objectAnswer instanceof Boolean) {
-			return (Boolean) objectAnswer;
+			Boolean answer = (Boolean) objectAnswer;
+			inRunner.addDebugCrumb(this.ruleRef, answer);
+			return answer;
 		}
 
 		if (null == objectAnswer) {
-			// Maybe this is a rule reference, and the author used 'if' instead of 'ifRef'.
+			// Maybe this is a rule reference, and the author used 'if' instead of 'ruleref'.
 			try {
 				objectAnswer = inRunner.getRule(this.skExpression.getOriginalString())
 						.run(inRunner);
 
 				if (objectAnswer instanceof Boolean) {
-					// Fix the rule for the author, it is not an 'if', it is an 'ifRef'.
+					// Fix the rule for the author, it is not an 'if', it is an 'ruleref'.
 					this.ruleRef = this.skExpression.getOriginalString();
 					this.inputExpression = null;
 					this.skExpression = null;
-					return (Boolean) objectAnswer;
+					Boolean answer = (Boolean) objectAnswer;
+					inRunner.addDebugCrumb(this.ruleRef, answer);
 				}
 			} catch (SkRuleNotFoundException e) {
 				// Will fall to exception below
@@ -126,6 +129,7 @@ public class SkIf {
 			}
 		}
 
+		// Only the error path found below
 		if (log.isDebugEnabled() && null != objectAnswer) {
 			log.debug(String.format("IF Class : %s", objectAnswer.getClass()
 					.getName()));
@@ -140,6 +144,7 @@ public class SkIf {
 								"null"), this.skExpression.getOriginalString(),
 						this.skExpression.getExpressionString());
 
+		inRunner.addErrorCrumb(warning, null);
 		throw new IllegalArgumentException(warning);
 	}
 }

@@ -20,6 +20,9 @@ public class SkActions {
 	@JsonProperty("action")
 	private List<SkAction> actionList;
 
+	@JsonProperty("postaction")
+	private List<SkAction> postActionList;
+
 	@JsonProperty("expressions")
 	private SkExpressions expressions;
 
@@ -44,6 +47,13 @@ public class SkActions {
 	/**
 	 *
 	 */
+	public List<SkAction> getPostActionList() {
+		return postActionList;
+	}
+
+	/**
+	 *
+	 */
 	public void setActionList(@NotNull List<SkAction> inActionList) {
 		actionList = inActionList;
 	}
@@ -51,9 +61,8 @@ public class SkActions {
 	/**
 	 *
 	 */
-	public void addActionList(@NotNull List<SkAction> inActionList) {
-		initList();
-		actionList.addAll(inActionList);
+	public void setPostActionList(@NotNull List<SkAction> inPostActionList) {
+		postActionList = inPostActionList;
 	}
 
 	/**
@@ -67,9 +76,26 @@ public class SkActions {
 	/**
 	 *
 	 */
+	public void addPostAction(@NotNull SkAction inPostAction) {
+		initPostList();
+		this.postActionList.add(inPostAction);
+	}
+
+	/**
+	 *
+	 */
 	private void initList() {
 		if (null == actionList) {
 			this.actionList = Lists.newArrayList();
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void initPostList() {
+		if (null == postActionList) {
+			this.postActionList = Lists.newArrayList();
 		}
 	}
 

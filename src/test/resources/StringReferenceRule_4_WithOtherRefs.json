@@ -35,7 +35,7 @@
 		  "then": {
 			"rule": {
 			  "condition": {
-				"ifRef": "COKE_RULE_00002",
+				"ruleref": "COKE_RULE_00002",
 				"then": {
 				  "action": {
 					"actiontype": "REF",

@@ -2,7 +2,7 @@
   "actions": {
 	"action": [
 	  {
-		"actiontype": "READPROPERTYFILE",
+		"actiontype": "READPROPERTYFILE_GLOBAL",
 		"context": "NOW",
 		"filename": "skunk.properties"
 	  },

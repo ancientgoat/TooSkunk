@@ -11,7 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 /**
  * Read a property file into the GLOBAL Context.
  */
-public class SkActionReadPropertyFile extends SkAction {
+public class SkActionReadPropertyFileGlobal extends SkAction {
 
 	private String filename;
 

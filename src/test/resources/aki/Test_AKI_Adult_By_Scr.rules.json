@@ -1,0 +1,75 @@
+{
+  "rules": {
+	"rule": [
+	  {
+		"name": "AKI_RULE_ADULT_BY_SCR",
+		"condition": {
+		  "if": "['SCR.N-N-1.48.HOURS'] || ['SCR.N-GE-1.5']",
+		  "then": {
+			"condition": {
+			  "if": "4.0 <= [SCR.N']",
+			  "then": {
+				"action": {
+				  "actiontype": "AKI",
+				  "message": "Stage 3 AKI : based on elevated SCr"
+				}
+			  },
+			  "else": {
+				"ruleref": "AKI_RULE_ADULT_BY_SCR-PART-2"
+			  }
+			}
+		  },
+		  "else": {
+			"condition": {
+			  "if": "['SCR.N'] >= 3 * ['SCR.REF'']",
+			  "then": {
+				"action": {
+				  "actiontype": "AKI",
+				  "message": "Stage 3 AKI : based on 300% increase above reference SCr"
+				}
+			  },
+			  "else": {
+				"ruleref": "AKI_RULE_ADULT_BY_SCR-PART-2"
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"name": "AKI_RULE_ADULT_BY_SCR-PART-2",
+		"condition": {
+		  "if": "['SCR.N'] >= 2 * ['SCR.REF']",
+		  "then": {
+			"action": {
+			  "actiontype": "AKI",
+			  "message": "Stage 2 AKI : based on 200% increase above reference SCr"
+			}
+		  },
+		  "else": {
+			"condition": {
+			  "if": "['SCR.N-N-1.48.HOURS']",
+			  "then": {
+				"action": {
+				  "actiontype": "AKI",
+				  "message": "Stage 1 AKI : based on rapid rise in SCr"
+				}
+			  },
+			  "else": {
+				"condition": {
+				  "if": "['SCR.N-GE-1.5']",
+				  "then": {
+					"action": {
+					  "actiontype": "AKI",
+					  "message": "Stage 1 AKI : based on 50% increase above reference SCr"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}
+

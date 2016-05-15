@@ -1,10 +1,14 @@
 package com.premierinc.rule.run;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.expression.SkExpression;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
@@ -101,7 +105,12 @@ public class SkRuleContext {
 	 *
 	 */
 	Object getValue(String inKey) {
-		return internalMap.get(inKey);
+		if (null != inKey) {
+			String s = inKey.replace("['", "")
+					.replace("']", "");
+			return internalMap.get(s);
+		}
+		return null;
 	}
 
 	/**
@@ -117,12 +126,18 @@ public class SkRuleContext {
 	public Object setValue(final SkExpression inExpression) {
 		String expressionString = inExpression.getExpressionString();
 		if (null == expressionString || 0 == expressionString.length()) {
+			this.runner.addErrorCrumb(String.format("%s : Missing Expression", expressionString));
 			throw new IllegalArgumentException("ExpressionString can not be null, or of length zero (0).");
 		}
-		if (log.isDebugEnabled()) {
-			log.debug(expressionString);
+		try {
+			Object answer = runExpression(expressionString);
+			this.runner.addDebugCrumb(
+					String.format("%s => %s", expressionString, findExpressionMacrosWithValues(expressionString),
+							answer));
+			return answer;
+		} catch (Exception e) {
+			throw new IllegalArgumentException(inExpression.dumpToString(), e);
 		}
-		return runExpression(expressionString);
 	}
 
 	/**
@@ -159,8 +174,19 @@ public class SkRuleContext {
 		Map<String, Object> combinedMap = Maps.newHashMap();
 		combinedMap.putAll(globalMap);
 		combinedMap.putAll(internalMap);
+
+		this.runner.addDebugCrumb(String.format("Before: %s => %s", inExpressionString,
+				findExpressionMacrosWithValues(inExpressionString)));
 		// Run the expression
-		Object value = exp.getValue(combinedMap);
+		Object value = null;
+		try {
+			value = exp.getValue(combinedMap);
+		} catch (Exception e) {
+			IllegalArgumentException e2 = new IllegalArgumentException(String.format("\"%s\"", inExpressionString), e);
+			this.runner.addFatalCrumb(String.format("Error: %s\n%s : %s", e.toString(), inExpressionString,
+					findExpressionMacrosWithValues(inExpressionString)), e2);
+			throw e2;
+		}
 		// Move all objects that belong in the local map, back to the local map.
 		combinedMap.keySet()
 				.forEach(k -> {
@@ -177,6 +203,7 @@ public class SkRuleContext {
 						globalMap.put(k, combinedMap.get(k));
 					}
 				});
+		this.runner.addDebugCrumb(String.format("After: => %s", findExpressionMacrosWithValues(inExpressionString)));
 		return value;
 	}
 
@@ -224,5 +251,60 @@ public class SkRuleContext {
 		}
 
 		return sb.toString();
+	}
+
+	/**
+	 *
+	 */
+	public String findExpressionMacrosWithValues(final String inMessage) {
+
+		Set<String> set = findExpressionMacros(inMessage);
+		List<String> returnList = Lists.newArrayList();
+
+		set.forEach(lst -> {
+			returnList.add(String.format("%s = %s", lst, getValue(lst)));
+		});
+
+		return String.join(", ", returnList);
+	}
+
+	/**
+	 *
+	 */
+	public Set<String> findExpressionMacros(final String inMessage) {
+
+		Set<String> expressionMacros = Sets.newHashSet();
+
+		if (null == inMessage) {
+			return expressionMacros;
+		}
+		Pattern pattern = Pattern.compile("\\[\\'.*?\\'\\]");
+
+		Matcher matcher = pattern.matcher(inMessage);
+
+		StringBuilder sb = new StringBuilder();
+
+		boolean b = matcher.find();
+		int prevEnd = 0;
+
+		if (log.isTraceEnabled()) {
+			log.trace("Replacing macros (RM)");
+		}
+
+		while (b) {
+			int start = matcher.start();
+			int end = matcher.end();
+			String macro = inMessage.substring(start + 2, end - 2);
+
+			// Find macro value and replace it into the string
+			macro = macro.toUpperCase();
+			expressionMacros.add(macro);
+
+			if (log.isTraceEnabled()) {
+				log.trace("RM: Start/End : " + start + " / " + end + " : " + macro + "'");
+			}
+			b = matcher.find();
+		}
+		return expressionMacros;
 	}
 }

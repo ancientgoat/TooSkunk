@@ -47,6 +47,14 @@ public class SkRules {
 	/**
 	 *
 	 */
+	public void addRules(final SkRules inRules) {
+		initList();
+		ruleList.addAll(inRules.getRuleList());
+	}
+
+	/**
+	 *
+	 */
 	private void initList() {
 		if (null == this.ruleList) {
 			ruleList = Lists.newArrayList();

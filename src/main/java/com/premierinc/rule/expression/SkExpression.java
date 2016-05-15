@@ -71,7 +71,8 @@ public class SkExpression {
 	 * This method actually will set a value in the local context, based on this expression.
 	 */
 	public void setValue(@NotNull SkRuleRunner inRunner) {
-		inRunner.setValue(this);
+		if (!this.expressionString.startsWith("//"))
+			inRunner.setValue(this);
 	}
 
 	/**
@@ -79,6 +80,19 @@ public class SkExpression {
 	 * Most often used to get a true or false for an 'if' condition.
 	 */
 	public Object getValue(@NotNull SkRuleRunner inRunner) {
-		return inRunner.getValue(this);
+		if (!this.expressionString.startsWith("//"))
+			return inRunner.getValue(this);
+		return true;
+	}
+
+	/**
+	 *
+	 */
+	public String dumpToString() {
+		return new StringBuilder()//
+				.append("\n")
+				.append(String.format("originalString   : %s \n", originalString))
+				.append(String.format("expressionString : %s \n", expressionString))
+				.toString();
 	}
 }

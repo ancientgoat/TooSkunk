@@ -4,7 +4,9 @@ import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.base.SkRule;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
+import com.premierinc.rule.breadcrumbs.SkBreadcrumbs;
 import com.premierinc.rule.expression.SkExpression;
+import java.lang.reflect.Type;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ public class SkRuleRunner {
 
 	private SkRuleContext ruleContext;
 	private SkRuleMaster ruleMaster;
+	private SkBreadcrumbs breadcrumbs = new SkBreadcrumbs();
 
 	/**
 	 *
@@ -174,7 +177,101 @@ public class SkRuleRunner {
 		action.run(this);
 	}
 
+	/**
+	 *
+	 */
 	public String expandMacros(final String inMessage) {
 		return this.ruleContext.expandMacros(inMessage);
+	}
+
+	/**
+	 *
+	 */
+	public Boolean runRuleRef(final String inRuleRef) {
+		SkRule rule = this.ruleMaster.getRule(inRuleRef);
+		return runRule(rule);
+	}
+
+	/**
+	 *
+	 */
+	public void addAlertCrumb(final String inError, Exception inException) {
+		this.breadcrumbs.addAlertCrumb(inError, inException);
+	}
+
+	public void addFatalCrumb(final String inError, Exception inException) {
+		this.breadcrumbs.addFatalCrumb(inError, inException);
+	}
+
+	public void addErrorCrumb(final String inError, Exception inException) {
+		this.breadcrumbs.addErrorCrumb(inError, inException);
+	}
+
+	public void addWarnCrumb(final String inError, Exception inException) {
+		this.breadcrumbs.addWarnCrumb(inError, inException);
+	}
+
+	public void addDebugCrumb(final String inError, Exception inException) {
+		this.breadcrumbs.addDebugCrumb(inError, inException);
+	}
+
+	public void addTraceCrumb(final String inError, Exception inException) {
+		this.breadcrumbs.addTraceCrumb(inError, inException);
+	}
+
+	public void addAlertCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addAlertCrumb(inDescription, inResult);
+	}
+
+	public void addFatalCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addFatalCrumb(inDescription, inResult);
+	}
+
+	public void addErrorCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addErrorCrumb(inDescription, inResult);
+	}
+
+	public void addWarnCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addWarnCrumb(inDescription, inResult);
+	}
+
+	public void addInfoCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addInfoCrumb(inDescription, inResult);
+	}
+
+	public void addDebugCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addDebugCrumb(inDescription, inResult);
+	}
+
+	public void addTraceCrumb(final String inDescription, Object inResult) {
+		this.breadcrumbs.addTraceCrumb(inDescription, inResult);
+	}
+
+	public void addAlertCrumb(final String inDescription) {
+		this.breadcrumbs.addAlertCrumb(inDescription, (Object) null);
+	}
+
+	public void addFatalCrumb(final String inDescription) {
+		this.breadcrumbs.addFatalCrumb(inDescription, (Object) null);
+	}
+
+	public void addErrorCrumb(final String inDescription) {
+		this.breadcrumbs.addErrorCrumb(inDescription, (Object) null);
+	}
+
+	public void addWarnCrumb(final String inDescription) {
+		this.breadcrumbs.addWarnCrumb(inDescription, (Object) null);
+	}
+
+	public void addInfoCrumb(final String inDescription) {
+		this.breadcrumbs.addInfoCrumb(inDescription, (Object) null);
+	}
+
+	public void addDebugCrumb(final String inDescription) {
+		this.breadcrumbs.addDebugCrumb(inDescription, (Object) null);
+	}
+
+	public void addTraceCrumb(final String inDescription) {
+		this.breadcrumbs.addTraceCrumb(inDescription, (Object) null);
 	}
 }

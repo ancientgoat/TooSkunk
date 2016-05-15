@@ -2,13 +2,10 @@ package com.premierinc.rule.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
 import java.io.StringWriter;
 import javax.annotation.PostConstruct;
 
@@ -79,6 +76,10 @@ public class JsonMapperHelper {
 		return prettyPrint(inObject, jsonMapper());
 	}
 
+	public static String beanToJsonPretty(final Object inObject, String inRootName) {
+		return prettyPrint(inObject, jsonMapper(), inRootName);
+	}
+
 	public static String beanToJson(final Object inObject) {
 		return prettyPrint(inObject, jsonMapper());
 	}
@@ -87,10 +88,26 @@ public class JsonMapperHelper {
 	 * Pretty Print (output) the input Object, using the input Jackson ObjectMapper.
 	 */
 	public static String prettyPrint(Object inObject, ObjectMapper inObjectMapper) {
+		return prettyPrint(inObject, inObjectMapper, null);
+	}
+
+	/**
+	 * Pretty Print (output) the input Object, using the input Jackson ObjectMapper.
+	 */
+	public static String prettyPrint(Object inObject, ObjectMapper inObjectMapper, String inRootName) {
 		try {
-			return inObjectMapper.writerWithDefaultPrettyPrinter()
-					.writeValueAsString(inObject);
-		} catch (JsonProcessingException e) {
+			//return inObjectMapper.writerWithDefaultPrettyPrinter()
+			//		.writeValueAsString(inObject);
+
+			StringWriter w = new StringWriter();
+			ObjectWriter writer = inObjectMapper.writerWithDefaultPrettyPrinter();
+			if (null != inRootName) {
+				writer = writer.withRootName(inRootName);
+			}
+			writer.writeValue(w, inObject);
+			return w.toString();
+
+		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
 	}

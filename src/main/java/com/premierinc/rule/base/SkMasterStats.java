@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
+import com.premierinc.rule.commands.SkCondition;
 import com.premierinc.rule.commands.SkIf;
 import com.premierinc.rule.exception.SkRuleNotFoundException;
 import com.premierinc.rule.expression.SkExpression;
@@ -160,42 +161,44 @@ public class SkMasterStats {
 		// Macro/Rule Map
 		// Rule/Macro Map
 		// Macro/SkIf Map
-		SkIf skIf = rule.getCondition()
-				.getSkIf();
+		SkCondition condition = rule.getCondition();
+		SkIf skIf = null;
 
-		if (null == skIf) {
-			throw new IllegalArgumentException(String.format("Rule '%s' is missing an IF statement.", rule.getName()));
+		if (null != condition) {
+			skIf = condition.getSkIf();
 		}
 
-		SkExpression exp = skIf.getSkExpression();
+		if (null != skIf) {
+			SkExpression exp = skIf.getSkExpression();
 
-		if (null != exp) {
-			List<String> macroList = exp.getMacroList();
-			for (String macro : macroList) {
+			if (null != exp) {
+				List<String> macroList = exp.getMacroList();
+				for (String macro : macroList) {
 
-				// Macro/Rules Map
-				List<SkRule> rules = this.macroRuleMap.get(macro);
-				if (null == rules) {
-					rules = Lists.newArrayList();
+					// Macro/Rules Map
+					List<SkRule> rules = this.macroRuleMap.get(macro);
+					if (null == rules) {
+						rules = Lists.newArrayList();
+					}
+					rules.add(rule);
+					this.macroRuleMap.put(macro, rules);
+
+					// Rule/Macros Map
+					List<String> macros = this.ruleMacroMap.get(inName);
+					if (null == macros) {
+						macros = Lists.newArrayList();
+					}
+					macros.add(macro);
+					this.ruleMacroMap.put(inName, macros);
+
+					// Macro/SkIf Map
+					List<SkIf> listIfs = this.macroIfMap.get(macro);
+					if (null == listIfs) {
+						listIfs = Lists.newArrayList();
+					}
+					listIfs.add(skIf);
+					this.macroIfMap.put(macro, listIfs);
 				}
-				rules.add(rule);
-				this.macroRuleMap.put(macro, rules);
-
-				// Rule/Macros Map
-				List<String> macros = this.ruleMacroMap.get(inName);
-				if (null == macros) {
-					macros = Lists.newArrayList();
-				}
-				macros.add(macro);
-				this.ruleMacroMap.put(inName, macros);
-
-				// Macro/SkIf Map
-				List<SkIf> listIfs = this.macroIfMap.get(macro);
-				if (null == listIfs) {
-					listIfs = Lists.newArrayList();
-				}
-				listIfs.add(skIf);
-				this.macroIfMap.put(macro, listIfs);
 			}
 		}
 	}

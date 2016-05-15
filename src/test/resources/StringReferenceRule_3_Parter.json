@@ -31,11 +31,11 @@
 		"name": "COKE_RULE_00003",
 		"description": "Are things really better?  Or are you hyped up on sugar?",
 		"condition": {
-		  "ifRef": "COKE_RULE_00001",
+		  "ruleref": "COKE_RULE_00001",
 		  "then": {
 			"rule": {
 			  "condition": {
-				"ifRef": "COKE_RULE_00002",
+				"ruleref": "COKE_RULE_00002",
 				"then": {
 				  "action": {
 					"actiontype": "PRINT",
