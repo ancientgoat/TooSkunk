@@ -113,18 +113,19 @@ public class SkIf {
 			try {
 				objectAnswer = inRunner.getRule(this.skExpression.getOriginalString())
 						.run(inRunner);
-
-				if (objectAnswer instanceof Boolean) {
-					// Fix the rule for the author, it is not an 'if', it is an 'ruleref'.
-					this.ruleRef = this.skExpression.getOriginalString();
-					this.inputExpression = null;
-					this.skExpression = null;
-					Boolean answer = (Boolean) objectAnswer;
-					inRunner.addDebugCrumb(this.ruleRef, answer);
-				}
 			} catch (SkRuleNotFoundException e) {
 				// Will fall to exception below
 				objectAnswer = null;
+			}
+
+			if (null != objectAnswer && objectAnswer instanceof Boolean) {
+				// Fix the rule for the author, it is not an 'if', it is an 'ruleref'.
+				this.ruleRef = this.skExpression.getOriginalString();
+				this.inputExpression = null;
+				this.skExpression = null;
+				Boolean answer = (Boolean) objectAnswer;
+				inRunner.addDebugCrumb(this.ruleRef, answer);
+				return answer;
 			}
 		}
 
@@ -135,13 +136,15 @@ public class SkIf {
 			log.debug(String.format("IF Value : %s", objectAnswer.toString()));
 		}
 
+		String expString = null != this.skExpression ? this.skExpression.getOriginalString() : "";
+		String tempAnswer = (null != objectAnswer ?
+				objectAnswer.getClass()
+						.getName() :
+				"null");
+
 		String warning =
 				String.format("IF condition mast result in a Boolean, not a " + "%s\nOriginal: %s\nSpEL Exp: %s",
-						(null != objectAnswer ?
-								objectAnswer.getClass()
-										.getName() :
-								"null"), this.skExpression.getOriginalString(),
-						this.skExpression.getExpressionString());
+						tempAnswer, expString, expString);
 
 		IllegalArgumentException e = new IllegalArgumentException(warning);
 		inRunner.addErrorCrumb(this.skExpression, e);

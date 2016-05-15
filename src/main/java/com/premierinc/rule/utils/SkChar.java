@@ -8,6 +8,7 @@ import java.util.Set;
  */
 public class SkChar {
 
+
 	public static final Set<Character> ALLOWED_MACRO_CHARS = new HashSet<Character>() {{
 		add('.');
 		add('~');
@@ -15,6 +16,8 @@ public class SkChar {
 	}};
 	public static final Set<Character> BAD_MACRO_CHARS = new HashSet<Character>() {{
 		add('\'');
+		add(')');
+		add('(');
 	}};
 	public static final Set<String> BAD_MACRO_WORDS = new HashSet<String>() {{
 		add("BIGDECIMAL");

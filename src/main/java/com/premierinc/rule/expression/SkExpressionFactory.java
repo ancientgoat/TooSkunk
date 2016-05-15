@@ -18,6 +18,8 @@ public class SkExpressionFactory {
 
 	private static Logger log = LoggerFactory.getLogger(SkExpressionFactory.class);
 
+	public static Boolean TURN_ON_EXPRESSION_PARSING = true;
+
 	public static final Set<Character> NON_MACRO_CHARS = new HashSet<Character>() {{
 		add('(');
 		add('[');
@@ -43,7 +45,9 @@ public class SkExpressionFactory {
 		if (!spelExpressionString.startsWith("//")) {
 			// do convert
 			//~~  Commented out for now :
-			//~~ spelExpressionString = convertExpression(inInputExpression, sb, haveMacro, haveQuote, macro,  macroList);
+			if(TURN_ON_EXPRESSION_PARSING) {
+				spelExpressionString = convertExpression(inInputExpression, sb, haveMacro, haveQuote, macro, macroList);
+			}
 		} else {
 			// do NOT convert
 		}

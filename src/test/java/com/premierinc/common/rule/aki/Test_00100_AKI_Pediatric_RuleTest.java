@@ -7,6 +7,7 @@ import com.premierinc.rule.breadcrumbs.SkBreadcrumb;
 import com.premierinc.rule.breadcrumbs.SkBreadcrumbType;
 import com.premierinc.rule.breadcrumbs.SkBreadcrumbs;
 import com.premierinc.rule.expression.SkExpression;
+import com.premierinc.rule.expression.SkExpressionFactory;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.Map;
 import org.junit.Assert;
@@ -30,6 +31,9 @@ public class Test_00100_AKI_Pediatric_RuleTest {
 	 */
 	@Test
 	public void testOutputJsonSimpleRuleTest() {
+
+		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = false;
+
 		// SkRules rules = buildThings(AKI_ONE, SkRules.class, "rules");
 		SkRules rules = buildThingsFromDirectory(AKI_DIR);
 
