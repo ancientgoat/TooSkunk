@@ -6,9 +6,11 @@ import com.premierinc.rule.action.custom.SkActionCustomGlobal;
 import com.premierinc.rule.base.SkRule;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
+import com.premierinc.rule.expression.SkExpressionFactory;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,14 @@ public class Test_00010_CustomActionTest {
 	private Logger log = LoggerFactory.getLogger(Test_00010_CustomActionTest.class);
 
 	public static final String CUSTOM_ACTION_FILE_NAME = "Test_Custom_Action_001.json";
+
+	/**
+	 *
+	 */
+	@BeforeClass
+	public static void beforeClass(){
+		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = true;
+	}
 
 	/**
 	 * Test a custom action.

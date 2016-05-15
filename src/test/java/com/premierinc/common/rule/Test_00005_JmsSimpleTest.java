@@ -3,8 +3,10 @@ package com.premierinc.common.rule;
 import com.premierinc.rule.action.SkAction;
 import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.base.SkRuleMaster;
+import com.premierinc.rule.expression.SkExpressionFactory;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.List;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,14 @@ public class Test_00005_JmsSimpleTest {
 	private Logger log = LoggerFactory.getLogger(Test_00005_JmsSimpleTest.class);
 
 	public static final String JMS_FILE_NAME = "Test_Jms_001.json";
+
+	/**
+	 *
+	 */
+	@BeforeClass
+	public static void beforeClass(){
+		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = true;
+	}
 
 	/**
 	 *

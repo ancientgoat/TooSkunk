@@ -11,6 +11,7 @@ import com.premierinc.rule.expression.SkExpressionFactory;
 import com.premierinc.rule.run.SkRuleRunner;
 import java.util.Map;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +28,18 @@ public class Test_00100_AKI_Adult_RuleTest {
 	public static final String AKI_DIR = "/aki/";
 
 	/**
+	 *
+	 */
+	@BeforeClass
+	public static void beforeClass(){
+		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = false;
+	}
+
+	/**
 	 * Can we read and run simple JSON without Exception?
 	 */
 	@Test
 	public void testOutputJsonSimpleRuleTest() {
-
-		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = false;
 
 		// SkRules rules = buildThings(AKI_ONE, SkRules.class, "rules");
 		SkRules rules = buildThingsFromDirectory(AKI_DIR);

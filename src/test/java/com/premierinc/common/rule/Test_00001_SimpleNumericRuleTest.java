@@ -4,8 +4,10 @@ import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.base.SkRuleBase;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.common.JsonMapperHelper;
+import com.premierinc.rule.expression.SkExpressionFactory;
 import com.premierinc.rule.run.SkRuleRunner;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,14 @@ public class Test_00001_SimpleNumericRuleTest {
 	public static final String ONE_RULE_FAIL_FILE_NAME = "NumericOneRuleTestFail.json";
 	public static final String TWO_RULE_FILE_NAME = "NumericTwoRuleTest.json";
 	public static final String ONE_ACTION_FILE_NAME = "Test_Action_Now_001.json";
+
+	/**
+	 *
+	 */
+	@BeforeClass
+	public static void beforeClass(){
+		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = true;
+	}
 
 	/**
 	 * Can we read simple JSON without Exception?

@@ -4,8 +4,10 @@ import com.premierinc.rule.action.SkActions;
 import com.premierinc.rule.base.SkRuleMaster;
 import com.premierinc.rule.base.SkRules;
 import com.premierinc.rule.common.JsonMapperHelper;
+import com.premierinc.rule.expression.SkExpressionFactory;
 import com.premierinc.rule.run.SkRuleRunner;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,14 @@ public class Test_00002_ReferenceTest {
 	public static final String FORTH_REF_TEST_FILE_NAME = "StringReferenceRule_6_MultiActionWithMacros.json";
 	public static final String FIRST_ACTION_FILE_NAME = "Test_Actions_001.json";
 	public static final String SECOND_ACTION_FILE_NAME = "Test_Actions_002_With_Macros.json";
+
+	/**
+	 *
+	 */
+	@BeforeClass
+	public static void beforeClass(){
+		SkExpressionFactory.TURN_ON_EXPRESSION_PARSING = true;
+	}
 
 	/**
 	 * Can we read a several rules simple JSON without Exception?
