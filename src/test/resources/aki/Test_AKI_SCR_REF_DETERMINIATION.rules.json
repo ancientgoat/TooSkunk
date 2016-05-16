@@ -7,7 +7,6 @@
 		  "if": "null != ['SCR.HIST']",
 		  "then": {
 			"expressions": [
-			  "['SCR.ADMIN'] = ['SCR.ADMIN.SAVED']",
 			  "['TEMP.ADMIN'] = ( null != ['SCR.ADMIN'] ? ['SCR.ADMIN'] : T(Integer).MIN_VALUE )",
 			  "['SCR.REF'] = ( ['SCR.HIST'] < ['TEMP.ADMIN'] ? ['TEMP.ADMIN'] : ['SCR.HIST'] "
 			]
@@ -23,17 +22,12 @@
 				  ]
 				},
 				"else": {
-				  "expressions": [
-					"['SCR.EST'] = ['SCR.EST.SAVED']"
-				  ]
 				}
 			  }
 			}
 		  }
 		},
 		"postexpressions": [
-		  "['SCR.ICU'] = ['SCR.ICU.SAVED']",
-		  "['SCR.ADMIN'] = ['SCR.ADMIN.SAVED']",
 		  "['TEMP.ADMIN'] = ( null != ['SCR.ADMIN'] ? ['SCR.ADMIN'] : T(Integer).MAX_VALUE )",
 		  "['TEMP.EST'] = ( null != ['SCR.EST'] ? ['SCR.EST'] : T(Integer).MAX_VALUE )",
 		  "['TEMP.ICU'] = ( null != ['SCR.ICU'] ? ['SCR.ICU'] : T(Integer).MAX_VALUE )",
@@ -41,9 +35,6 @@
 		  "['SCR.REF'] = T(Math).min( ['SCR.REF'], ['TEMP.ICU'] )",
 		  "// Test comment",
 		  "['SCR.REF'] = ( T(Integer).MAX_VALUE != ['SCR.REF'] ? ['SCR.REF'] : null )",
-		  "['SCR.N'] = ['SCR.N.SAVED']",
-		  "['SCR.N-1'] = ['SCR.N-1.SAVED']",
-		  "['SCR.N-1.48HOURS.FROM.SCR.N'] = ['SCR.N-1.48HOURS.FROM.SCR.N.SAVED']",
 		  "['SCR.N-N-1.48.HOURS>=0.3'] = ( 0.3 <= ['SCR.N'] - ['SCR.N-1'] && ['SCR.N-1.48HOURS.FROM.SCR.N'] )",
 		  "['SCR.N-GE-1.5'] = ( 0 < ['SCR.N'] && 0 < ['SCR.REF'] && ['SCR.N'] >= 1.5 * ['SCR.REF'] )"
 		]

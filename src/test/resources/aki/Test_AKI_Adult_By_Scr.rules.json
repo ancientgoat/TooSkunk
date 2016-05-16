@@ -11,7 +11,7 @@
 			  "then": {
 				"action": {
 				  "actiontype": "AKI",
-				  "message": "Stage 3 AKI : based on elevated SCr"
+				  "message": "Adult Stage 3 AKI : based on elevated SCr"
 				}
 			  },
 			  "else": {
@@ -20,7 +20,7 @@
 				  "then": {
 					"action": {
 					  "actiontype": "AKI",
-					  "message": "Stage 3 AKI : based on 300% increase above reference SCr"
+					  "message": "Adult Stage 3 AKI : based on 300% increase above reference SCr"
 					}
 				  },
 				  "else": {
@@ -39,7 +39,7 @@
 		  "then": {
 			"action": {
 			  "actiontype": "AKI",
-			  "message": "Stage 2 AKI : based on 200% increase above reference SCr"
+			  "message": "Adult Stage 2 AKI : based on 200% increase above reference SCr"
 			}
 		  },
 		  "else": {
@@ -48,7 +48,7 @@
 			  "then": {
 				"action": {
 				  "actiontype": "AKI",
-				  "message": "Stage 1 AKI : based on rapid rise in SCr"
+				  "message": "Adult Stage 1 AKI : based on rapid rise in SCr"
 				}
 			  },
 			  "else": {
@@ -57,7 +57,7 @@
 				  "then": {
 					"action": {
 					  "actiontype": "AKI",
-					  "message": "Stage 1 AKI : based on 50% increase above reference SCr"
+					  "message": "Adult Stage 1 AKI : based on 50% increase above reference SCr"
 					}
 				  }
 				}

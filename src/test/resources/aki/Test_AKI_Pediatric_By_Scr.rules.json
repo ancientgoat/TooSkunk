@@ -4,7 +4,6 @@
 	  {
 		"name": "AKI_RULE_PEDIATRIC_BY_SCR",
 		"expressions": [
-		  "['SCR.N'] = ['SCR.N.SAVED']",
 		  "['EGFR.PEDIATRIC'] = ( 0.413 * ['PATIENT.HEIGHT.CM'] ) / ['SCR.N'] "
 		],
 		"condition": {
@@ -15,7 +14,7 @@
 			  "then": {
 				"action": {
 				  "actiontype": "AKI",
-				  "message": "Stage 3 AKI : based on elevated SCr"
+				  "message": "Pediatric Stage 3 AKI : based on elevated SCr"
 				}
 			  },
 			  "else": {
@@ -24,7 +23,7 @@
 				  "then": {
 					"action": {
 					  "actiontype": "AKI",
-					  "message": "Stage 3 AKI : based on 300% increase above reference SCr"
+					  "message": "Pediatric Stage 3 AKI : based on 300% increase above reference SCr"
 					}
 				  },
 				  "else": {
@@ -33,7 +32,7 @@
 					  "then": {
 						"action": {
 						  "actiontype": "AKI",
-						  "message": "Stage 3 AKI : based on low eGFR"
+						  "message": "Pediatric Stage 3 AKI : based on low eGFR"
 						}
 					  },
 					  "else": {
@@ -57,7 +56,7 @@
 		  "then": {
 			"action": {
 			  "actiontype": "AKI",
-			  "message": "Stage 2 AKI : based on 200% increase above reference SCr"
+			  "message": "Pediatric Stage 2 AKI : based on 200% increase above reference SCr"
 			}
 		  },
 		  "else": {
@@ -66,7 +65,7 @@
 			  "then": {
 				"action": {
 				  "actiontype": "AKI",
-				  "message": "Stage 1 AKI : based on rapid rise in SCr"
+				  "message": "Pediatric Stage 1 AKI : based on rapid rise in SCr"
 				}
 			  },
 			  "else": {
@@ -75,7 +74,7 @@
 				  "then": {
 					"action": {
 					  "actiontype": "AKI",
-					  "message": "Stage 1 AKI : based on 50% increase above reference SCr"
+					  "message": "Pediatric Stage 1 AKI : based on 50% increase above reference SCr"
 					}
 				  }
 				}
